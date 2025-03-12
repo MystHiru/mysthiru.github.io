@@ -1,10 +1,10 @@
 # Site settings
 title: MystHiru Blog
-SEOTitle: MystHiru的博客 | MystHiru Blog
+SEOTitle: 吕金瑞的博客 | 吕金瑞 Blog
 header-img: img/home-bg.jpg
 email: mysthiru@gmail.com
 description: "这里是 吕金瑞 的个人博客，与你一起发现更大的世界 | 好好活着"
-keyword: "MystHiru"
+keyword: "吕金瑞"
 url: "https://huangxuan.me" # your host, for absolute URL
 baseurl: "" # for example, '/blog' if your blog hosted on 'host/blog'
 
