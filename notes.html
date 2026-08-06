@@ -22,10 +22,8 @@
       --radius-full: 999px;
       --gap: clamp(1rem, 2.5vw, 1.5rem);
       --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-      --font-mono: "SF Mono", Consolas, "Liberation Mono", monospace;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
       background: var(--surface-0);
       color: var(--text-primary);
@@ -36,119 +34,46 @@
       display: flex;
       flex-direction: column;
     }
-    
+    a { color: inherit; }
     nav {
-      background: var(--surface-1);
+      background: rgba(10,13,18,.85);
       border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px);
     }
     nav ul {
-      display: flex;
-      list-style: none;
-      gap: var(--gap);
+      display: flex; list-style: none; gap: var(--gap);
       padding: 1rem clamp(1.5rem, 5vw, 3rem);
-      max-width: 1200px;
-      margin: 0 auto;
+      max-width: 1200px; margin: 0 auto;
     }
-    nav a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: color 0.2s;
-    }
+    nav a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
     nav a:hover, nav a.active { color: var(--accent); }
-    
     main {
       flex: 1;
       padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
-      max-width: 800px;
-      margin: 0 auto;
-      width: 100%;
+      max-width: 800px; margin: 0 auto; width: 100%;
     }
-    
     h1 {
-      font-size: clamp(2rem, 4vw, 2.5rem);
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+      font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 600; margin-bottom: 0.5rem;
       background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    
-    .subtitle {
-      color: var(--text-dim);
-      margin-bottom: 3rem;
-    }
-    
-    .note-list {
-      display: grid;
-      gap: 1.5rem;
-    }
-    
-    .note-card {
-      background: var(--surface-1);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      transition: border-color 0.2s;
-    }
-    
+    .subtitle { color: var(--text-dim); margin-bottom: 3rem; }
+    .note-list { display: grid; gap: 1.5rem; }
+    .note-card { background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.5rem; transition: border-color 0.2s; }
     .note-card:hover { border-color: var(--accent-muted); }
-    
-    .note-card h3 {
-      color: var(--accent);
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    
-    .note-date {
-      color: var(--text-dim);
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-    }
-    
-    .note-card p {
-      color: var(--text-secondary);
-      line-height: 1.8;
-    }
-    
-    .empty-state {
-      text-align: center;
-      padding: 4rem 2rem;
-      color: var(--text-dim);
-    }
-    
-    .empty-state h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: var(--text-secondary);
-    }
-    
-    footer {
-      margin-top: auto;
-      padding: 2rem clamp(1.5rem, 5vw, 3rem);
-      border-top: 1px solid var(--line);
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 0.9rem;
-    }
-    
-    @media (max-width: 760px) {
-      nav ul { flex-wrap: wrap; justify-content: center; }
-    }
-    
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-      }
-    }
+    .note-card h3 { color: var(--accent); font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .note-date { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1rem; }
+    .note-card p { color: var(--text-secondary); line-height: 1.8; }
+
+    /* DATA markers for admin */
+    .note-card[data-note] { }
+    [data-note-title] { }
+    [data-note-date] { }
+    [data-note-body] { }
+
+    footer { margin-top: auto; padding: 2rem clamp(1.5rem, 5vw, 3rem); border-top: 1px solid var(--line); text-align: center; color: var(--text-dim); font-size: 0.9rem; }
+    @media (max-width: 760px) { nav ul { flex-wrap: wrap; justify-content: center; } }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
@@ -160,24 +85,29 @@
       <li><a href="notes.html" class="active">随笔</a></li>
     </ul>
   </nav>
-  
   <main>
-    <h1><!-- EDITABLE:notes_title -->随笔记录<!-- END --></h1>
-    <p class="subtitle"><!-- EDITABLE:notes_subtitle -->一些想法、碎片和不太成形的东西<!-- END --></p>
-    
-    <!-- 笔记卡片在这里编辑，用 <!-- NOTE --> 和 <!-- /NOTE --> 包起来
+    <h1>随笔记录</h1>
+    <p class="subtitle">一些想法、碎片和不太成形的东西</p>
     <div class="note-list" id="note-list">
-      <!-- NOTE -->
-      <div class="note-card">
-        <h3><!-- EDITABLE:note_1_title -->笔记标题<!-- END --></h3>
-        <div class="note-date"><!-- EDITABLE:note_1_date -->2025-01-01<!-- END --></div>
-        <p><!-- EDITABLE:note_1_body -->笔记的正文内容，可以写一些技术思考、问题记录或者日常观察。<!-- END --></p>
+      <!-- NOTE:start -->
+      <div class="note-card" data-note="1">
+        <h3 data-note-title="1">关于“先做出来”这件事</h3>
+        <div class="note-date" data-note-date="1">2026-08-06</div>
+        <p data-note-body="1">很多时候一个想法在脑子里转了很久，但真正动手做了之后才发现，它和想象中完全不一样。不过没关系，至少现在有了一个可以改的东西，而不是一个永远停留在脑子的念头。</p>
       </div>
-      <!-- /NOTE -->
+      <div class="note-card" data-note="2">
+        <h3 data-note-title="2">深夜写代码的副作用</h3>
+        <div class="note-date" data-note-date="2">2026-07-28</div>
+        <p data-note-body="2">凌晨两点写出来的代码，第二天早上看往往觉得是另一个人写的。但有时候，凌晨的灵感也确实比白天更野一点。</p>
+      </div>
+      <div class="note-card" data-note="3">
+        <h3 data-note-title="3">AI 不是万能，但确实好用</h3>
+        <div class="note-date" data-note-date="3">2026-07-15</div>
+        <p data-note-body="3">最近越来越多地把 AI 当作日常开发的一部分。它帮我快速搭框架、写样板代码、想命名——但真正决定“做什么”和“做到什么程度”的，还是得自己来。</p>
+      </div>
+      <!-- NOTE:end -->
     </div>
-    -->
   </main>
-  
   <footer>
     <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
   </footer>

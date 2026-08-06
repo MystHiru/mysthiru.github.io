@@ -6,493 +6,417 @@
   <title>管理面板 · 玄明</title>
   <style>
     :root {
-      --surface-0: #05070C;
-      --surface-1: #0A0D12;
-      --surface-2: #0F131C;
-      --surface-3: #161D2B;
-      --accent: #9D7BFF;
-      --accent-muted: #6B5B95;
-      --danger: #E56B6B;
-      --ok: #7BD88F;
-      --text-primary: #E8E8F0;
-      --text-secondary: #A8A8B8;
-      --text-dim: #6B6B7B;
-      --line: #282C38;
-      --radius-md: 14px;
-      --radius-full: 999px;
-      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-      --font-mono: "SF Mono", Consolas, "Liberation Mono", monospace;
+      --s0: #05070C; --s1: #0A0D12; --s2: #0F131C; --s3: #161D2B;
+      --accent: #9D7BFF; --am: #6B5B95; --danger: #E56B6B; --ok: #7BD88F;
+      --tp: #E8E8F0; --ts: #A8A8B8; --td: #6B6B7B; --line: #282C38;
+      --rm: 14px; --rf: 999px; --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--surface-0);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: .95rem;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-    a { color: inherit; }
-
-    nav {
-      background: rgba(10,13,18,.85);
-      border-bottom: 1px solid var(--line);
-      position: sticky; top: 0; z-index: 100;
-      backdrop-filter: blur(12px);
-    }
-    nav .nav-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: .8rem clamp(1.5rem, 5vw, 3rem);
-      max-width: 1200px; margin: 0 auto;
-    }
-    .brand { color: var(--accent); text-decoration: none; font-weight: 700; letter-spacing: .1em; }
-
-    main { max-width: 1200px; margin: 0 auto; padding: 1.5rem clamp(1.5rem, 5vw, 3rem) 4rem; }
-
-    .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; flex-wrap: wrap; }
-    .tab { padding: .6rem 1.2rem; border-radius: 10px 10px 0 0; border: 1px solid var(--line); border-bottom: none; background: var(--surface-1); color: var(--text-dim); cursor: pointer; font-size: .85rem; transition: all .2s; }
-    .tab:hover { color: var(--text-secondary); }
-    .tab.active { background: var(--surface-2); color: var(--accent); border-color: var(--accent-muted); }
-
-    .panel { display: none; }
-    .panel.active { display: block; }
-
-    .card { background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1rem; }
-    .card h3 { font-size: .95rem; color: var(--accent); margin-bottom: .6rem; }
-    .card label { display: block; color: var(--text-dim); font-size: .78rem; margin-bottom: .3rem; }
-    .card input, .card textarea {
-      width: 100%;
-      background: var(--surface-2);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      color: var(--text-primary);
-      padding: .6rem .8rem;
-      font-size: .9rem;
-      font-family: var(--font-sans);
-    }
-    .card textarea { min-height: 60px; resize: vertical; }
-    .card input:focus, .card textarea:focus { outline: none; border-color: var(--accent-muted); }
-    .card .row { display: flex; gap: .6rem; flex-wrap: wrap; }
-    .card .row > * { flex: 1; min-width: 120px; }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: .4rem;
-      padding: .6rem 1.2rem; border-radius: var(--radius-full);
-      border: none; cursor: pointer;
-      font-size: .85rem; font-weight: 500; font-family: var(--font-sans);
-      transition: all .2s;
-    }
-    .btn-primary { background: var(--accent); color: var(--surface-0); }
-    .btn-primary:hover { background: var(--accent-muted); }
-    .btn-ghost { background: var(--surface-2); color: var(--text-primary); border: 1px solid var(--line); }
-    .btn-ghost:hover { background: var(--surface-3); border-color: var(--accent-muted); }
-    .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
-    .btn-danger:hover { background: rgba(229,107,107,.12); }
-    .btn:disabled { opacity: .5; cursor: not-allowed; }
-
-    #status { margin-top: 1rem; font-size: .9rem; min-height: 1.4em; padding: 0 2px; }
-    #status.ok { color: var(--ok); }
-    #status.err { color: var(--danger); }
-    #status.busy { color: var(--accent); }
-
-    .token-bar { display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .token-bar input { flex: 1; min-width: 200px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; color: var(--text-primary); padding: .6rem 1rem; font-size: .85rem; }
-    .token-bar input:focus { outline: none; border-color: var(--accent-muted); }
-
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-    .gallery-item { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 3/4; background: var(--surface-2); }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .gallery-item .del { position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; background: rgba(5,7,12,.75); color: var(--danger); border: 1px solid rgba(229,107,107,.5); border-radius: 999px; font-size: .75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .2s; }
-    .gallery-item:hover .del { opacity: 1; }
-    .gallery-item .name { position: absolute; left: 0; right: 0; bottom: 0; padding: 1rem .4rem .35rem; background: linear-gradient(transparent, rgba(0,0,0,.8)); font-size: .65rem; color: var(--text-secondary); text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
-
-    #drop { border: 1.5px dashed var(--line); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; color: var(--text-dim); cursor: pointer; transition: border-color .2s, background .2s; margin-bottom: 1rem; }
-    #drop:hover, #drop.dragover { border-color: var(--accent); background: var(--surface-2); color: var(--text-secondary); }
-    #drop input { display: none; }
-
-    @media (max-width: 560px) {
-      .gallery-item .del { opacity: 1; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-      .tabs { overflow-x: auto; flex-wrap: nowrap; }
-      .tab { white-space: nowrap; font-size: .8rem; }
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--s0); color:var(--tp); font-family:var(--font); font-size:.95rem; line-height:1.6; min-height:100vh; }
+    nav { background:rgba(10,13,18,.85); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); }
+    nav .inner { display:flex; align-items:center; justify-content:space-between; padding:.8rem clamp(1.5rem,5vw,3rem); max-width:1200px; margin:0 auto; }
+    .brand { color:var(--accent); text-decoration:none; font-weight:700; letter-spacing:.1em; }
+    main { max-width:1200px; margin:0 auto; padding:1.5rem clamp(1.5rem,5vw,3rem) 4rem; }
+    .tbar { display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; margin-bottom:1.5rem; }
+    .tbar input { flex:1; min-width:200px; background:var(--s2); border:1px solid var(--line); border-radius:10px; color:var(--tp); padding:.6rem 1rem; font-size:.85rem; }
+    .tbar input:focus { outline:none; border-color:var(--am); }
+    .tabs { display:flex; gap:4px; margin-bottom:1.5rem; flex-wrap:wrap; }
+    .tab { padding:.6rem 1.2rem; border-radius:10px 10px 0 0; border:1px solid var(--line); border-bottom:none; background:var(--s1); color:var(--td); cursor:pointer; font-size:.85rem; }
+    .tab:hover { color:var(--ts); }
+    .tab.active { background:var(--s2); color:var(--accent); border-color:var(--am); }
+    .panel { display:none; } .panel.active { display:block; }
+    .card { background:var(--s1); border:1px solid var(--line); border-radius:var(--rm); padding:1.2rem; margin-bottom:1rem; }
+    .card h3 { font-size:.95rem; color:var(--accent); margin-bottom:.6rem; }
+    .card label { display:block; color:var(--td); font-size:.78rem; margin-bottom:.3rem; }
+    .card input, .card textarea { width:100%; background:var(--s2); border:1px solid var(--line); border-radius:8px; color:var(--tp); padding:.6rem .8rem; font-size:.9rem; font-family:var(--font); }
+    .card textarea { min-height:50px; resize:vertical; }
+    .card input:focus, .card textarea:focus { outline:none; border-color:var(--am); }
+    .card .row { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; }
+    .card .row > * { flex:1; min-width:100px; }
+    .btn { display:inline-flex; align-items:center; gap:.4rem; padding:.6rem 1.2rem; border-radius:var(--rf); border:none; cursor:pointer; font-size:.85rem; font-weight:500; font-family:var(--font); transition:all .2s; }
+    .btn-primary { background:var(--accent); color:var(--s0); }
+    .btn-primary:hover { background:var(--am); }
+    .btn-ghost { background:var(--s2); color:var(--tp); border:1px solid var(--line); }
+    .btn-ghost:hover { background:var(--s3); border-color:var(--am); }
+    .btn-danger { background:transparent; color:var(--danger); border:1px solid var(--danger); }
+    .btn-danger:hover { background:rgba(229,107,107,.12); }
+    .btn-sm { font-size:.78rem; padding:.35rem .8rem; }
+    .btn:disabled { opacity:.5; cursor:not-allowed; }
+    #status { margin-top:1rem; font-size:.9rem; min-height:1.4em; padding:0 2px; }
+    #status.ok { color:var(--ok); } #status.err { color:var(--danger); } #status.busy { color:var(--accent); }
+    .g-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; }
+    .g-item { position:relative; border-radius:10px; overflow:hidden; border:1px solid var(--line); aspect-ratio:3/4; background:var(--s2); }
+    .g-item img { width:100%; height:100%; object-fit:cover; display:block; }
+    .g-item .del { position:absolute; top:5px; right:5px; width:26px; height:26px; background:rgba(5,7,12,.75); color:var(--danger); border:1px solid rgba(229,107,107,.5); border-radius:999px; font-size:.75rem; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; }
+    .g-item:hover .del { opacity:1; }
+    .g-item .nm { position:absolute; left:0; right:0; bottom:0; padding:1rem .4rem .35rem; background:linear-gradient(transparent,rgba(0,0,0,.8)); font-size:.65rem; color:var(--ts); text-overflow:ellipsis; white-space:nowrap; overflow:hidden; }
+    #drop { border:1.5px dashed var(--line); border-radius:var(--rm); padding:1.5rem; text-align:center; color:var(--td); cursor:pointer; margin-bottom:1rem; }
+    #drop:hover, #drop.dragover { border-color:var(--accent); background:var(--s2); color:var(--ts); }
+    #drop input { display:none; }
+    .item-bar { display:flex; gap:.6rem; align-items:center; margin-bottom:1rem; }
+    .item-bar .btn { flex-shrink:0; }
+    .item-card { background:var(--s1); border:1px solid var(--line); border-radius:var(--rm); padding:1rem; margin-bottom:.8rem; }
+    .item-card .hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:.4rem; }
+    .item-card .hdr .idx { color:var(--td); font-size:.78rem; }
+    .item-card .hdr .btns { display:flex; gap:4px; }
+    .item-card .flds { display:grid; gap:.5rem; }
+    .item-card .flds input, .item-card .flds textarea { width:100%; background:var(--s2); border:1px solid var(--line); border-radius:6px; color:var(--tp); padding:.45rem .7rem; font-size:.85rem; font-family:var(--font); }
+    .item-card .flds input:focus, .item-card .flds textarea:focus { outline:none; border-color:var(--am); }
+    .item-card .flds textarea { min-height:40px; resize:vertical; }
+    @media (max-width:560px) { .g-item .del { opacity:1; } .g-grid { grid-template-columns:repeat(2,1fr); } .tabs { overflow-x:auto; flex-wrap:nowrap; } .tab { white-space:nowrap; font-size:.8rem; } }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="nav-inner">
-      <a class="brand" href="index.html">MYSTHIRU</a>
-      <span style="color:var(--text-dim);font-size:.82rem;">管理面板</span>
-    </div>
-  </nav>
-
+  <nav><div class="inner"><a class="brand" href="index.html">MYSTHIRU</a><span style="color:var(--td);font-size:.82rem;">管理面板</span></div></nav>
   <main>
-    <div class="token-bar">
+    <div class="tbar">
       <input type="password" id="token" placeholder="Fine-grained Token" autocomplete="off">
       <button class="btn btn-primary" id="btnConnect">连接</button>
-      <span style="color:var(--text-dim);font-size:.78rem;">Token 仅存本地</span>
+      <span style="color:var(--td);font-size:.78rem;">Token 仅存本地 · 自动保存</span>
     </div>
-
-    <div class="tabs" id="tabs">
+    <div class="tabs">
       <div class="tab active" data-tab="content">📝 内容</div>
       <div class="tab" data-tab="gallery">🖼️ 图片</div>
       <div class="tab" data-tab="projects">📦 项目</div>
       <div class="tab" data-tab="notes">📄 随笔</div>
     </div>
-
     <div id="status"></div>
 
     <div class="panel active" id="tab-content">
-      <div id="content-editor">
-        <p style="color:var(--text-dim);">点击「连接」后自动加载所有可编辑内容。</p>
-      </div>
-      <div style="margin-top:1rem;text-align:right;">
-        <button class="btn btn-primary" id="saveContent" style="display:none;">全部保存</button>
-      </div>
+      <div id="content-editor"><p style="color:var(--td);">点击「连接」后加载。</p></div>
+      <div style="margin-top:1rem;text-align:right;"><button class="btn btn-primary" id="saveContent" style="display:none;">全部保存</button></div>
     </div>
 
     <div class="panel" id="tab-gallery">
-      <div id="drop">
-        📁 点击选择或拖入图片（自动压缩到 1200px）
-        <input type="file" id="file" accept="image/*" multiple>
-      </div>
-      <div id="gallery-list"><p style="color:var(--text-dim);">连接后显示图片列表。</p></div>
+      <div id="drop">📁 点击选择或拖入图片（自动压缩到 1200px）<input type="file" id="file" accept="image/*" multiple></div>
+      <div id="gallery-list"><p style="color:var(--td);">连接后显示。</p></div>
     </div>
 
     <div class="panel" id="tab-projects">
-      <div id="project-editor">
-        <p style="color:var(--text-dim);">连接后编辑项目卡片。</p>
-      </div>
-      <div style="margin-top:1rem;text-align:right;">
-        <button class="btn btn-primary" id="saveProjects" style="display:none;">保存项目</button>
-      </div>
+      <div class="item-bar"><button class="btn btn-ghost btn-sm" id="addProject">＋ 新增项目</button></div>
+      <div id="project-editor"><p style="color:var(--td);">连接后编辑。</p></div>
+      <div style="margin-top:1rem;text-align:right;"><button class="btn btn-primary" id="saveProjects" style="display:none;">保存项目</button></div>
     </div>
 
     <div class="panel" id="tab-notes">
-      <div id="note-editor">
-        <p style="color:var(--text-dim);">连接后编辑随笔内容。</p>
-      </div>
-      <div style="margin-top:1rem;text-align:right;">
-        <button class="btn btn-primary" id="saveNotes" style="display:none;">保存随笔</button>
-      </div>
+      <div class="item-bar"><button class="btn btn-ghost btn-sm" id="addNote">＋ 新增随笔</button></div>
+      <div id="note-editor"><p style="color:var(--td);">连接后编辑。</p></div>
+      <div style="margin-top:1rem;text-align:right;"><button class="btn btn-primary" id="saveNotes" style="display:none;">保存随笔</button></div>
     </div>
   </main>
 
   <script>
-    const OWNER = 'MystHiru';
-    const REPO = 'mysthiru.github.io';
-    const BRANCH = 'main';
-    const DIR = 'img/archive';
-    const GALLERY_FILE = 'gallery.html';
-
-    const $ = id => document.getElementById(id);
-    const s = $('status');
-    function st(msg, cls='') { s.textContent = msg; s.className = cls; }
-    function tk() { return $('token').value.trim(); }
-
-    async function gh(path, method='GET', body=null) {
-      const opt = { method, headers: { 'Authorization': 'Bearer ' + tk() } };
-      if (body) { opt.headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
-      const r = await fetch('https://api.github.com' + path, opt);
-      if (!r.ok) {
-        let m = 'HTTP ' + r.status;
-        try { const e = await r.json(); m = e.message || m; } catch(_) {}
-        throw new Error(m);
-      }
-      return r.status === 204 ? null : r.json();
+    const OWNER='MystHiru', REPO='mysthiru.github.io', BRANCH='main', DIR='img/archive', GALLERY_FILE='gallery.html';
+    const $=id=>document.getElementById(id), s=$('status');
+    function st(m,c=''){s.textContent=m;s.className=c;}
+    function tk(){return $('token').value.trim();}
+    async function gh(path,method='GET',body=null){
+      const opt={method,headers:{'Authorization':'Bearer '+tk()}};
+      if(body){opt.headers['Content-Type']='application/json';opt.body=JSON.stringify(body);}
+      const r=await fetch('https://api.github.com'+path,opt);
+      if(!r.ok){let m='HTTP '+r.status;try{const e=await r.json();m=e.message||m;}catch(_){}throw new Error(m);}
+      return r.status===204?null:r.json();
     }
 
-    // ---- 标签切换 ----
-    document.querySelectorAll('.tab').forEach(el => {
-      el.onclick = () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-        el.classList.add('active');
-        $(`tab-${el.dataset.tab}`).classList.add('active');
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(el=>{
+      el.onclick=()=>{
+        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+        el.classList.add('active'); $('tab-'+el.dataset.tab).classList.add('active');
       };
     });
 
-    // ---- 连接 ----
-    $('btnConnect').onclick = async () => {
-      if (!tk()) { st('请输入 Token', 'err'); return; }
-      st('正在连接…', 'busy');
-      try {
-        await loadContent();
-        await loadGallery();
-        await loadProjects();
-        await loadNotes();
-        st('已连接，所有内容已加载', 'ok');
-      } catch (e) { st('连接失败：' + e.message, 'err'); }
+    // Connect
+    $('btnConnect').onclick=async()=>{
+      if(!tk()){st('请输入 Token','err');return;}
+      st('连接中…','busy');
+      try{
+        await loadContent(); await loadGallery();
+        await loadProjects(); await loadNotes();
+        st('已连接 ✅','ok');
+      }catch(e){st('连接失败：'+e.message,'err');}
     };
-    $('token').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnConnect').click(); });
+    $('token').addEventListener('keydown',e=>{if(e.key==='Enter')$('btnConnect').click();});
 
-    // ---- 内容编辑 ----
-    let contentFields = {}; // {key: {page, selector, value, sha}}
-
-    async function loadContent() {
-      const pages = ['index.html', 'about.html'];
-      contentFields = {};
-      const ce = $('content-editor');
-      ce.innerHTML = '';
-
-      for (const page of pages) {
-        const meta = await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
-        const html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
-        const regex = /<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g;
-        let m;
-        let hasField = false;
-        while ((m = regex.exec(html)) !== null) {
-          hasField = true;
-          const key = m[1];
-          const val = m[2].trim();
-          contentFields[key] = { page, selector: key, value: val, sha: meta.sha, raw: meta.content };
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `<label>${key} <span style="color:var(--text-dim);font-size:.7rem;">(${page})</span></label>
-            <textarea id="field-${key}" rows="2">${escHtml(val)}</textarea>`;
-          ce.appendChild(card);
-        }
-        if (!hasField) {
-          ce.innerHTML = `<p style="color:var(--text-dim);">${page} 没有可编辑标记</p>`;
+    // ========== CONTENT ==========
+    let contentFields={};
+    async function loadContent(){
+      const pages=['index.html','about.html'];
+      contentFields={}; const ce=$('content-editor'); ce.innerHTML='';
+      for(const page of pages){
+        const meta=await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
+        const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
+        const re=/<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g; let m;
+        while((m=re.exec(html))!==null){
+          const key=m[1],val=m[2].trim();
+          contentFields[key]={page,val,sha:meta.sha};
+          const cd=document.createElement('div'); cd.className='card';
+          cd.innerHTML=`<label>${key} <span style="color:var(--td);font-size:.7rem;">(${page})</span></label><textarea id="cf-${key}" rows="2">${esc(val)}</textarea>`;
+          ce.appendChild(cd);
         }
       }
-      $('saveContent').style.display = Object.keys(contentFields).length ? 'inline-flex' : 'none';
+      $('saveContent').style.display=Object.keys(contentFields).length?'inline-flex':'none';
     }
-
-    $('saveContent').onclick = async () => {
-      st('正在保存内容…', 'busy');
-      try {
-        // Group by page
-        const byPage = {};
-        for (const [key, info] of Object.entries(contentFields)) {
-          const val = $(`field-${key}`).value.trim();
-          if (!byPage[info.page]) byPage[info.page] = { sha: info.sha, replaces: [] };
-          byPage[info.page].replaces.push({ key, val });
+    $('saveContent').onclick=async()=>{
+      st('保存中…','busy');
+      try{
+        const byPage={};
+        for(const[key,info]of Object.entries(contentFields)){
+          const v=$(`cf-${key}`).value.trim();
+          if(!byPage[info.page])byPage[info.page]={replaces:[]};
+          byPage[info.page].replaces.push({key,val:v});
         }
-        for (const [page, data] of Object.entries(byPage)) {
-          const meta = await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
-          let html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
-          for (const r of data.replaces) {
-            html = html.replace(
-              new RegExp(`<!-- EDITABLE:${r.key} -->[\\s\\S]*?<!-- END -->`),
-              `<!-- EDITABLE:${r.key} -->${r.val}<!-- END -->`
-            );
-          }
-          await gh(`/repos/${OWNER}/${REPO}/contents/${page}`, 'PUT', {
-            message: `Edit content: ${page}`,
-            content: btoa(unescape(encodeURIComponent(html))),
-            sha: meta.sha,
-            branch: BRANCH
-          });
+        for(const[page,data]of Object.entries(byPage)){
+          const meta=await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
+          let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
+          for(const r of data.replaces)
+            html=html.replace(new RegExp(`<!-- EDITABLE:${r.key} -->[\\s\\S]*?<!-- END -->`),`<!-- EDITABLE:${r.key} -->${r.val}<!-- END -->`);
+          await gh(`/repos/${OWNER}/${REPO}/contents/${page}`,'PUT',{message:`Edit ${page}`,content:btoa(unescape(encodeURIComponent(html))),sha:meta.sha,branch:BRANCH});
         }
-        st('内容已保存 ✅', 'ok');
-      } catch (e) { st('保存失败：' + e.message, 'err'); }
+        st('内容已保存 ✅','ok');
+      }catch(e){st('保存失败：'+e.message,'err');}
     };
 
-    // ---- 图片管理 ----
-    let images = [];
-    async function loadGallery() {
-      try {
-        const data = await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}`);
-        images = Array.isArray(data) ? data.filter(i => i.type === 'file') : [];
+    // ========== GALLERY ==========
+    let images=[];
+    async function loadGallery(){
+      try{
+        const data=await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}`);
+        images=Array.isArray(data)?data.filter(i=>i.type==='file'):[];
         renderGallery();
-      } catch (e) { $('gallery-list').innerHTML = `<p style="color:var(--text-dim);">读取失败：${e.message}</p>`; }
+      }catch(e){$('gallery-list').innerHTML=`<p style="color:var(--td);">读取失败：${e.message}</p>`;}
     }
-
-    function renderGallery() {
-      const gl = $('gallery-list');
-      if (!images.length) {
-        gl.innerHTML = '<p style="color:var(--text-dim);">还没有图片，拖入或点击上传。</p>';
-        return;
-      }
-      const grid = document.createElement('div');
-      grid.className = 'gallery-grid';
-      images.forEach(img => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-        item.innerHTML = `<img loading="lazy" src="${img.download_url}" alt="${img.name}"><div class="name">${img.name}</div>`;
-        const del = document.createElement('button');
-        del.className = 'del'; del.textContent = '✕'; del.title = '删除';
-        del.onclick = () => deleteImage(img);
-        item.appendChild(del);
-        grid.appendChild(item);
+    function renderGallery(){
+      const gl=$('gallery-list');
+      if(!images.length){gl.innerHTML='<p style="color:var(--td);">还没有图片。</p>';return;}
+      const grid=document.createElement('div');grid.className='g-grid';
+      images.forEach(img=>{
+        const item=document.createElement('div');item.className='g-item';
+        item.innerHTML=`<img loading="lazy" src="${img.download_url}" alt="${img.name}"><div class="nm">${img.name}</div>`;
+        const del=document.createElement('button');del.className='del';del.textContent='✕';
+        del.onclick=()=>deleteImage(img);item.appendChild(del);grid.appendChild(item);
       });
-      gl.innerHTML = '';
-      gl.appendChild(grid);
+      gl.innerHTML='';gl.appendChild(grid);
     }
-
-    async function deleteImage(img) {
-      if (!confirm(`删除 ${img.name}？`)) return;
-      st('删除中…', 'busy');
-      try {
-        await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${img.name}`, 'DELETE', {
-          message: `Delete ${img.name}`, sha: img.sha, branch: BRANCH
-        });
-        await syncGallery();
-        await loadGallery();
-        st('已删除并同步', 'ok');
-      } catch (e) { st('删除失败：' + e.message, 'err'); }
+    async function deleteImage(img){
+      if(!confirm(`删除 ${img.name}？`))return;st('删除中…','busy');
+      try{
+        await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${img.name}`,'DELETE',{message:`Delete ${img.name}`,sha:img.sha,branch:BRANCH});
+        await syncGallery(); await loadGallery();
+        st('已删除并同步','ok');
+      }catch(e){st('删除失败：'+e.message,'err');}
     }
-
-    const drop = $('drop'), fileInput = $('file');
-    drop.onclick = () => fileInput.click();
-    drop.ondragover = e => { e.preventDefault(); drop.classList.add('dragover'); };
-    drop.ondragleave = () => drop.classList.remove('dragover');
-    drop.ondrop = e => { e.preventDefault(); drop.classList.remove('dragover'); handleFiles(e.dataTransfer.files); };
-    fileInput.onchange = () => handleFiles(fileInput.files);
-
-    async function handleFiles(files) {
-      if (!tk()) { st('请先输入 Token', 'err'); return; }
-      const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
-      if (!arr.length) return;
-      let ok = 0, fail = 0;
-      for (const f of arr) {
-        try {
-          st(`处理 ${f.name}…`, 'busy');
-          const jpg = await compress(f);
-          const name = `img-${new Date().toISOString().replace(/[-:T]/g,'').slice(0,14)}-${Math.random().toString(36).slice(2,6)}.jpg`;
-          await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${name}`, 'PUT', {
-            message: `Upload ${name}`, content: jpg, branch: BRANCH
-          });
+    const drop=$('drop'),fi=$('file');
+    drop.onclick=()=>fi.click();
+    drop.ondragover=e=>{e.preventDefault();drop.classList.add('dragover');};
+    drop.ondragleave=()=>drop.classList.remove('dragover');
+    drop.ondrop=e=>{e.preventDefault();drop.classList.remove('dragover');handleFiles(e.dataTransfer.files);};
+    fi.onchange=()=>handleFiles(fi.files);
+    async function handleFiles(files){
+      if(!tk()){st('请先输入 Token','err');return;}
+      const arr=Array.from(files).filter(f=>f.type.startsWith('image/'));
+      if(!arr.length)return;let ok=0,fail=0;
+      for(const f of arr){
+        try{
+          st(`处理 ${f.name}…`,'busy');
+          const jpg=await compress(f);
+          const name=`img-${new Date().toISOString().replace(/[-:T]/g,'').slice(0,14)}-${Math.random().toString(36).slice(2,6)}.jpg`;
+          await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${name}`,'PUT',{message:`Upload ${name}`,content:jpg,branch:BRANCH});
           ok++;
-        } catch (e) { fail++; st('上传失败：' + e.message, 'err'); }
+        }catch(e){fail++;st('上传失败：'+e.message,'err');}
       }
-      try {
-        await syncGallery();
-        await loadGallery();
-        st(`完成：上传 ${ok} 张${fail ? '，失败 ' + fail + ' 张' : ''}`, ok && !fail ? 'ok' : 'err');
-      } catch (e) { st('同步失败：' + e.message, 'err'); }
+      try{await syncGallery();await loadGallery();st(`完成：上传 ${ok} 张${fail?'，失败 '+fail+' 张':''}`,ok&&!fail?'ok':'err');}catch(e){st('同步失败：'+e.message,'err');}
     }
-
-    function compress(file) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => {
-          let { width: w, height: h } = img;
-          const MAX = 1200;
-          if (Math.max(w, h) > MAX) { const s = MAX / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
-          const c = document.createElement('canvas');
-          c.width = w; c.height = h;
-          c.getContext('2d').drawImage(img, 0, 0, w, h);
-          resolve(c.toDataURL('image/jpeg', .82).split(',')[1]);
+    function compress(file){
+      return new Promise((resolve,reject)=>{
+        const img=new Image();
+        img.onload=()=>{
+          let {width:w,height:h}=img;const MAX=1200;
+          if(Math.max(w,h)>MAX){const s=MAX/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);}
+          const c=document.createElement('canvas');c.width=w;c.height=h;
+          c.getContext('2d').drawImage(img,0,0,w,h);
+          resolve(c.toDataURL('image/jpeg',.82).split(',')[1]);
         };
-        img.onerror = () => reject(new Error('图片解析失败'));
-        img.src = URL.createObjectURL(file);
+        img.onerror=()=>reject(new Error('图片解析失败'));img.src=URL.createObjectURL(file);
       });
     }
+    async function syncGallery(){
+      const meta=await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`);
+      const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
+      const figs=images.sort((a,b)=>a.name.localeCompare(b.name)).map((img,i)=>`<figure><img loading="lazy" src="./${DIR}/${img.name}" alt="收藏 ${i+1}"><figcaption>${String(i+1).padStart(2,'0')}</figcaption></figure>`).join('\n      ');
+      const out=html.replace(/<div class="gallery">[\s\S]*?<\/div>\s*<\/main>/,`<div class="gallery">\n      ${figs}\n    </div>\n  </main>`);
+      await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`,'PUT',{message:'Sync gallery',content:btoa(unescape(encodeURIComponent(out))),sha:meta.sha,branch:BRANCH});
+    }
 
-    async function syncGallery() {
-      const meta = await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`);
-      const html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
-      const figs = images
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((img, i) => `<figure><img loading="lazy" src="./${DIR}/${img.name}" alt="收藏 ${i+1}"><figcaption>${String(i+1).padStart(2,'0')}</figcaption></figure>`)
-        .join('\n      ');
-      const out = html.replace(/<div class="gallery">[\s\S]*?<\/div>\s*<\/main>/, `<div class="gallery">\n      ${figs}\n    </div>\n  </main>`);
-      await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`, 'PUT', {
-        message: 'Sync gallery', content: btoa(unescape(encodeURIComponent(out))), sha: meta.sha, branch: BRANCH
+    // ========== PROJECTS (add/edit/delete/reorder) ==========
+    let projects=[];
+    async function loadProjects(){
+      const meta=await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
+      const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
+      // Parse cards
+      const re=/<div class="project-card" data-project="(\d+)"[^>]*>([\s\S]*?)<\/div>\s*<!-- \/PROJECT -->/g;
+      projects=[]; let m;
+      while((m=re.exec(html))!==null){
+        const card=m[0];
+        const name=m[0].match(/data-proj-name="\d+">([\s\S]*?)<\//);
+        const desc=m[0].match(/data-proj-desc="\d+">([\s\S]*?)<\//);
+        const tag1=m[0].match(/data-proj-tag1="\d+">([\s\S]*?)<\//);
+        const tag2=m[0].match(/data-proj-tag2="\d+">([\s\S]*?)<\//);
+        projects.push({
+          name: name?name[1].trim():'',
+          desc: desc?desc[1].trim():'',
+          tag1: tag1?tag1[1].trim():'',
+          tag2: tag2?tag2[1].trim():''
+        });
+      }
+      renderProjects();
+    }
+    function renderProjects(){
+      const pe=$('project-editor'); pe.innerHTML='';
+      if(!projects.length){pe.innerHTML='<p style="color:var(--td);">暂无项目。</p>';$('saveProjects').style.display='none';return;}
+      $('saveProjects').style.display='inline-flex';
+      projects.forEach((p,i)=>{
+        const cd=document.createElement('div');cd.className='item-card';
+        cd.innerHTML=`
+          <div class="hdr">
+            <span class="idx">#${i+1}</span>
+            <div class="btns">
+              <button class="btn btn-ghost btn-sm" onclick="moveProj(${i},-1)">↑</button>
+              <button class="btn btn-ghost btn-sm" onclick="moveProj(${i},1)">↓</button>
+              <button class="btn btn-danger btn-sm" onclick="delProj(${i})">✕</button>
+            </div>
+          </div>
+          <div class="flds">
+            <input id="pn-${i}" value="${esc(p.name)}" placeholder="项目名称">
+            <textarea id="pd-${i}" rows="2" placeholder="项目描述">${esc(p.desc)}</textarea>
+            <div class="row"><input id="pt1-${i}" value="${esc(p.tag1)}" placeholder="标签1"><input id="pt2-${i}" value="${esc(p.tag2)}" placeholder="标签2"></div>
+          </div>`;
+        pe.appendChild(cd);
       });
     }
-
-    // ---- 项目编辑 ----
-    let projectPageSha = null;
-    let projectFields = {};
-
-    async function loadProjects() {
-      const pe = $('project-editor');
-      const meta = await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
-      projectPageSha = meta.sha;
-      const html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
-      const regex = /<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g;
-      let m, has = false;
-      pe.innerHTML = '';
-      projectFields = {};
-      while ((m = regex.exec(html)) !== null) {
-        has = true;
-        const key = m[1]; const val = m[2].trim();
-        projectFields[key] = val;
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<label>${key}</label>
-          <textarea id="pfield-${key}" rows="2">${escHtml(val)}</textarea>`;
-        pe.appendChild(card);
-      }
-      if (!has) pe.innerHTML = '<p style="color:var(--text-dim);">暂无项目卡片标记。</p>';
-      $('saveProjects').style.display = has ? 'inline-flex' : 'none';
+    function moveProj(i,dir){
+      const j=i+dir;
+      if(j<0||j>=projects.length)return;
+      [projects[i],projects[j]]=[projects[j],projects[i]];
+      renderProjects();
     }
-
-    $('saveProjects').onclick = async () => {
-      st('保存项目…', 'busy');
-      try {
-        const meta = await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
-        let html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
-        for (const key of Object.keys(projectFields)) {
-          const val = $(`pfield-${key}`).value.trim();
-          html = html.replace(
-            new RegExp(`<!-- EDITABLE:${key} -->[\\s\\S]*?<!-- END -->`),
-            `<!-- EDITABLE:${key} -->${val}<!-- END -->`
-          );
-        }
-        await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`, 'PUT', {
-          message: 'Edit projects', content: btoa(unescape(encodeURIComponent(html))), sha: meta.sha, branch: BRANCH
+    function delProj(i){
+      if(!confirm(`删除项目 #${i+1}？`))return;
+      projects.splice(i,1); renderProjects();
+    }
+    $('addProject').onclick=()=>{
+      projects.push({name:'新项目',desc:'项目描述',tag1:'标签',tag2:''});
+      renderProjects();
+    };
+    $('saveProjects').onclick=async()=>{
+      st('保存项目…','busy');
+      try{
+        // Read current values
+        projects.forEach((p,i)=>{
+          p.name=$(`pn-${i}`).value.trim();
+          p.desc=$(`pd-${i}`).value.trim();
+          p.tag1=$(`pt1-${i}`).value.trim();
+          p.tag2=$(`pt2-${i}`).value.trim();
         });
-        st('项目已保存 ✅', 'ok');
-      } catch (e) { st('保存失败：' + e.message, 'err'); }
+        const meta=await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
+        let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
+        const cards=projects.map((p,i)=>`      <div class="project-card" data-project="${i+1}">
+        <h3 data-proj-name="${i+1}">${p.name}</h3>
+        <p data-proj-desc="${i+1}">${p.desc}</p>
+        <div class="project-meta">
+          <span class="project-tag" data-proj-tag1="${i+1}">${p.tag1}</span>
+          <span class="project-tag" data-proj-tag2="${i+1}">${p.tag2}</span>
+        </div>
+      </div>
+      <!-- /PROJECT -->`).join('\n');
+        html=html.replace(/<!-- PROJECT:start -->[\s\S]*?<!-- PROJECT:end -->/,`<!-- PROJECT:start -->\n${cards}\n      <!-- PROJECT:end -->`);
+        await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`,'PUT',{message:'Edit projects',content:btoa(unescape(encodeURIComponent(html))),sha:meta.sha,branch:BRANCH});
+        st('项目已保存 ✅','ok');
+      }catch(e){st('保存失败：'+e.message,'err');}
     };
 
-    // ---- 随笔编辑 ----
-    let notePageSha = null;
-    let noteFields = {};
-
-    async function loadNotes() {
-      const ne = $('note-editor');
-      const meta = await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
-      notePageSha = meta.sha;
-      const html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
-      const regex = /<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g;
-      let m, has = false;
-      ne.innerHTML = '';
-      noteFields = {};
-      while ((m = regex.exec(html)) !== null) {
-        has = true;
-        const key = m[1]; const val = m[2].trim();
-        noteFields[key] = val;
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<label>${key}</label>
-          <textarea id="nfield-${key}" rows="3">${escHtml(val)}</textarea>`;
-        ne.appendChild(card);
-      }
-      if (!has) ne.innerHTML = '<p style="color:var(--text-dim);">暂无随笔标记。</p>';
-      $('saveNotes').style.display = has ? 'inline-flex' : 'none';
-    }
-
-    $('saveNotes').onclick = async () => {
-      st('保存随笔…', 'busy');
-      try {
-        const meta = await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
-        let html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
-        for (const key of Object.keys(noteFields)) {
-          const val = $(`nfield-${key}`).value.trim();
-          html = html.replace(
-            new RegExp(`<!-- EDITABLE:${key} -->[\\s\\S]*?<!-- END -->`),
-            `<!-- EDITABLE:${key} -->${val}<!-- END -->`
-          );
-        }
-        await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`, 'PUT', {
-          message: 'Edit notes', content: btoa(unescape(encodeURIComponent(html))), sha: meta.sha, branch: BRANCH
+    // ========== NOTES (add/edit/delete/reorder) ==========
+    let notes=[];
+    async function loadNotes(){
+      const meta=await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
+      const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
+      const re=/<div class="note-card" data-note="(\d+)"[^>]*>([\s\S]*?)<\/div>\s*<!-- \/NOTE -->/g;
+      notes=[]; let m;
+      while((m=re.exec(html))!==null){
+        const title=m[0].match(/data-note-title="\d+">([\s\S]*?)<\//);
+        const date=m[0].match(/data-note-date="\d+">([\s\S]*?)<\//);
+        const body=m[0].match(/data-note-body="\d+">([\s\S]*?)<\//);
+        notes.push({
+          title: title?title[1].trim():'',
+          date: date?date[1].trim():'',
+          body: body?body[1].trim():''
         });
-        st('随笔已保存 ✅', 'ok');
-      } catch (e) { st('保存失败：' + e.message, 'err'); }
+      }
+      renderNotes();
+    }
+    function renderNotes(){
+      const ne=$('note-editor'); ne.innerHTML='';
+      if(!notes.length){ne.innerHTML='<p style="color:var(--td);">暂无随笔。</p>';$('saveNotes').style.display='none';return;}
+      $('saveNotes').style.display='inline-flex';
+      notes.forEach((n,i)=>{
+        const cd=document.createElement('div');cd.className='item-card';
+        cd.innerHTML=`
+          <div class="hdr">
+            <span class="idx">#${i+1}</span>
+            <div class="btns">
+              <button class="btn btn-ghost btn-sm" onclick="moveNote(${i},-1)">↑</button>
+              <button class="btn btn-ghost btn-sm" onclick="moveNote(${i},1)">↓</button>
+              <button class="btn btn-danger btn-sm" onclick="delNote(${i})">✕</button>
+            </div>
+          </div>
+          <div class="flds">
+            <input id="nt-${i}" value="${esc(n.title)}" placeholder="标题">
+            <input id="nd-${i}" value="${esc(n.date)}" placeholder="日期 (YYYY-MM-DD)">
+            <textarea id="nb-${i}" rows="3" placeholder="正文">${esc(n.body)}</textarea>
+          </div>`;
+        ne.appendChild(cd);
+      });
+    }
+    function moveNote(i,dir){
+      const j=i+dir;
+      if(j<0||j>=notes.length)return;
+      [notes[i],notes[j]]=[notes[j],notes[i]];
+      renderNotes();
+    }
+    function delNote(i){
+      if(!confirm(`删除随笔 #${i+1}？`))return;
+      notes.splice(i,1); renderNotes();
+    }
+    $('addNote').onclick=()=>{
+      notes.push({title:'新随笔',date:new Date().toISOString().slice(0,10),body:'正文内容'});
+      renderNotes();
+    };
+    $('saveNotes').onclick=async()=>{
+      st('保存随笔…','busy');
+      try{
+        notes.forEach((n,i)=>{
+          n.title=$(`nt-${i}`).value.trim();
+          n.date=$(`nd-${i}`).value.trim();
+          n.body=$(`nb-${i}`).value.trim();
+        });
+        const meta=await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
+        let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
+        const cards=notes.map((n,i)=>`      <div class="note-card" data-note="${i+1}">
+        <h3 data-note-title="${i+1}">${n.title}</h3>
+        <div class="note-date" data-note-date="${i+1}">${n.date}</div>
+        <p data-note-body="${i+1}">${n.body}</p>
+      </div>
+      <!-- /NOTE -->`).join('\n');
+        html=html.replace(/<!-- NOTE:start -->[\s\S]*?<!-- NOTE:end -->/,`<!-- NOTE:start -->\n${cards}\n      <!-- NOTE:end -->`);
+        await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`,'PUT',{message:'Edit notes',content:btoa(unescape(encodeURIComponent(html))),sha:meta.sha,branch:BRANCH});
+        st('随笔已保存 ✅','ok');
+      }catch(e){st('保存失败：'+e.message,'err');}
     };
 
-    function escHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
-
-    // 恢复 token
-    try { const t = localStorage.getItem('mh_token'); if (t) $('token').value = t; } catch(_) {}
-    $('token').addEventListener('change', () => { try { localStorage.setItem('mh_token', $('token').value); } catch(_) {} });
+    function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    try{const t=localStorage.getItem('mh_token');if(t)$('token').value=t;}catch(_){}
+    $('token').addEventListener('change',()=>{try{localStorage.setItem('mh_token',$('token').value);}catch(_){}});
   </script>
 </body>
 </html>
