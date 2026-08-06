@@ -139,6 +139,16 @@
       color: var(--text-dim);
       font-size: 0.9rem;
     }
+    .admin-entry {
+      margin-top: 1rem;
+      font-size: 0.72rem;
+    }
+    .admin-entry a {
+      color: rgba(255,255,255,0.16);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .admin-entry a:hover { color: var(--accent); }
     
     @media (max-width: 760px) {
       nav ul { flex-wrap: wrap; justify-content: center; }
@@ -199,6 +209,7 @@
   
   <footer>
     <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
+    <p class="admin-entry"><a href="admin.html">管理</a></p>
   </footer>
 </body>
 </html>
