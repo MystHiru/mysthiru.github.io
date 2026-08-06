@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于 - 玄明</title>
+  <style>
+    :root {
+      --surface-0: #05070C;
+      --surface-1: #0A0D12;
+      --surface-2: #0F131C;
+      --surface-3: #161D2B;
+      --surface-4: #1E2636;
+      --accent: #9D7BFF;
+      --accent-muted: #6B5B95;
+      --text-primary: #E8E8F0;
+      --text-secondary: #A8A8B8;
+      --text-dim: #6B6B7B;
+      --line: #282C38;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-full: 999px;
+      --gap: clamp(1rem, 2.5vw, 1.5rem);
+      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      --font-mono: "SF Mono", Consolas, "Liberation Mono", monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--surface-0);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    nav {
+      background: var(--surface-1);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: var(--gap);
+      padding: 1rem clamp(1.5rem, 5vw, 3rem);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: var(--accent); }
+    
+    main {
+      flex: 1;
+      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    h1 {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .content {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+    
+    .content p {
+      margin-bottom: 1.5rem;
+    }
+    
+    .quote {
+      background: var(--surface-1);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      font-style: italic;
+      color: var(--text-primary);
+    }
+    
+    .list {
+      background: var(--surface-1);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .list h3 {
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    .list ul {
+      list-style: none;
+      display: grid;
+      gap: 0.8rem;
+    }
+    
+    .list li {
+      color: var(--text-secondary);
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    .list li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+    
+    footer {
+      margin-top: auto;
+      padding: 2rem clamp(1.5rem, 5vw, 3rem);
+      border-top: 1px solid var(--line);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 760px) {
+      nav ul { flex-wrap: wrap; justify-content: center; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">首页</a></li>
+      <li><a href="about.html" class="active">关于</a></li>
+      <li><a href="projects.html">项目</a></li>
+      <li><a href="notes.html">随笔</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <h1>关于我</h1>
+    
+    <div class="content">
+      <p>我是玄明（MystHiru），一个喜欢追番、听音乐，也喜欢把突然冒出来的想法做成能运行的小东西的人。</p>
+      
+      <p>平时大多在代码、耳机和屏幕之间切换。AI 是我的高频搭档：它负责快速铺路，我负责判断方向、修掉细节，以及面对最后那个奇怪的 bug。</p>
+      
+      <p>目前正在寻找适合自己的节奏。比起把主页塞满标签，更希望这里留下几件真正做过、也愿意继续维护的东西。</p>
+    </div>
+    
+    <div class="quote">
+      「先把想法做出来，再决定它应该长成什么样。」
+    </div>
+    
+    <div class="list">
+      <h3>我会关注的东西</h3>
+      <ul>
+        <li>每季新番，以及让人记住的角色</li>
+        <li>适合通勤和深夜的音乐</li>
+        <li>Android、自动化与开源项目</li>
+        <li>AI 辅助开发带来的新工作方式</li>
+      </ul>
+    </div>
+    
+    <div class="list">
+      <h3>联系方式</h3>
+      <ul>
+        <li><a href="https://github.com/MystHiru" style="color:var(--accent);text-decoration:none;">GitHub</a></li>
+        <li><a href="https://t.me/MystHiru" style="color:var(--accent);text-decoration:none;">Telegram</a></li>
+      </ul>
+    </div>
+  </main>
+  
+  <footer>
+    <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
+  </footer>
+</body>
+</html>

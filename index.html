@@ -1,92 +1,256 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="玄明 / MystHiru 的个人主页">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>玄明 · MystHiru</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
-    :root { --ink:#242331; --muted:#777487; --paper:#fbfaf7; --line:#e7e2dc; --violet:#6654c7; --violet-soft:#eeeafd; --pink:#d985a2; }
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { margin:0; color:var(--ink); background:var(--paper); font-family:"Noto Sans SC",system-ui,sans-serif; line-height:1.8; }
-    a { color:inherit; }
-    .shell { width:min(1060px,calc(100% - 40px)); margin:auto; }
-    .topbar { height:76px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
-    .brand { color:var(--violet); text-decoration:none; font-weight:900; letter-spacing:.08em; }
-    nav { display:flex; gap:24px; color:var(--muted); font-size:.92rem; }
-    nav a { text-decoration:none; }
-    nav a:hover { color:var(--violet); }
-    .hero { min-height:620px; display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:70px; align-items:center; padding:78px 0 92px; }
-    .eyebrow { color:var(--violet); font-size:.84rem; letter-spacing:.18em; font-weight:700; }
-    h1 { margin:14px 0 18px; font-size:clamp(3.1rem,8vw,6rem); line-height:1.05; letter-spacing:.02em; }
-    .lead { max-width:620px; color:var(--muted); font-size:1.14rem; }
-    .actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
-    .button { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:8px; padding:10px 17px; text-decoration:none; font-size:.92rem; transition:.2s ease; }
-    .button.primary { color:white; background:var(--violet); border-color:var(--violet); }
-    .button:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(61,45,135,.12); }
-    .portrait-wrap { position:relative; width:260px; height:300px; margin:auto; }
-    .portrait-wrap::before { content:""; position:absolute; inset:18px -18px -18px 18px; border:1px solid #d8d0f2; border-radius:52% 48% 44% 56%; transform:rotate(8deg); }
-    .portrait { position:relative; width:220px; height:260px; object-fit:cover; border-radius:48% 48% 18% 18%; display:block; margin:auto; box-shadow:0 20px 40px rgba(54,43,112,.16); }
-    .portrait-note { position:absolute; bottom:0; right:-8px; color:var(--pink); font-size:.85rem; background:var(--paper); padding:2px 8px; }
-    section { padding:82px 0; border-top:1px solid var(--line); }
-    .section-head { display:flex; align-items:baseline; justify-content:space-between; gap:20px; margin-bottom:32px; }
-    h2 { margin:0; font-size:1.8rem; }
-    .section-head span { color:var(--muted); font-size:.84rem; }
-    .about { display:grid; grid-template-columns:1.25fr .75fr; gap:70px; }
-    .about p { margin:0 0 17px; color:#575362; }
-    .note { padding:22px 24px; background:var(--violet-soft); border-left:3px solid var(--violet); color:#554b80; }
-    .focus-list { margin:0; padding:0; list-style:none; }
-    .focus-list li { padding:12px 0; border-bottom:1px solid var(--line); color:var(--muted); }
-    .focus-list li::before { content:"✦"; color:var(--pink); margin-right:12px; }
-    .projects { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-    .project { padding:22px; border:1px solid var(--line); background:white; border-radius:8px; transition:.2s ease; }
-    .project:hover { border-color:#cfc5ef; transform:translateY(-3px); }
-    .project small { color:var(--violet); font-weight:700; }
-    .project h3 { margin:10px 0 8px; font-size:1.08rem; }
-    .project p { margin:0; color:var(--muted); font-size:.92rem; }
-    footer { padding:42px 0 58px; border-top:1px solid var(--line); color:var(--muted); font-size:.86rem; }
-    .footer-links { display:flex; gap:18px; margin-bottom:15px; }
-    @media (max-width:760px) {
-      .shell { width:min(100% - 32px,560px); }
-      .topbar { height:66px; }
-      nav { gap:12px; font-size:.8rem; }
-      .hero { min-height:auto; grid-template-columns:1fr; gap:38px; padding:64px 0 72px; }
-      .hero-copy { order:1; }
-      .portrait-wrap { order:2; transform:scale(.86); margin-top:-12px; }
-      h1 { font-size:3.4rem; }
-      .lead { font-size:1rem; }
-      section { padding:60px 0; }
-      .section-head { display:block; margin-bottom:22px; }
-      .section-head span { display:block; margin-top:5px; }
-      .about, .projects { grid-template-columns:1fr; gap:18px; }
-      .about { gap:34px; }
-      .actions .button { flex:1 1 auto; justify-content:center; }
+    :root {
+      --surface-0: #05070C;
+      --surface-1: #0A0D12;
+      --surface-2: #0F131C;
+      --surface-3: #161D2B;
+      --surface-4: #1E2636;
+      --accent: #9D7BFF;
+      --accent-muted: #6B5B95;
+      --text-primary: #E8E8F0;
+      --text-secondary: #A8A8B8;
+      --text-dim: #6B6B7B;
+      --line: #282C38;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-full: 999px;
+      --gap: clamp(1rem, 2.5vw, 1.5rem);
+      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      --font-mono: "SF Mono", Consolas, "Liberation Mono", monospace;
     }
-    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--surface-0);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    nav {
+      background: var(--surface-1);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: var(--gap);
+      padding: 1rem clamp(1.5rem, 5vw, 3rem);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: var(--accent); }
+    
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem);
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-content h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-content .subtitle {
+      color: var(--text-secondary);
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      margin-bottom: 2rem;
+    }
+    .hero-content p {
+      color: var(--text-dim);
+      max-width: 42ch;
+      margin-bottom: 2rem;
+    }
+    .hero-image {
+      position: relative;
+      width: clamp(180px, 25vw, 280px);
+      height: clamp(240px, 33vw, 380px);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.9) saturate(1.1);
+    }
+    
+    .links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.5rem;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--surface-0);
+    }
+    .btn-primary:hover {
+      background: var(--accent-muted);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text-primary);
+      border: 1px solid var(--line);
+    }
+    .btn-secondary:hover {
+      background: var(--surface-3);
+      border-color: var(--accent-muted);
+    }
+    
+    section {
+      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+    .card {
+      background: var(--surface-1);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--accent-muted); }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    footer {
+      margin-top: auto;
+      padding: 2rem clamp(1.5rem, 5vw, 3rem);
+      border-top: 1px solid var(--line);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 760px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-image {
+        margin: 0 auto;
+        width: clamp(160px, 50vw, 220px);
+        height: clamp(220px, 70vw, 300px);
+      }
+      .hero-content p { margin-left: auto; margin-right: auto; }
+      .links { justify-content: center; }
+      nav ul { flex-wrap: wrap; justify-content: center; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <header class="shell topbar">
-    <a class="brand" href="#top">MYSTHIRU</a>
-    <nav aria-label="主导航"><a href="#about">关于</a><a href="#projects">项目</a><a href="https://github.com/MystHiru">GitHub</a></nav>
-  </header>
-  <main id="top">
-    <div class="shell hero">
-      <div class="hero-copy">
-        <div class="eyebrow">玄明 / PERSONAL LOG</div>
-        <h1>把灵感<br>做成现实。</h1>
-        <p class="lead">追番、听歌、写代码。AI 是我的高频搭档，而真正要留下的，是那些亲手打磨过的小成果。</p>
-        <div class="actions"><a class="button primary" href="https://github.com/MystHiru">查看 GitHub</a><a class="button" href="https://t.me/MystHiru">联系我 · Telegram</a></div>
+  <nav>
+    <ul>
+      <li><a href="index.html" class="active">首页</a></li>
+      <li><a href="about.html">关于</a></li>
+      <li><a href="projects.html">项目</a></li>
+      <li><a href="notes.html">随笔</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <div class="hero">
+      <div class="hero-content">
+        <h1>玄明 · MystHiru</h1>
+        <p class="subtitle">把灵感拆成代码，再把代码装回日常。</p>
+        <p>我喜欢追番、听音乐，也喜欢把突然冒出来的想法做成能运行的小东西。平时大多在代码、耳机和屏幕之间切换。</p>
+        <div class="links">
+          <a href="https://github.com/MystHiru" class="btn btn-primary">GitHub</a>
+          <a href="https://t.me/MystHiru" class="btn btn-secondary">Telegram</a>
+        </div>
       </div>
-      <div class="portrait-wrap"><img class="portrait" src="./avatar.png" alt="MystHiru avatar"><span class="portrait-note">夜间编辑中</span></div>
+      <div class="hero-image">
+        <img src="./img/character.png" alt="Anime character decoration">
+      </div>
     </div>
-    <section id="about"><div class="shell"><div class="section-head"><h2>关于我</h2><span>ABOUT THE PERSON BEHIND THE CODE</span></div><div class="about"><div><p>我是玄明，也可以叫我 MystHiru。喜欢让屏幕里出现一点新东西：一个工具、一段自动化流程，或者只是一个终于跑通的页面。</p><p>我不太擅长把自己包装成某种标准答案。现在的状态是边学边做，边做边收集灵感。</p><div class="note">「先把想法做出来，再决定它应该长成什么样。」</div></div><ul class="focus-list"><li>动画与角色设计</li><li>适合长夜的音乐</li><li>Android 与自动化</li><li>AI 辅助开发</li></ul></div></div></section>
-    <section id="projects"><div class="shell"><div class="section-head"><h2>正在做的事</h2><span>SELECTED WORKS</span></div><div class="projects"><article class="project"><small>01 / KOTLIN</small><h3>Action-Build-Myst</h3><p>面向多种设备的 Kernel 构建与自动化流程。</p></article><article class="project"><small>02 / WEB</small><h3>个人网站</h3><p>一个记录兴趣、项目和阶段性想法的小空间。</p></article><article class="project"><small>03 / NEXT</small><h3>下一件小事</h3><p>还在整理灵感，等它变成可以运行的东西。</p></article></div></div></section>
+    
+    <section>
+      <h2 class="section-title">最近在关注</h2>
+      <div class="grid">
+        <div class="card">
+          <h3 style="margin-bottom:0.5rem;color:var(--accent);">📺 追番</h3>
+          <p style="color:var(--text-secondary);font-size:0.95rem;">每季新番，以及让人记住的角色</p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:0.5rem;color:var(--accent);">🎵 音乐</h3>
+          <p style="color:var(--text-secondary);font-size:0.95rem;">适合通勤和深夜的音乐</p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:0.5rem;color:var(--accent);">💻 开发</h3>
+          <p style="color:var(--text-secondary);font-size:0.95rem;">Android、自动化与开源项目</p>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:0.5rem;color:var(--accent);">🤖 AI</h3>
+          <p style="color:var(--text-secondary);font-size:0.95rem;">AI 辅助开发带来的新工作方式</p>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer><div class="shell"><div class="footer-links"><a href="https://github.com/MystHiru">GitHub</a><a href="https://t.me/MystHiru">Telegram</a></div><div>© 2026 MystHiru · 玄明</div></div></footer>
+  
+  <footer>
+    <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
+  </footer>
 </body>
 </html>

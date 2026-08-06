@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随笔 - 玄明</title>
+  <style>
+    :root {
+      --surface-0: #05070C;
+      --surface-1: #0A0D12;
+      --surface-2: #0F131C;
+      --surface-3: #161D2B;
+      --surface-4: #1E2636;
+      --accent: #9D7BFF;
+      --accent-muted: #6B5B95;
+      --text-primary: #E8E8F0;
+      --text-secondary: #A8A8B8;
+      --text-dim: #6B6B7B;
+      --line: #282C38;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-full: 999px;
+      --gap: clamp(1rem, 2.5vw, 1.5rem);
+      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      --font-mono: "SF Mono", Consolas, "Liberation Mono", monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--surface-0);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+      line-height: 1.7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    nav {
+      background: var(--surface-1);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: var(--gap);
+      padding: 1rem clamp(1.5rem, 5vw, 3rem);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: var(--accent); }
+    
+    main {
+      flex: 1;
+      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    
+    h1 {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .subtitle {
+      color: var(--text-dim);
+      margin-bottom: 3rem;
+    }
+    
+    .note-list {
+      display: grid;
+      gap: 1.5rem;
+    }
+    
+    .note-card {
+      background: var(--surface-1);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    
+    .note-card:hover { border-color: var(--accent-muted); }
+    
+    .note-card h3 {
+      color: var(--accent);
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .note-date {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    
+    .note-card p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-dim);
+    }
+    
+    .empty-state h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+    }
+    
+    footer {
+      margin-top: auto;
+      padding: 2rem clamp(1.5rem, 5vw, 3rem);
+      border-top: 1px solid var(--line);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 760px) {
+      nav ul { flex-wrap: wrap; justify-content: center; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">首页</a></li>
+      <li><a href="about.html">关于</a></li>
+      <li><a href="projects.html">项目</a></li>
+      <li><a href="notes.html" class="active">随笔</a></li>
+    </ul>
+  </nav>
+  
+  <main>
+    <h1>随笔记录</h1>
+    <p class="subtitle">一些想法、碎片和不太成形的东西</p>
+    
+    <div class="empty-state">
+      <h2>✍️ 还没开始写</h2>
+      <p>这里会放一些开发过程中的想法、遇到的问题，以及偶尔的胡思乱想。</p>
+    </div>
+    
+    <!-- 示例笔记卡片，实际使用时取消注释并填入内容
+    <div class="note-list">
+      <div class="note-card">
+        <h3>笔记标题</h3>
+        <div class="note-date">2025-01-01</div>
+        <p>笔记的正文内容，可以写一些技术思考、问题记录或者日常观察。</p>
+      </div>
+    </div>
+    -->
+  </main>
+  
+  <footer>
+    <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
+  </footer>
+</body>
+</html>
