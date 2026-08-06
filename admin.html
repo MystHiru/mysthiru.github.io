@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>收藏管理 · 玄明</title>
+  <style>
+    :root {
+      --surface-0: #05070C;
+      --surface-1: #0A0D12;
+      --surface-2: #0F131C;
+      --surface-3: #161D2B;
+      --accent: #9D7BFF;
+      --accent-muted: #6B5B95;
+      --danger: #E56B6B;
+      --ok: #7BD88F;
+      --text-primary: #E8E8F0;
+      --text-secondary: #A8A8B8;
+      --text-dim: #6B6B7B;
+      --line: #282C38;
+      --radius-md: 14px;
+      --radius-full: 999px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--surface-0);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: .98rem;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    a { color: inherit; }
+
+    nav {
+      background: rgba(10,13,18,.85);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    nav .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem clamp(1.5rem, 5vw, 3rem);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .brand { color: var(--accent); text-decoration: none; font-weight: 700; letter-spacing: .1em; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem clamp(1.5rem, 5vw, 3rem) 4rem; }
+    header.page h1 { font-size: clamp(1.5rem,4vw,2rem); font-weight: 600; }
+    header.page p { color: var(--text-dim); margin-top: .4rem; }
+
+    .panel { background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.4rem; margin-top: 1.5rem; }
+    .panel h2 { font-size: 1.05rem; margin-bottom: 1rem; color: var(--text-primary); }
+
+    label { display: block; color: var(--text-secondary); font-size: .85rem; margin-bottom: .4rem; }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--text-primary);
+      padding: .7rem 1rem;
+      font-size: .92rem;
+      font-family: var(--font-sans);
+    }
+    input:focus { outline: none; border-color: var(--accent-muted); }
+
+    .row { display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .65rem 1.3rem; border-radius: var(--radius-full);
+      border: none; cursor: pointer;
+      font-size: .9rem; font-weight: 500; font-family: var(--font-sans);
+      transition: all .2s;
+    }
+    .btn-primary { background: var(--accent); color: var(--surface-0); }
+    .btn-primary:hover { background: var(--accent-muted); }
+    .btn-ghost { background: var(--surface-2); color: var(--text-primary); border: 1px solid var(--line); }
+    .btn-ghost:hover { background: var(--surface-3); border-color: var(--accent-muted); }
+    .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); font-size: .8rem; padding: .4rem .9rem; }
+    .btn-danger:hover { background: rgba(229,107,107,.12); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    #drop {
+      border: 1.5px dashed var(--line);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      margin-top: 1rem;
+    }
+    #drop:hover, #drop.dragover { border-color: var(--accent); background: var(--surface-2); color: var(--text-secondary); }
+    #drop input { display: none; }
+
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-top: 1.2rem; }
+    .item { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 3/4; background: var(--surface-2); }
+    .item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .item .del {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(5,7,12,.75);
+      color: var(--danger);
+      border: 1px solid rgba(229,107,107,.5);
+      border-radius: 999px;
+      width: 30px; height: 30px;
+      font-size: .85rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .2s;
+    }
+    .item:hover .del { opacity: 1; }
+    .item .name {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 1rem .5rem .4rem;
+      background: linear-gradient(transparent, rgba(0,0,0,.8));
+      font-size: .7rem; color: var(--text-secondary);
+      text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+    }
+
+    #status { margin-top: 1rem; font-size: .9rem; min-height: 1.4em; }
+    #status.ok { color: var(--ok); }
+    #status.err { color: var(--danger); }
+    #status.busy { color: var(--accent); }
+
+    .hint { font-size: .8rem; color: var(--text-dim); margin-top: .8rem; line-height: 1.8; }
+    .hint code { color: var(--accent); background: var(--surface-2); padding: 1px 6px; border-radius: 6px; font-size: .78rem; }
+
+    @media (max-width: 560px) {
+      .item .del { opacity: 1; }
+      .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <a class="brand" href="index.html">MYSTHIRU</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="page">
+      <h1>收藏管理</h1>
+      <p>直接管理画廊图片：上传新图、删除旧图，自动同步 gallery.html。</p>
+    </header>
+
+    <section class="panel">
+      <h2>① 连接 GitHub</h2>
+      <label for="token">Fine-grained Token（只授权 mysthiru.github.io 仓库 · Contents 读写）</label>
+      <div class="row">
+        <input type="password" id="token" placeholder="github_pat_xxx..." autocomplete="off" style="flex:1;min-width:220px">
+        <button class="btn btn-primary" id="btnConnect">连接并读取</button>
+      </div>
+      <p class="hint">
+        创建方法：GitHub → Settings → Developer settings → <b>Fine-grained tokens</b> → Generate new token<br>
+        · Repository access 选 <b>Only select repositories → mysthiru.github.io</b><br>
+        · Permissions → Contents 选 <b>Read and write</b><br>
+        · Token 只保存在本浏览器 localStorage，访问本页的访客看不到你的操作记录（但请勿把页面 URL 外传）
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>② 上传图片</h2>
+      <div id="drop">
+        点击选择或拖入图片（支持 jpg / png / webp，自动压缩到 1200px 以内）
+        <input type="file" id="file" accept="image/*" multiple>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>③ 当前收藏</h2>
+      <div id="list"><p style="color:var(--text-dim)">连接后显示图片列表，悬停图片右上角可删除。</p></div>
+    </section>
+
+    <div id="status"></div>
+  </main>
+
+  <script>
+    const REPO = 'mysthiru.github.io';
+    const OWNER = 'MystHiru';
+    const BRANCH = 'main';
+    const DIR = 'img/archive';
+    const GALLERY_PAGE = 'gallery.html';
+    const TS = () => new Date().toISOString().replace(/[-:T]/g,'').slice(0,14);
+
+    let images = []; // {name, sha, url}
+
+    const $ = id => document.getElementById(id);
+    const statusEl = $('status');
+
+    function setStatus(msg, cls='') {
+      statusEl.textContent = msg;
+      statusEl.className = cls;
+    }
+
+    function token() { return $('token').value.trim(); }
+
+    async function gh(path, method='GET', body=null) {
+      const opt = { method, headers: { 'Authorization': 'Bearer ' + token() } };
+      if (body) { opt.headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
+      const r = await fetch('https://api.github.com' + path, opt);
+      if (!r.ok) {
+        let m = 'HTTP ' + r.status;
+        try { const e = await r.json(); m = e.message || m; } catch(_) {}
+        throw new Error(m);
+      }
+      return r.status === 204 ? null : r.json();
+    }
+
+    async function load() {
+      if (!token()) { setStatus('请先输入 Token', 'err'); return; }
+      setStatus('正在读取…', 'busy');
+      try {
+        images = await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}`);
+        if (!Array.isArray(images)) images = [];
+        images = images.filter(i => i.type === 'file');
+        render();
+        setStatus(`已连接，共 ${images.length} 张图片`, 'ok');
+      } catch (e) { setStatus('连接失败：' + e.message, 'err'); }
+    }
+
+    function render() {
+      const list = $('list');
+      if (!images.length) { list.innerHTML = '<p style="color:var(--text-dim)">还没有图片，上传一张试试。</p>'; return; }
+      list.innerHTML = '';
+      const grid = document.createElement('div');
+      grid.className = 'gallery';
+      images.forEach(img => {
+        const item = document.createElement('div');
+        item.className = 'item';
+        item.innerHTML = `<img loading="lazy" src="${img.download_url}" alt="${img.name}"><div class="name">${img.name}</div>`;
+        const del = document.createElement('button');
+        del.className = 'del';
+        del.title = '删除';
+        del.textContent = '✕';
+        del.onclick = () => remove(img);
+        item.appendChild(del);
+        grid.appendChild(item);
+      });
+      list.appendChild(grid);
+    }
+
+    // ---- 删除 ----
+    async function remove(img) {
+      if (!confirm(`删除 ${img.name} ？`)) return;
+      setStatus('删除中…', 'busy');
+      try {
+        await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${img.name}`, 'DELETE', {
+          message: `Delete ${img.name}`,
+          sha: img.sha,
+          branch: BRANCH
+        });
+        await rebuildGallery();
+        await load();
+        setStatus('已删除并同步画廊', 'ok');
+      } catch (e) { setStatus('删除失败：' + e.message, 'err'); }
+    }
+
+    // ---- 上传 ----
+    async function uploadFile(file) {
+      setStatus(`处理 ${file.name}…`, 'busy');
+      const jpg = await compress(file);
+      const name = `img-${TS()}-${Math.random().toString(36).slice(2,6)}.jpg`;
+      setStatus(`上传 ${name}…`, 'busy');
+      try {
+        await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${name}`, 'PUT', {
+          message: `Upload ${name}`,
+          content: jpg,
+          branch: BRANCH
+        });
+        return name;
+      } catch (e) { throw new Error('上传 ' + name + ' 失败：' + e.message); }
+    }
+
+    function compress(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const MAX = 1200;
+          let { width: w, height: h } = img;
+          if (Math.max(w, h) > MAX) {
+            const s = MAX / Math.max(w, h);
+            w = Math.round(w * s); h = Math.round(h * s);
+          }
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          const ctx = c.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(c.toDataURL('image/jpeg', .82).split(',')[1]);
+        };
+        img.onerror = () => reject(new Error('图片解析失败'));
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    // ---- 重建 gallery.html ----
+    async function rebuildGallery() {
+      const meta = await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_PAGE}`);
+      const html = atob(meta.content.replace(/\s/g, ''));
+      const figs = images
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((img, i) => `<figure><img loading="lazy" src="./${DIR}/${img.name}" alt="收藏 ${i+1}"><figcaption>${i+1 < 10 ? '0' + (i+1) : i+1}</figcaption></figure>`)
+        .join('\n      ');
+      const out = html.replace(/<div class="gallery">[\s\S]*?<\/div>\s*<\/main>/, `<div class="gallery">\n      ${figs}\n    </div>\n  </main>`);
+      await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_PAGE}`, 'PUT', {
+        message: 'Sync gallery list',
+        content: btoa(unescape(encodeURIComponent(out))),
+        sha: meta.sha,
+        branch: BRANCH
+      });
+    }
+
+    // ---- events ----
+    $('btnConnect').onclick = load;
+    $('token').addEventListener('keydown', e => { if (e.key === 'Enter') load(); });
+
+    const drop = $('drop');
+    const fileInput = $('file');
+    drop.onclick = () => fileInput.click();
+    drop.ondragover = e => { e.preventDefault(); drop.classList.add('dragover'); };
+    drop.ondragleave = () => drop.classList.remove('dragover');
+    drop.ondrop = e => {
+      e.preventDefault(); drop.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    };
+    fileInput.onchange = () => handleFiles(fileInput.files);
+
+    async function handleFiles(files) {
+      if (!token()) { setStatus('请先输入 Token', 'err'); return; }
+      const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
+      if (!arr.length) return;
+      let ok = 0, fail = 0;
+      for (const f of arr) {
+        try { await uploadFile(f); ok++; }
+        catch (e) { fail++; setStatus(e.message, 'err'); }
+      }
+      try {
+        await rebuildGallery();
+        await load();
+        setStatus(`完成：上传 ${ok} 张${fail ? '，失败 ' + fail + ' 张' : ''}，画廊已同步`, ok && !fail ? 'ok' : 'err');
+      } catch (e) { setStatus('画廊同步失败：' + e.message, 'err'); }
+    }
+
+    // 恢复本地保存的 token
+    try { const t = localStorage.getItem('mh_token'); if (t) $('token').value = t; } catch(_) {}
+    $('token').addEventListener('change', () => { try { localStorage.setItem('mh_token', $('token').value); } catch(_) {} });
+  </script>
+</body>
+</html>
