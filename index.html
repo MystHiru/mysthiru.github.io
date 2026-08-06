@@ -8,685 +8,99 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0a0a1a;
-            --bg-secondary: #12122a;
-            --bg-card: #1a1a3e;
-            --text-primary: #e8e8f0;
-            --text-secondary: #a0a0c0;
-            --accent: #6C5CE7;
-            --accent-light: #a29bfe;
-            --accent-glow: rgba(108, 92, 231, 0.3);
-            --border: #2a2a5a;
-            --pink: #ff6b9d;
-            --pink-glow: rgba(255, 107, 157, 0.2);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* Particle Starfield */
-        #particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Floating Glow Orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.15;
-            pointer-events: none;
-            z-index: 0;
-            animation: floatOrb 20s ease-in-out infinite;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent);
-            top: -100px;
-            left: -100px;
-        }
-
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--pink);
-            bottom: -50px;
-            right: -50px;
-            animation-delay: -7s;
-        }
-
-        .orb-3 {
-            width: 250px;
-            height: 250px;
-            background: #6c5ce7;
-            top: 50%;
-            left: 50%;
-            animation-delay: -14s;
-        }
-
-        /* Sakura Petals */
-        .sakura-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .petal {
-            position: absolute;
-            top: -20px;
-            width: 12px;
-            height: 12px;
-            background: var(--pink);
-            border-radius: 50% 0 50% 0;
-            opacity: 0.3;
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-20px) rotate(0deg); opacity: 0.3; }
-            100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
-        }
-
-        .ciallo-badge {
-            display: inline-block;
-            padding: 4px 14px;
-            background: linear-gradient(135deg, var(--pink), var(--accent));
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: white;
-            margin-top: 8px;
-        }
-
-        @keyframes floatOrb {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(50px, -50px) scale(1.1); }
-            50% { transform: translate(-30px, 30px) scale(0.9); }
-            75% { transform: translate(40px, 20px) scale(1.05); }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            background: linear-gradient(180deg, rgba(10,10,26,0.95) 0%, transparent 100%);
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-light);
-            text-decoration: none;
-            letter-spacing: 2px;
-        }
-
-        .nav-logo span {
-            color: var(--text-primary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 20px 60px;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            background: rgba(108, 92, 231, 0.15);
-            border: 1px solid rgba(108, 92, 231, 0.3);
-            border-radius: 50px;
-            font-size: 0.85rem;
-            color: var(--accent-light);
-            margin-bottom: 30px;
-            letter-spacing: 3px;
-            animation: fadeInDown 1s ease;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
-            background: linear-gradient(135deg, #a29bfe, #6C5CE7, #a29bfe);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 3s ease infinite, fadeInUp 1s ease;
-            margin-bottom: 10px;
-        }
-
-        .hero .subtitle {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: var(--text-secondary);
-            font-weight: 300;
-            margin-bottom: 10px;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-
-        .hero .motto {
-            font-size: 1.1rem;
-            color: var(--accent-light);
-            font-style: italic;
-            margin-bottom: 40px;
-            opacity: 0.8;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .hero .motto cite {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            font-style: normal;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-            animation: fadeInUp 1s ease 0.6s both;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 14px 32px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
-            color: white;
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            background: rgba(108, 92, 231, 0.1);
-            transform: translateY(-2px);
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            animation: fadeInUp 1s ease 1s both;
-        }
-
-        .scroll-indicator .mouse {
-            width: 24px;
-            height: 38px;
-            border: 2px solid var(--text-secondary);
-            border-radius: 12px;
-            position: relative;
-        }
-
-        .scroll-indicator .mouse::after {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 2px;
-            animation: scrollWheel 2s ease infinite;
-        }
-
-        @keyframes scrollWheel {
-            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(12px); }
-        }
-
-        /* Section Common */
-        section {
-            position: relative;
-            z-index: 1;
-            padding: 100px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 60px;
-            color: var(--text-primary);
-        }
-
-        .section-title span {
-            color: var(--accent);
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: var(--accent);
-            margin: 16px auto 0;
-            border-radius: 2px;
-        }
-
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-        }
-
-        .about-text p {
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            font-size: 1.05rem;
-        }
-
-        .about-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 24px;
-        }
-
-        .about-tag {
-            padding: 6px 16px;
-            background: rgba(108, 92, 231, 0.1);
-            border: 1px solid rgba(108, 92, 231, 0.2);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: var(--accent-light);
-        }
-
-        .about-ascii {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            color: var(--accent-light);
-            white-space: pre;
-            overflow-x: auto;
-            text-align: center;
-        }
-
-        /* Skills */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 20px;
-        }
-
-        .skill-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px 16px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: default;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
-
-        .skill-card .icon {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-        }
-
-        .skill-card .name {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* Projects */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .project-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
-
-        .project-card .icon {
-            font-size: 2rem;
-            margin-bottom: 16px;
-        }
-
-        .project-card h4 {
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-        }
-
-        .project-card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 16px;
-        }
-
-        .project-card .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .project-card .tags span {
-            padding: 4px 12px;
-            background: rgba(108, 92, 231, 0.1);
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: var(--accent-light);
-        }
-
-        /* Quotes */
-        .quote-section {
-            text-align: center;
-            padding: 80px 20px;
-        }
-
-        .quote-block {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .quote-block blockquote {
-            font-size: 1.4rem;
-            font-style: italic;
-            color: var(--accent-light);
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .quote-block cite {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Timeline / Goals */
-        .goals-list {
-            display: grid;
-            gap: 16px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .goal-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 24px;
-            transition: all 0.3s;
-        }
-
-        .goal-item:hover {
-            border-color: var(--accent);
-        }
-
-        .goal-item .checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--border);
-            border-radius: 4px;
-            flex-shrink: 0;
-        }
-
-        .goal-item .label {
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        footer {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 60px 20px;
-            border-top: 1px solid var(--border);
-        }
-
-        footer .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        footer .social-links a {
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            text-decoration: none;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        footer .social-links a:hover {
-            color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        footer p {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav {
-                padding: 16px 20px;
-            }
-            
-            .nav-links {
-                gap: 16px;
-                font-size: 0.85rem;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            section {
-                padding: 60px 16px;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .skills-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .skills-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Fade-in on scroll */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg-primary: #0a0a1a; --bg-secondary: #12122a; --bg-card: #1a1a3e; --text-primary: #e8e8f0; --text-secondary: #a0a0c0; --accent: #6C5CE7; --accent-light: #a29bfe; --accent-glow: rgba(108,92,231,0.3); --border: #2a2a5a; --pink: #ff6b9d; --pink-glow: rgba(255,107,157,0.2); }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; z-index: 0; animation: floatOrb 20s ease-in-out infinite; }
+        .orb-1 { width: 400px; height: 400px; background: var(--accent); top: -100px; left: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: var(--pink); bottom: -50px; right: -50px; animation-delay: -7s; }
+        .orb-3 { width: 250px; height: 250px; background: #6c5ce7; top: 50%; left: 50%; animation-delay: -14s; }
+        @keyframes floatOrb { 0%,100% { transform: translate(0,0) scale(1); } 25% { transform: translate(50px,-50px) scale(1.1); } 50% { transform: translate(-30px,30px) scale(0.9); } 75% { transform: translate(40px,20px) scale(1.05); } }
+        .sakura-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .petal { position: absolute; top: -20px; width: 12px; height: 12px; background: var(--pink); border-radius: 50% 0 50% 0; opacity: 0.3; animation: fall linear infinite; }
+        @keyframes fall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 0.3; } 100% { transform: translateY(105vh) rotate(720deg); opacity: 0; } }
+        .ciallo-badge { display: inline-block; padding: 4px 14px; background: linear-gradient(135deg, var(--pink), var(--accent)); border-radius: 20px; font-size: 0.8rem; color: white; margin-top: 8px; }
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: linear-gradient(180deg, rgba(10,10,26,0.95) 0%, transparent 100%); backdrop-filter: blur(10px); }
+        .nav-logo { font-size: 1.5rem; font-weight: 700; color: var(--accent-light); text-decoration: none; letter-spacing: 2px; }
+        .nav-logo span { color: var(--text-primary); }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s; }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a:hover::after { width: 100%; }
+        .hero { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 60px; }
+        .hero-badge { display: inline-block; padding: 8px 20px; background: rgba(108,92,231,0.15); border: 1px solid rgba(108,92,231,0.3); border-radius: 50px; font-size: 0.85rem; color: var(--accent-light); margin-bottom: 30px; letter-spacing: 3px; animation: fadeInDown 1s ease; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; background: linear-gradient(135deg, #a29bfe, #6C5CE7, #a29bfe); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientShift 3s ease infinite, fadeInUp 1s ease; margin-bottom: 10px; }
+        .hero .subtitle { font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--text-secondary); font-weight: 300; margin-bottom: 10px; animation: fadeInUp 1s ease 0.2s both; }
+        .hero .motto { font-size: 1.1rem; color: var(--accent-light); font-style: italic; margin-bottom: 40px; opacity: 0.8; animation: fadeInUp 1s ease 0.4s both; }
+        .hero .motto cite { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px; font-style: normal; }
+        .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; animation: fadeInUp 1s ease 0.6s both; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 12px; font-size: 1rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease; cursor: pointer; border: none; font-family: inherit; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), #8b5cf6); color: white; box-shadow: 0 4px 20px var(--accent-glow); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+        .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent); background: rgba(108,92,231,0.1); transform: translateY(-2px); }
+        .scroll-indicator { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.8rem; animation: fadeInUp 1s ease 1s both; }
+        .scroll-indicator .mouse { width: 24px; height: 38px; border: 2px solid var(--text-secondary); border-radius: 12px; position: relative; }
+        .scroll-indicator .mouse::after { content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: var(--accent); border-radius: 2px; animation: scrollWheel 2s ease infinite; }
+        @keyframes scrollWheel { 0% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(12px); } }
+        section { position: relative; z-index: 1; padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2.2rem; font-weight: 700; margin-bottom: 60px; color: var(--text-primary); }
+        .section-title span { color: var(--accent); }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--accent); margin: 16px auto 0; border-radius: 2px; }
+        .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-text h3 { font-size: 1.8rem; margin-bottom: 20px; }
+        .about-text p { color: var(--text-secondary); margin-bottom: 16px; font-size: 1.05rem; }
+        .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+        .about-tag { padding: 6px 16px; background: rgba(108,92,231,0.1); border: 1px solid rgba(108,92,231,0.2); border-radius: 20px; font-size: 0.85rem; color: var(--accent-light); }
+        .about-ascii { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 30px; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; color: var(--accent-light); white-space: pre; overflow-x: auto; text-align: center; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .project-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 30px; transition: all 0.3s ease; }
+        .project-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 8px 30px var(--accent-glow); }
+        .project-card .icon { font-size: 2rem; margin-bottom: 16px; }
+        .project-card h4 { font-size: 1.2rem; margin-bottom: 12px; }
+        .project-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px; }
+        .project-card .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .project-card .tags span { padding: 4px 12px; background: rgba(108,92,231,0.1); border-radius: 12px; font-size: 0.75rem; color: var(--accent-light); }
+        .quote-section { text-align: center; padding: 80px 20px; }
+        .quote-block { max-width: 700px; margin: 0 auto; }
+        .quote-block blockquote { font-size: 1.4rem; font-style: italic; color: var(--accent-light); line-height: 1.8; margin-bottom: 20px; }
+        .quote-block cite { color: var(--text-secondary); font-size: 0.9rem; }
+        .goals-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; max-width: 700px; margin: 0 auto; }
+        .goal-badge { padding: 12px 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; transition: all 0.3s; }
+        .goal-badge:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px var(--accent-glow); }
+        .anime-gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .anime-gallery img { border-radius: 12px; border: 2px solid var(--border); transition: all 0.3s; max-width: 100%; height: auto; }
+        .anime-gallery img:hover { border-color: var(--accent); transform: scale(1.02); box-shadow: 0 8px 30px var(--accent-glow); }
+        footer { position: relative; z-index: 1; text-align: center; padding: 60px 20px; border-top: 1px solid var(--border); }
+        footer .social-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; }
+        footer .social-links a { color: var(--text-secondary); font-size: 1.5rem; text-decoration: none; transition: color 0.3s, transform 0.3s; }
+        footer .social-links a:hover { color: var(--accent); transform: translateY(-2px); }
+        footer p { color: var(--text-secondary); font-size: 0.85rem; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @media (max-width: 768px) { nav { padding: 16px 20px; } .nav-links { gap: 16px; font-size: 0.85rem; } .about-content { grid-template-columns: 1fr; gap: 40px; } .hero h1 { font-size: 2.5rem; } section { padding: 60px 16px; } .projects-grid { grid-template-columns: 1fr; } }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
-    <!-- Ambient Orbs -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
-
-    <!-- Sakura Petals -->
     <div class="sakura-container" id="sakuraContainer"></div>
 
-    <!-- Navigation -->
     <nav>
         <a href="#" class="nav-logo">🔮 玄<span>明</span></a>
         <ul class="nav-links">
             <li><a href="#about">关于</a></li>
-            <li><a href="#skills">技能</a></li>
             <li><a href="#projects">项目</a></li>
             <li><a href="#goals">目标</a></li>
         </ul>
     </nav>
 
-    <!-- Hero -->
     <section class="hero">
         <div class="hero-badge">✦ 夢を見てる ✦</div>
         <h1>MystHiru</h1>
@@ -697,12 +111,8 @@
             <div class="ciallo-badge">Ciallo～(∠・ω&lt; )⌒★</div>
         </div>
         <div class="hero-actions">
-            <a href="https://github.com/MystHiru" class="btn btn-primary" target="_blank">
-                🐙 GitHub
-            </a>
-            <a href="#about" class="btn btn-secondary">
-                💭 了解更多
-            </a>
+            <a href="https://github.com/MystHiru" class="btn btn-primary" target="_blank">🐙 GitHub</a>
+            <a href="#about" class="btn btn-secondary">💭 了解更多</a>
         </div>
         <div class="scroll-indicator">
             <div class="mouse"></div>
@@ -710,27 +120,16 @@
         </div>
     </section>
 
-    <!-- About -->
     <section id="about">
         <h2 class="section-title fade-in">💜 About <span>Me</span></h2>
         <div class="about-content">
             <div class="about-text fade-in">
                 <h3>🌙 玄明 / MystHiru</h3>
-                <p>
-                    <b>コードを愛する、AI に依存しているエンジニア</b> 💻
-                </p>
-                <p>
-                    🎯 <b>AI 重度依赖</b> —— 比起自己写，更喜欢让 AI 帮我写，然后自己改（笑）
-                </p>
-                <p>
-                    🎵 <b>音乐</b> —— 耳机不离身，歌单里什么都有
-                </p>
-                <p>
-                    📺 <b>追番</b> —— 每一季都会追几部，杂食系观众
-                </p>
-                <p>
-                    💭 <b>梦想</b> —— 有一天能做出真正属于自己的东西
-                </p>
+                <p><b>コードを愛する、AI に依存しているエンジニア</b> 💻</p>
+                <p>🎯 <b>AI 重度依赖</b> —— 比起自己写，更喜欢让 AI 帮我写，然后自己改（笑）</p>
+                <p>🎵 <b>音乐</b> —— 耳机不离身，歌单里什么都有</p>
+                <p>📺 <b>追番</b> —— 每一季都会追几部，杂食系观众</p>
+                <p>💭 <b>梦想</b> —— 有一天能做出真正属于自己的东西</p>
                 <div class="about-tags">
                     <span class="about-tag">#AI重度依赖</span>
                     <span class="about-tag">#追番</span>
@@ -756,62 +155,6 @@
         </div>
     </section>
 
-    <!-- Skills -->
-    <section id="skills">
-        <h2 class="section-title fade-in">🎮 Tech <span>Stack</span></h2>
-        <div class="skills-grid">
-            <div class="skill-card fade-in">
-                <div class="icon">🐍</div>
-                <div class="name">Python</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🟣</div>
-                <div class="name">Kotlin</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🟨</div>
-                <div class="name">JavaScript</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🔷</div>
-                <div class="name">TypeScript</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🌐</div>
-                <div class="name">HTML/CSS</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">⚛️</div>
-                <div class="name">React</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🟢</div>
-                <div class="name">Node.js</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🐳</div>
-                <div class="name">Docker</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🔀</div>
-                <div class="name">Git</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🐧</div>
-                <div class="name">Linux</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">🤖</div>
-                <div class="name">AI Tools</div>
-            </div>
-            <div class="skill-card fade-in">
-                <div class="icon">💜</div>
-                <div class="name">Cursor</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects -->
     <section id="projects">
         <h2 class="section-title fade-in">📦 My <span>Projects</span></h2>
         <div class="projects-grid">
@@ -845,7 +188,6 @@
         </div>
     </section>
 
-    <!-- Quote -->
     <section class="quote-section">
         <div class="quote-block fade-in">
             <blockquote>
@@ -856,39 +198,21 @@
         </div>
     </section>
 
-    <!-- Goals -->
     <section id="goals">
         <h2 class="section-title fade-in">🎯 2026 <span>Goals</span></h2>
-        <div class="goals-list">
-            <div class="goal-item fade-in">
-                <div class="checkbox"></div>
-                <span class="label">🌟 做出一个自己的开源项目</span>
-            </div>
-            <div class="goal-item fade-in">
-                <div class="checkbox"></div>
-                <span class="label">📝 多写点技术笔记</span>
-            </div>
-            <div class="goal-item fade-in">
-                <div class="checkbox"></div>
-                <span class="label">🎮 学点游戏开发</span>
-            </div>
-            <div class="goal-item fade-in">
-                <div class="checkbox"></div>
-                <span class="label">🤖 更深入地玩 AI</span>
-            </div>
-            <div class="goal-item fade-in">
-                <div class="checkbox"></div>
-                <span class="label">📖 多读点书</span>
-            </div>
+        <div class="goals-grid">
+            <div class="goal-badge fade-in">🌟 开源项目</div>
+            <div class="goal-badge fade-in">🎮 游戏开发</div>
+            <div class="goal-badge fade-in">🤖 深入 AI</div>
+            <div class="goal-badge fade-in">📖 多读书</div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="social-links">
             <a href="https://github.com/MystHiru" target="_blank" title="GitHub">🐙</a>
             <a href="https://t.me/MystHiru" target="_blank" title="Telegram">✈️</a>
-            <a href="mailto:your-email@example.com" title="Email">📧</a>
+            <a href="mailto:mysthiru@gmail.com" title="Email">📧</a>
         </div>
         <p>© 2026 MystHiru · 玄明の小さな工房</p>
         <p style="margin-top: 8px; font-size: 0.8rem; opacity: 0.6;">
@@ -897,7 +221,6 @@
     </footer>
 
     <script>
-        // Sakura Petal Generator
         const sakuraContainer = document.getElementById('sakuraContainer');
         for (let i = 0; i < 20; i++) {
             const petal = document.createElement('div');
@@ -910,30 +233,17 @@
             petal.style.opacity = 0.15 + Math.random() * 0.2;
             sakuraContainer.appendChild(petal);
         }
-
-        // Fade-in on scroll
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Smooth scroll for nav links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
             });
         });
-
-        // Parallax effect on orbs
         document.addEventListener('mousemove', (e) => {
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
