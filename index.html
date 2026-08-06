@@ -41,20 +41,15 @@
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
         .btn-secondary { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
         .btn-secondary:hover { border-color: var(--accent); background: rgba(108,92,231,0.1); transform: translateY(-2px); }
-        .scroll-indicator { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.8rem; animation: fadeInUp 1s ease 1s both; }
-        .scroll-indicator .mouse { width: 24px; height: 38px; border: 2px solid var(--text-secondary); border-radius: 12px; position: relative; }
-        .scroll-indicator .mouse::after { content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: var(--accent); border-radius: 2px; animation: scrollWheel 2s ease infinite; }
-        @keyframes scrollWheel { 0% { opacity: 1; transform: translateX(-50%) translateY(0); } 100% { opacity: 0; transform: translateX(-50%) translateY(12px); } }
         section { position: relative; z-index: 1; padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 2.2rem; font-weight: 700; margin-bottom: 60px; color: var(--text-primary); }
         .section-title span { color: var(--accent); }
         .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--accent); margin: 16px auto 0; border-radius: 2px; }
-        .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-content { display: flex; flex-direction: column; gap: 40px; max-width: 700px; margin: 0 auto; }
         .about-text h3 { font-size: 1.8rem; margin-bottom: 20px; }
         .about-text p { color: var(--text-secondary); margin-bottom: 16px; font-size: 1.05rem; }
         .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
         .about-tag { padding: 6px 16px; background: rgba(108,92,231,0.1); border: 1px solid rgba(108,92,231,0.2); border-radius: 20px; font-size: 0.85rem; color: var(--accent-light); }
-        .about-ascii { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 30px; font-family: 'Courier New', monospace; font-size: 0.85rem; line-height: 1.5; color: var(--accent-light); white-space: pre; overflow-x: auto; text-align: center; }
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
         .project-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 30px; transition: all 0.3s ease; }
         .project-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 8px 30px var(--accent-glow); }
@@ -75,7 +70,7 @@
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        @media (max-width: 768px) { nav { padding: 16px 20px; } .nav-links { gap: 16px; font-size: 0.85rem; } .about-content { grid-template-columns: 1fr; gap: 40px; } .hero h1 { font-size: 2.5rem; } section { padding: 60px 16px; } .projects-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { nav { padding: 16px 20px; } .nav-links { gap: 16px; font-size: 0.85rem; } .hero h1 { font-size: 2.5rem; } section { padding: 60px 16px; } .projects-grid { grid-template-columns: 1fr; } }
         .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
     </style>
@@ -107,11 +102,7 @@
             <a href="https://github.com/MystHiru" class="btn btn-primary" target="_blank">🐙 GitHub</a>
             <a href="#about" class="btn btn-secondary">💭 了解更多</a>
         </div>
-        <div class="scroll-indicator">
-            <div class="mouse"></div>
-            <span>Scroll</span>
-        </div>
-    </section>
+        </section>
 
     <section id="about">
         <h2 class="section-title fade-in">💜 About <span>Me</span></h2>
@@ -131,21 +122,7 @@
                     <span class="about-tag">#梦想家</span>
                 </div>
             </div>
-            <div class="about-ascii fade-in">
-╭─────────────────────────╮
-│                         │
-│      🔮 玄明           │
-│      ═══════════        │
-│                         │
-│   💭 夢を見てる         │
-│   💻 AI依存症           │
-│   🎵 音楽中毒           │
-│   📺 追番習慣           │
-│   ✨ いつか創りたい     │
-│                         │
-╰─────────────────────────╯
             </div>
-        </div>
     </section>
 
     <section id="projects">
