@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --bg-primary: #0a0a1a; --bg-secondary: #12122a; --bg-card: #1a1a3e; --text-primary: #e8e8f0; --text-secondary: #a0a0c0; --accent: #6C5CE7; --accent-light: #a29bfe; --accent-glow: rgba(108,92,231,0.3); --border: #2a2a5a; --pink: #ff6b9d; --pink-glow: rgba(255,107,157,0.2); }
+        :root { --bg-primary: #0a0a1a; --bg-secondary: #12122a; --bg-card: #1a1a3e; --text-primary: #e8e8f0; --text-secondary: #a0a0c0; --accent: #6C5CE7; --accent-light: #a29bfe; --accent-glow: rgba(108,92,231,0.3); --border: #2a2a5a; --pink: #ff6b9d; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
         .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; z-index: 0; animation: floatOrb 20s ease-in-out infinite; }
@@ -67,12 +67,6 @@
         .quote-block { max-width: 700px; margin: 0 auto; }
         .quote-block blockquote { font-size: 1.4rem; font-style: italic; color: var(--accent-light); line-height: 1.8; margin-bottom: 20px; }
         .quote-block cite { color: var(--text-secondary); font-size: 0.9rem; }
-        .goals-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; max-width: 700px; margin: 0 auto; }
-        .goal-badge { padding: 12px 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; color: var(--text-secondary); font-size: 1rem; transition: all 0.3s; }
-        .goal-badge:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 20px var(--accent-glow); }
-        .anime-gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
-        .anime-gallery img { border-radius: 12px; border: 2px solid var(--border); transition: all 0.3s; max-width: 100%; height: auto; }
-        .anime-gallery img:hover { border-color: var(--accent); transform: scale(1.02); box-shadow: 0 8px 30px var(--accent-glow); }
         footer { position: relative; z-index: 1; text-align: center; padding: 60px 20px; border-top: 1px solid var(--border); }
         footer .social-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; }
         footer .social-links a { color: var(--text-secondary); font-size: 1.5rem; text-decoration: none; transition: color 0.3s, transform 0.3s; }
@@ -97,7 +91,6 @@
         <ul class="nav-links">
             <li><a href="#about">关于</a></li>
             <li><a href="#projects">项目</a></li>
-            <li><a href="#goals">目标</a></li>
         </ul>
     </nav>
 
@@ -198,20 +191,9 @@
         </div>
     </section>
 
-    <section id="goals">
-        <h2 class="section-title fade-in">🎯 2026 <span>Goals</span></h2>
-        <div class="goals-grid">
-            <div class="goal-badge fade-in">🌟 开源项目</div>
-            <div class="goal-badge fade-in">🎮 游戏开发</div>
-            <div class="goal-badge fade-in">🤖 深入 AI</div>
-            <div class="goal-badge fade-in">📖 多读书</div>
-        </div>
-    </section>
-
     <footer>
         <div class="social-links">
             <a href="https://github.com/MystHiru" target="_blank" title="GitHub">🐙</a>
-            <a href="https://t.me/MystHiru" target="_blank" title="Telegram">✈️</a>
             <a href="mailto:mysthiru@gmail.com" title="Email">📧</a>
         </div>
         <p>© 2026 MystHiru · 玄明の小さな工房</p>
