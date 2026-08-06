@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>收藏管理 · 玄明</title>
+  <title>管理面板 · 玄明</title>
   <style>
     :root {
       --surface-0: #05070C;
@@ -21,14 +21,15 @@
       --radius-md: 14px;
       --radius-full: 999px;
       --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      --font-mono: "SF Mono", Consolas, "Liberation Mono", monospace;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: var(--surface-0);
       color: var(--text-primary);
       font-family: var(--font-sans);
-      font-size: .98rem;
-      line-height: 1.7;
+      font-size: .95rem;
+      line-height: 1.6;
       min-height: 100vh;
     }
     a { color: inherit; }
@@ -36,105 +37,84 @@
     nav {
       background: rgba(10,13,18,.85);
       border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       backdrop-filter: blur(12px);
     }
     nav .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: .9rem clamp(1.5rem, 5vw, 3rem);
-      max-width: 1100px;
-      margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .8rem clamp(1.5rem, 5vw, 3rem);
+      max-width: 1200px; margin: 0 auto;
     }
     .brand { color: var(--accent); text-decoration: none; font-weight: 700; letter-spacing: .1em; }
 
-    main { max-width: 1100px; margin: 0 auto; padding: 2rem clamp(1.5rem, 5vw, 3rem) 4rem; }
-    header.page h1 { font-size: clamp(1.5rem,4vw,2rem); font-weight: 600; }
-    header.page p { color: var(--text-dim); margin-top: .4rem; }
+    main { max-width: 1200px; margin: 0 auto; padding: 1.5rem clamp(1.5rem, 5vw, 3rem) 4rem; }
 
-    .panel { background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.4rem; margin-top: 1.5rem; }
-    .panel h2 { font-size: 1.05rem; margin-bottom: 1rem; color: var(--text-primary); }
+    .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab { padding: .6rem 1.2rem; border-radius: 10px 10px 0 0; border: 1px solid var(--line); border-bottom: none; background: var(--surface-1); color: var(--text-dim); cursor: pointer; font-size: .85rem; transition: all .2s; }
+    .tab:hover { color: var(--text-secondary); }
+    .tab.active { background: var(--surface-2); color: var(--accent); border-color: var(--accent-muted); }
 
-    label { display: block; color: var(--text-secondary); font-size: .85rem; margin-bottom: .4rem; }
-    input[type="text"], input[type="password"] {
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .card { background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1rem; }
+    .card h3 { font-size: .95rem; color: var(--accent); margin-bottom: .6rem; }
+    .card label { display: block; color: var(--text-dim); font-size: .78rem; margin-bottom: .3rem; }
+    .card input, .card textarea {
       width: 100%;
       background: var(--surface-2);
       border: 1px solid var(--line);
-      border-radius: 10px;
+      border-radius: 8px;
       color: var(--text-primary);
-      padding: .7rem 1rem;
-      font-size: .92rem;
+      padding: .6rem .8rem;
+      font-size: .9rem;
       font-family: var(--font-sans);
     }
-    input:focus { outline: none; border-color: var(--accent-muted); }
+    .card textarea { min-height: 60px; resize: vertical; }
+    .card input:focus, .card textarea:focus { outline: none; border-color: var(--accent-muted); }
+    .card .row { display: flex; gap: .6rem; flex-wrap: wrap; }
+    .card .row > * { flex: 1; min-width: 120px; }
 
-    .row { display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; }
     .btn {
-      display: inline-flex; align-items: center; gap: .45rem;
-      padding: .65rem 1.3rem; border-radius: var(--radius-full);
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .6rem 1.2rem; border-radius: var(--radius-full);
       border: none; cursor: pointer;
-      font-size: .9rem; font-weight: 500; font-family: var(--font-sans);
+      font-size: .85rem; font-weight: 500; font-family: var(--font-sans);
       transition: all .2s;
     }
     .btn-primary { background: var(--accent); color: var(--surface-0); }
     .btn-primary:hover { background: var(--accent-muted); }
     .btn-ghost { background: var(--surface-2); color: var(--text-primary); border: 1px solid var(--line); }
     .btn-ghost:hover { background: var(--surface-3); border-color: var(--accent-muted); }
-    .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); font-size: .8rem; padding: .4rem .9rem; }
+    .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
     .btn-danger:hover { background: rgba(229,107,107,.12); }
     .btn:disabled { opacity: .5; cursor: not-allowed; }
 
-    #drop {
-      border: 1.5px dashed var(--line);
-      border-radius: var(--radius-md);
-      padding: 2rem;
-      text-align: center;
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: border-color .2s, background .2s;
-      margin-top: 1rem;
-    }
-    #drop:hover, #drop.dragover { border-color: var(--accent); background: var(--surface-2); color: var(--text-secondary); }
-    #drop input { display: none; }
-
-    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-top: 1.2rem; }
-    .item { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 3/4; background: var(--surface-2); }
-    .item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .item .del {
-      position: absolute; top: 8px; right: 8px;
-      background: rgba(5,7,12,.75);
-      color: var(--danger);
-      border: 1px solid rgba(229,107,107,.5);
-      border-radius: 999px;
-      width: 30px; height: 30px;
-      font-size: .85rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: opacity .2s;
-    }
-    .item:hover .del { opacity: 1; }
-    .item .name {
-      position: absolute; left: 0; right: 0; bottom: 0;
-      padding: 1rem .5rem .4rem;
-      background: linear-gradient(transparent, rgba(0,0,0,.8));
-      font-size: .7rem; color: var(--text-secondary);
-      text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
-    }
-
-    #status { margin-top: 1rem; font-size: .9rem; min-height: 1.4em; }
+    #status { margin-top: 1rem; font-size: .9rem; min-height: 1.4em; padding: 0 2px; }
     #status.ok { color: var(--ok); }
     #status.err { color: var(--danger); }
     #status.busy { color: var(--accent); }
 
-    .hint { font-size: .8rem; color: var(--text-dim); margin-top: .8rem; line-height: 1.8; }
-    .hint code { color: var(--accent); background: var(--surface-2); padding: 1px 6px; border-radius: 6px; font-size: .78rem; }
+    .token-bar { display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .token-bar input { flex: 1; min-width: 200px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; color: var(--text-primary); padding: .6rem 1rem; font-size: .85rem; }
+    .token-bar input:focus { outline: none; border-color: var(--accent-muted); }
+
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .gallery-item { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 3/4; background: var(--surface-2); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-item .del { position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; background: rgba(5,7,12,.75); color: var(--danger); border: 1px solid rgba(229,107,107,.5); border-radius: 999px; font-size: .75rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .2s; }
+    .gallery-item:hover .del { opacity: 1; }
+    .gallery-item .name { position: absolute; left: 0; right: 0; bottom: 0; padding: 1rem .4rem .35rem; background: linear-gradient(transparent, rgba(0,0,0,.8)); font-size: .65rem; color: var(--text-secondary); text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+
+    #drop { border: 1.5px dashed var(--line); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; color: var(--text-dim); cursor: pointer; transition: border-color .2s, background .2s; margin-bottom: 1rem; }
+    #drop:hover, #drop.dragover { border-color: var(--accent); background: var(--surface-2); color: var(--text-secondary); }
+    #drop input { display: none; }
 
     @media (max-width: 560px) {
-      .item .del { opacity: 1; }
-      .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .gallery-item .del { opacity: 1; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .tabs { overflow-x: auto; flex-wrap: nowrap; }
+      .tab { white-space: nowrap; font-size: .8rem; }
     }
   </style>
 </head>
@@ -142,68 +122,76 @@
   <nav>
     <div class="nav-inner">
       <a class="brand" href="index.html">MYSTHIRU</a>
+      <span style="color:var(--text-dim);font-size:.82rem;">管理面板</span>
     </div>
   </nav>
 
   <main>
-    <header class="page">
-      <h1>收藏管理</h1>
-      <p>直接管理画廊图片：上传新图、删除旧图，自动同步 gallery.html。</p>
-    </header>
+    <div class="token-bar">
+      <input type="password" id="token" placeholder="Fine-grained Token" autocomplete="off">
+      <button class="btn btn-primary" id="btnConnect">连接</button>
+      <span style="color:var(--text-dim);font-size:.78rem;">Token 仅存本地</span>
+    </div>
 
-    <section class="panel">
-      <h2>① 连接 GitHub</h2>
-      <label for="token">Fine-grained Token（只授权 mysthiru.github.io 仓库 · Contents 读写）</label>
-      <div class="row">
-        <input type="password" id="token" placeholder="github_pat_xxx..." autocomplete="off" style="flex:1;min-width:220px">
-        <button class="btn btn-primary" id="btnConnect">连接并读取</button>
-      </div>
-      <p class="hint">
-        创建方法：GitHub → Settings → Developer settings → <b>Fine-grained tokens</b> → Generate new token<br>
-        · Repository access 选 <b>Only select repositories → mysthiru.github.io</b><br>
-        · Permissions → Contents 选 <b>Read and write</b><br>
-        · Token 只保存在本浏览器 localStorage，访问本页的访客看不到你的操作记录（但请勿把页面 URL 外传）
-      </p>
-    </section>
-
-    <section class="panel">
-      <h2>② 上传图片</h2>
-      <div id="drop">
-        点击选择或拖入图片（支持 jpg / png / webp，自动压缩到 1200px 以内）
-        <input type="file" id="file" accept="image/*" multiple>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2>③ 当前收藏</h2>
-      <div id="list"><p style="color:var(--text-dim)">连接后显示图片列表，悬停图片右上角可删除。</p></div>
-    </section>
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="content">📝 内容</div>
+      <div class="tab" data-tab="gallery">🖼️ 图片</div>
+      <div class="tab" data-tab="projects">📦 项目</div>
+      <div class="tab" data-tab="notes">📄 随笔</div>
+    </div>
 
     <div id="status"></div>
+
+    <div class="panel active" id="tab-content">
+      <div id="content-editor">
+        <p style="color:var(--text-dim);">点击「连接」后自动加载所有可编辑内容。</p>
+      </div>
+      <div style="margin-top:1rem;text-align:right;">
+        <button class="btn btn-primary" id="saveContent" style="display:none;">全部保存</button>
+      </div>
+    </div>
+
+    <div class="panel" id="tab-gallery">
+      <div id="drop">
+        📁 点击选择或拖入图片（自动压缩到 1200px）
+        <input type="file" id="file" accept="image/*" multiple>
+      </div>
+      <div id="gallery-list"><p style="color:var(--text-dim);">连接后显示图片列表。</p></div>
+    </div>
+
+    <div class="panel" id="tab-projects">
+      <div id="project-editor">
+        <p style="color:var(--text-dim);">连接后编辑项目卡片。</p>
+      </div>
+      <div style="margin-top:1rem;text-align:right;">
+        <button class="btn btn-primary" id="saveProjects" style="display:none;">保存项目</button>
+      </div>
+    </div>
+
+    <div class="panel" id="tab-notes">
+      <div id="note-editor">
+        <p style="color:var(--text-dim);">连接后编辑随笔内容。</p>
+      </div>
+      <div style="margin-top:1rem;text-align:right;">
+        <button class="btn btn-primary" id="saveNotes" style="display:none;">保存随笔</button>
+      </div>
+    </div>
   </main>
 
   <script>
-    const REPO = 'mysthiru.github.io';
     const OWNER = 'MystHiru';
+    const REPO = 'mysthiru.github.io';
     const BRANCH = 'main';
     const DIR = 'img/archive';
-    const GALLERY_PAGE = 'gallery.html';
-    const TS = () => new Date().toISOString().replace(/[-:T]/g,'').slice(0,14);
-
-    let images = []; // {name, sha, url}
+    const GALLERY_FILE = 'gallery.html';
 
     const $ = id => document.getElementById(id);
-    const statusEl = $('status');
-
-    function setStatus(msg, cls='') {
-      statusEl.textContent = msg;
-      statusEl.className = cls;
-    }
-
-    function token() { return $('token').value.trim(); }
+    const s = $('status');
+    function st(msg, cls='') { s.textContent = msg; s.className = cls; }
+    function tk() { return $('token').value.trim(); }
 
     async function gh(path, method='GET', body=null) {
-      const opt = { method, headers: { 'Authorization': 'Bearer ' + token() } };
+      const opt = { method, headers: { 'Authorization': 'Bearer ' + tk() } };
       if (body) { opt.headers['Content-Type'] = 'application/json'; opt.body = JSON.stringify(body); }
       const r = await fetch('https://api.github.com' + path, opt);
       if (!r.ok) {
@@ -214,85 +202,178 @@
       return r.status === 204 ? null : r.json();
     }
 
-    async function load() {
-      if (!token()) { setStatus('请先输入 Token', 'err'); return; }
-      setStatus('正在读取…', 'busy');
+    // ---- 标签切换 ----
+    document.querySelectorAll('.tab').forEach(el => {
+      el.onclick = () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+        $(`tab-${el.dataset.tab}`).classList.add('active');
+      };
+    });
+
+    // ---- 连接 ----
+    $('btnConnect').onclick = async () => {
+      if (!tk()) { st('请输入 Token', 'err'); return; }
+      st('正在连接…', 'busy');
       try {
-        images = await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}`);
-        if (!Array.isArray(images)) images = [];
-        images = images.filter(i => i.type === 'file');
-        render();
-        setStatus(`已连接，共 ${images.length} 张图片`, 'ok');
-      } catch (e) { setStatus('连接失败：' + e.message, 'err'); }
+        await loadContent();
+        await loadGallery();
+        await loadProjects();
+        await loadNotes();
+        st('已连接，所有内容已加载', 'ok');
+      } catch (e) { st('连接失败：' + e.message, 'err'); }
+    };
+    $('token').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnConnect').click(); });
+
+    // ---- 内容编辑 ----
+    let contentFields = {}; // {key: {page, selector, value, sha}}
+
+    async function loadContent() {
+      const pages = ['index.html', 'about.html'];
+      contentFields = {};
+      const ce = $('content-editor');
+      ce.innerHTML = '';
+
+      for (const page of pages) {
+        const meta = await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
+        const html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
+        const regex = /<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g;
+        let m;
+        let hasField = false;
+        while ((m = regex.exec(html)) !== null) {
+          hasField = true;
+          const key = m[1];
+          const val = m[2].trim();
+          contentFields[key] = { page, selector: key, value: val, sha: meta.sha, raw: meta.content };
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `<label>${key} <span style="color:var(--text-dim);font-size:.7rem;">(${page})</span></label>
+            <textarea id="field-${key}" rows="2">${escHtml(val)}</textarea>`;
+          ce.appendChild(card);
+        }
+        if (!hasField) {
+          ce.innerHTML = `<p style="color:var(--text-dim);">${page} 没有可编辑标记</p>`;
+        }
+      }
+      $('saveContent').style.display = Object.keys(contentFields).length ? 'inline-flex' : 'none';
     }
 
-    function render() {
-      const list = $('list');
-      if (!images.length) { list.innerHTML = '<p style="color:var(--text-dim)">还没有图片，上传一张试试。</p>'; return; }
-      list.innerHTML = '';
+    $('saveContent').onclick = async () => {
+      st('正在保存内容…', 'busy');
+      try {
+        // Group by page
+        const byPage = {};
+        for (const [key, info] of Object.entries(contentFields)) {
+          const val = $(`field-${key}`).value.trim();
+          if (!byPage[info.page]) byPage[info.page] = { sha: info.sha, replaces: [] };
+          byPage[info.page].replaces.push({ key, val });
+        }
+        for (const [page, data] of Object.entries(byPage)) {
+          const meta = await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
+          let html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
+          for (const r of data.replaces) {
+            html = html.replace(
+              new RegExp(`<!-- EDITABLE:${r.key} -->[\\s\\S]*?<!-- END -->`),
+              `<!-- EDITABLE:${r.key} -->${r.val}<!-- END -->`
+            );
+          }
+          await gh(`/repos/${OWNER}/${REPO}/contents/${page}`, 'PUT', {
+            message: `Edit content: ${page}`,
+            content: btoa(unescape(encodeURIComponent(html))),
+            sha: meta.sha,
+            branch: BRANCH
+          });
+        }
+        st('内容已保存 ✅', 'ok');
+      } catch (e) { st('保存失败：' + e.message, 'err'); }
+    };
+
+    // ---- 图片管理 ----
+    let images = [];
+    async function loadGallery() {
+      try {
+        const data = await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}`);
+        images = Array.isArray(data) ? data.filter(i => i.type === 'file') : [];
+        renderGallery();
+      } catch (e) { $('gallery-list').innerHTML = `<p style="color:var(--text-dim);">读取失败：${e.message}</p>`; }
+    }
+
+    function renderGallery() {
+      const gl = $('gallery-list');
+      if (!images.length) {
+        gl.innerHTML = '<p style="color:var(--text-dim);">还没有图片，拖入或点击上传。</p>';
+        return;
+      }
       const grid = document.createElement('div');
-      grid.className = 'gallery';
+      grid.className = 'gallery-grid';
       images.forEach(img => {
         const item = document.createElement('div');
-        item.className = 'item';
+        item.className = 'gallery-item';
         item.innerHTML = `<img loading="lazy" src="${img.download_url}" alt="${img.name}"><div class="name">${img.name}</div>`;
         const del = document.createElement('button');
-        del.className = 'del';
-        del.title = '删除';
-        del.textContent = '✕';
-        del.onclick = () => remove(img);
+        del.className = 'del'; del.textContent = '✕'; del.title = '删除';
+        del.onclick = () => deleteImage(img);
         item.appendChild(del);
         grid.appendChild(item);
       });
-      list.appendChild(grid);
+      gl.innerHTML = '';
+      gl.appendChild(grid);
     }
 
-    // ---- 删除 ----
-    async function remove(img) {
-      if (!confirm(`删除 ${img.name} ？`)) return;
-      setStatus('删除中…', 'busy');
+    async function deleteImage(img) {
+      if (!confirm(`删除 ${img.name}？`)) return;
+      st('删除中…', 'busy');
       try {
         await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${img.name}`, 'DELETE', {
-          message: `Delete ${img.name}`,
-          sha: img.sha,
-          branch: BRANCH
+          message: `Delete ${img.name}`, sha: img.sha, branch: BRANCH
         });
-        await rebuildGallery();
-        await load();
-        setStatus('已删除并同步画廊', 'ok');
-      } catch (e) { setStatus('删除失败：' + e.message, 'err'); }
+        await syncGallery();
+        await loadGallery();
+        st('已删除并同步', 'ok');
+      } catch (e) { st('删除失败：' + e.message, 'err'); }
     }
 
-    // ---- 上传 ----
-    async function uploadFile(file) {
-      setStatus(`处理 ${file.name}…`, 'busy');
-      const jpg = await compress(file);
-      const name = `img-${TS()}-${Math.random().toString(36).slice(2,6)}.jpg`;
-      setStatus(`上传 ${name}…`, 'busy');
+    const drop = $('drop'), fileInput = $('file');
+    drop.onclick = () => fileInput.click();
+    drop.ondragover = e => { e.preventDefault(); drop.classList.add('dragover'); };
+    drop.ondragleave = () => drop.classList.remove('dragover');
+    drop.ondrop = e => { e.preventDefault(); drop.classList.remove('dragover'); handleFiles(e.dataTransfer.files); };
+    fileInput.onchange = () => handleFiles(fileInput.files);
+
+    async function handleFiles(files) {
+      if (!tk()) { st('请先输入 Token', 'err'); return; }
+      const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
+      if (!arr.length) return;
+      let ok = 0, fail = 0;
+      for (const f of arr) {
+        try {
+          st(`处理 ${f.name}…`, 'busy');
+          const jpg = await compress(f);
+          const name = `img-${new Date().toISOString().replace(/[-:T]/g,'').slice(0,14)}-${Math.random().toString(36).slice(2,6)}.jpg`;
+          await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${name}`, 'PUT', {
+            message: `Upload ${name}`, content: jpg, branch: BRANCH
+          });
+          ok++;
+        } catch (e) { fail++; st('上传失败：' + e.message, 'err'); }
+      }
       try {
-        await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${name}`, 'PUT', {
-          message: `Upload ${name}`,
-          content: jpg,
-          branch: BRANCH
-        });
-        return name;
-      } catch (e) { throw new Error('上传 ' + name + ' 失败：' + e.message); }
+        await syncGallery();
+        await loadGallery();
+        st(`完成：上传 ${ok} 张${fail ? '，失败 ' + fail + ' 张' : ''}`, ok && !fail ? 'ok' : 'err');
+      } catch (e) { st('同步失败：' + e.message, 'err'); }
     }
 
     function compress(file) {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => {
-          const MAX = 1200;
           let { width: w, height: h } = img;
-          if (Math.max(w, h) > MAX) {
-            const s = MAX / Math.max(w, h);
-            w = Math.round(w * s); h = Math.round(h * s);
-          }
+          const MAX = 1200;
+          if (Math.max(w, h) > MAX) { const s = MAX / Math.max(w, h); w = Math.round(w * s); h = Math.round(h * s); }
           const c = document.createElement('canvas');
           c.width = w; c.height = h;
-          const ctx = c.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
           resolve(c.toDataURL('image/jpeg', .82).split(',')[1]);
         };
         img.onerror = () => reject(new Error('图片解析失败'));
@@ -300,55 +381,116 @@
       });
     }
 
-    // ---- 重建 gallery.html ----
-    async function rebuildGallery() {
-      const meta = await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_PAGE}`);
-      const html = atob(meta.content.replace(/\s/g, ''));
+    async function syncGallery() {
+      const meta = await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`);
+      const html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
       const figs = images
         .sort((a, b) => a.name.localeCompare(b.name))
-        .map((img, i) => `<figure><img loading="lazy" src="./${DIR}/${img.name}" alt="收藏 ${i+1}"><figcaption>${i+1 < 10 ? '0' + (i+1) : i+1}</figcaption></figure>`)
+        .map((img, i) => `<figure><img loading="lazy" src="./${DIR}/${img.name}" alt="收藏 ${i+1}"><figcaption>${String(i+1).padStart(2,'0')}</figcaption></figure>`)
         .join('\n      ');
       const out = html.replace(/<div class="gallery">[\s\S]*?<\/div>\s*<\/main>/, `<div class="gallery">\n      ${figs}\n    </div>\n  </main>`);
-      await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_PAGE}`, 'PUT', {
-        message: 'Sync gallery list',
-        content: btoa(unescape(encodeURIComponent(out))),
-        sha: meta.sha,
-        branch: BRANCH
+      await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`, 'PUT', {
+        message: 'Sync gallery', content: btoa(unescape(encodeURIComponent(out))), sha: meta.sha, branch: BRANCH
       });
     }
 
-    // ---- events ----
-    $('btnConnect').onclick = load;
-    $('token').addEventListener('keydown', e => { if (e.key === 'Enter') load(); });
+    // ---- 项目编辑 ----
+    let projectPageSha = null;
+    let projectFields = {};
 
-    const drop = $('drop');
-    const fileInput = $('file');
-    drop.onclick = () => fileInput.click();
-    drop.ondragover = e => { e.preventDefault(); drop.classList.add('dragover'); };
-    drop.ondragleave = () => drop.classList.remove('dragover');
-    drop.ondrop = e => {
-      e.preventDefault(); drop.classList.remove('dragover');
-      handleFiles(e.dataTransfer.files);
-    };
-    fileInput.onchange = () => handleFiles(fileInput.files);
-
-    async function handleFiles(files) {
-      if (!token()) { setStatus('请先输入 Token', 'err'); return; }
-      const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
-      if (!arr.length) return;
-      let ok = 0, fail = 0;
-      for (const f of arr) {
-        try { await uploadFile(f); ok++; }
-        catch (e) { fail++; setStatus(e.message, 'err'); }
+    async function loadProjects() {
+      const pe = $('project-editor');
+      const meta = await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
+      projectPageSha = meta.sha;
+      const html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
+      const regex = /<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g;
+      let m, has = false;
+      pe.innerHTML = '';
+      projectFields = {};
+      while ((m = regex.exec(html)) !== null) {
+        has = true;
+        const key = m[1]; const val = m[2].trim();
+        projectFields[key] = val;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<label>${key}</label>
+          <textarea id="pfield-${key}" rows="2">${escHtml(val)}</textarea>`;
+        pe.appendChild(card);
       }
-      try {
-        await rebuildGallery();
-        await load();
-        setStatus(`完成：上传 ${ok} 张${fail ? '，失败 ' + fail + ' 张' : ''}，画廊已同步`, ok && !fail ? 'ok' : 'err');
-      } catch (e) { setStatus('画廊同步失败：' + e.message, 'err'); }
+      if (!has) pe.innerHTML = '<p style="color:var(--text-dim);">暂无项目卡片标记。</p>';
+      $('saveProjects').style.display = has ? 'inline-flex' : 'none';
     }
 
-    // 恢复本地保存的 token
+    $('saveProjects').onclick = async () => {
+      st('保存项目…', 'busy');
+      try {
+        const meta = await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
+        let html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
+        for (const key of Object.keys(projectFields)) {
+          const val = $(`pfield-${key}`).value.trim();
+          html = html.replace(
+            new RegExp(`<!-- EDITABLE:${key} -->[\\s\\S]*?<!-- END -->`),
+            `<!-- EDITABLE:${key} -->${val}<!-- END -->`
+          );
+        }
+        await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`, 'PUT', {
+          message: 'Edit projects', content: btoa(unescape(encodeURIComponent(html))), sha: meta.sha, branch: BRANCH
+        });
+        st('项目已保存 ✅', 'ok');
+      } catch (e) { st('保存失败：' + e.message, 'err'); }
+    };
+
+    // ---- 随笔编辑 ----
+    let notePageSha = null;
+    let noteFields = {};
+
+    async function loadNotes() {
+      const ne = $('note-editor');
+      const meta = await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
+      notePageSha = meta.sha;
+      const html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
+      const regex = /<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g;
+      let m, has = false;
+      ne.innerHTML = '';
+      noteFields = {};
+      while ((m = regex.exec(html)) !== null) {
+        has = true;
+        const key = m[1]; const val = m[2].trim();
+        noteFields[key] = val;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<label>${key}</label>
+          <textarea id="nfield-${key}" rows="3">${escHtml(val)}</textarea>`;
+        ne.appendChild(card);
+      }
+      if (!has) ne.innerHTML = '<p style="color:var(--text-dim);">暂无随笔标记。</p>';
+      $('saveNotes').style.display = has ? 'inline-flex' : 'none';
+    }
+
+    $('saveNotes').onclick = async () => {
+      st('保存随笔…', 'busy');
+      try {
+        const meta = await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
+        let html = decodeURIComponent(escape(atob(meta.content.replace(/\s/g, ''))));
+        for (const key of Object.keys(noteFields)) {
+          const val = $(`nfield-${key}`).value.trim();
+          html = html.replace(
+            new RegExp(`<!-- EDITABLE:${key} -->[\\s\\S]*?<!-- END -->`),
+            `<!-- EDITABLE:${key} -->${val}<!-- END -->`
+          );
+        }
+        await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`, 'PUT', {
+          message: 'Edit notes', content: btoa(unescape(encodeURIComponent(html))), sha: meta.sha, branch: BRANCH
+        });
+        st('随笔已保存 ✅', 'ok');
+      } catch (e) { st('保存失败：' + e.message, 'err'); }
+    };
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // 恢复 token
     try { const t = localStorage.getItem('mh_token'); if (t) $('token').value = t; } catch(_) {}
     $('token').addEventListener('change', () => { try { localStorage.setItem('mh_token', $('token').value); } catch(_) {} });
   </script>
