@@ -24,6 +24,8 @@
             --accent-light: #a29bfe;
             --accent-glow: rgba(108, 92, 231, 0.3);
             --border: #2a2a5a;
+            --pink: #ff6b9d;
+            --pink-glow: rgba(255, 107, 157, 0.2);
         }
 
         html {
@@ -72,7 +74,7 @@
         .orb-2 {
             width: 300px;
             height: 300px;
-            background: #a29bfe;
+            background: var(--pink);
             bottom: -50px;
             right: -50px;
             animation-delay: -7s;
@@ -85,6 +87,42 @@
             top: 50%;
             left: 50%;
             animation-delay: -14s;
+        }
+
+        /* Sakura Petals */
+        .sakura-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .petal {
+            position: absolute;
+            top: -20px;
+            width: 12px;
+            height: 12px;
+            background: var(--pink);
+            border-radius: 50% 0 50% 0;
+            opacity: 0.3;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 0.3; }
+            100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+        }
+
+        .ciallo-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            background: linear-gradient(135deg, var(--pink), var(--accent));
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: white;
+            margin-top: 8px;
         }
 
         @keyframes floatOrb {
@@ -634,6 +672,9 @@
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
 
+    <!-- Sakura Petals -->
+    <div class="sakura-container" id="sakuraContainer"></div>
+
     <!-- Navigation -->
     <nav>
         <a href="#" class="nav-logo">🔮 玄<span>明</span></a>
@@ -653,6 +694,7 @@
         <div class="motto">
             「山谷有信使穿过我的睡眠，以羽翼丈量寂静」
             <cite>—— 梦中的信使</cite>
+            <div class="ciallo-badge">Ciallo～(∠・ω&lt; )⌒★</div>
         </div>
         <div class="hero-actions">
             <a href="https://github.com/MystHiru" class="btn btn-primary" target="_blank">
@@ -855,6 +897,20 @@
     </footer>
 
     <script>
+        // Sakura Petal Generator
+        const sakuraContainer = document.getElementById('sakuraContainer');
+        for (let i = 0; i < 20; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * 100 + '%';
+            petal.style.animationDuration = (8 + Math.random() * 12) + 's';
+            petal.style.animationDelay = Math.random() * 15 + 's';
+            petal.style.width = (8 + Math.random() * 8) + 'px';
+            petal.style.height = petal.style.width;
+            petal.style.opacity = 0.15 + Math.random() * 0.2;
+            sakuraContainer.appendChild(petal);
+        }
+
         // Fade-in on scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
