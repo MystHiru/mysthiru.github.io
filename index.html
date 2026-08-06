@@ -10,7 +10,6 @@
       --surface-1: #0A0D12;
       --surface-2: #0F131C;
       --surface-3: #161D2B;
-      --surface-4: #1E2636;
       --accent: #9D7BFF;
       --accent-muted: #6B5B95;
       --text-primary: #E8E8F0;
@@ -36,220 +35,188 @@
       display: flex;
       flex-direction: column;
     }
-    
+    a { color: inherit; }
+
+    /* Navigation */
     nav {
-      background: var(--surface-1);
+      background: rgba(10,13,18,.85);
       border-bottom: 1px solid var(--line);
       position: sticky;
       top: 0;
       z-index: 100;
       backdrop-filter: blur(12px);
     }
-    nav ul {
+    nav .nav-inner {
       display: flex;
-      list-style: none;
+      align-items: center;
+      justify-content: space-between;
       gap: var(--gap);
-      padding: 1rem clamp(1.5rem, 5vw, 3rem);
+      padding: .9rem clamp(1.5rem, 5vw, 3rem);
       max-width: 1200px;
       margin: 0 auto;
     }
-    nav a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: color 0.2s;
-    }
-    nav a:hover, nav a.active { color: var(--accent); }
-    
+    .brand { color: var(--accent); text-decoration: none; font-weight: 700; letter-spacing: .1em; font-size: 1rem; }
+    nav ul { display: flex; list-style: none; gap: var(--gap); }
+    nav a:not(.brand) { color: var(--text-secondary); text-decoration: none; font-size: .95rem; transition: color .2s; }
+    nav a:not(.brand):hover, nav a.active { color: var(--accent); }
+
+    /* Hero */
     .hero {
       display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 2rem;
+      grid-template-columns: minmax(0,1fr) minmax(300px,420px);
+      gap: clamp(2rem,6vw,5rem);
       align-items: center;
-      padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem);
+      padding: clamp(3rem,8vw,6rem) clamp(1.5rem,5vw,3rem);
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
     }
     .hero-content h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(2.2rem,5vw,3.2rem);
       font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
       background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .hero-content .subtitle {
-      color: var(--text-secondary);
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
-      margin-bottom: 2rem;
-    }
-    .hero-content p {
-      color: var(--text-dim);
-      max-width: 42ch;
-      margin-bottom: 2rem;
-    }
-    .hero-image {
-      position: relative;
-      width: clamp(180px, 25vw, 280px);
-      height: clamp(240px, 33vw, 380px);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--line);
-    }
-    .hero-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.9) saturate(1.1);
-    }
-    
-    .links {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
+    .hero-content .subtitle { color: var(--text-secondary); font-size: clamp(1rem,2vw,1.15rem); margin-bottom: 1.5rem; }
+    .hero-content p { color: var(--text-dim); max-width: 46ch; margin-bottom: 2rem; }
+    .links { display: flex; gap: 1rem; flex-wrap: wrap; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.7rem 1.5rem;
-      border-radius: var(--radius-full);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .7rem 1.5rem; border-radius: var(--radius-full);
+      text-decoration: none; font-size: .95rem; font-weight: 500; transition: all .2s;
     }
-    .btn-primary {
-      background: var(--accent);
-      color: var(--surface-0);
+    .btn-primary { background: var(--accent); color: var(--surface-0); }
+    .btn-primary:hover { background: var(--accent-muted); transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface-2); color: var(--text-primary); border: 1px solid var(--line); }
+    .btn-secondary:hover { background: var(--surface-3); border-color: var(--accent-muted); }
+
+    /* Hero collage */
+    .collage { position: relative; height: clamp(360px,44vw,520px); }
+    .collage img { position: absolute; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--line); box-shadow: 0 18px 40px rgba(0,0,0,.45); }
+    .collage .main { width: 68%; height: 86%; top: 0; right: 0; }
+    .collage .small-a { width: 46%; height: 52%; bottom: 0; left: 0; border-color: var(--accent-muted); z-index: 2; }
+    .collage .small-b { width: 34%; height: 40%; top: 6%; left: 2%; opacity: .92; transform: rotate(-4deg); z-index: 1; }
+    .collage-note {
+      position: absolute; bottom: -14px; left: 18px;
+      background: var(--surface-2); border: 1px solid var(--line);
+      padding: .4rem .9rem; border-radius: var(--radius-full);
+      font-size: .78rem; color: var(--accent); z-index: 3;
+      box-shadow: 0 8px 20px rgba(0,0,0,.35);
     }
-    .btn-primary:hover {
-      background: var(--accent-muted);
-      transform: translateY(-1px);
-    }
-    .btn-secondary {
-      background: var(--surface-2);
-      color: var(--text-primary);
-      border: 1px solid var(--line);
-    }
-    .btn-secondary:hover {
-      background: var(--surface-3);
-      border-color: var(--accent-muted);
-    }
-    
-    section {
-      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .section-title {
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      color: var(--text-primary);
-    }
-    .card {
-      background: var(--surface-1);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      transition: border-color 0.2s;
-    }
-    .card:hover { border-color: var(--accent-muted); }
-    
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-    
-    footer {
-      margin-top: auto;
-      padding: 2rem clamp(1.5rem, 5vw, 3rem);
-      border-top: 1px solid var(--line);
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 0.9rem;
-    }
-    
-    @media (max-width: 760px) {
-      .hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-      .hero-image {
-        margin: 0 auto;
-        width: clamp(160px, 50vw, 220px);
-        height: clamp(220px, 70vw, 300px);
-      }
+
+    /* Section */
+    section { padding: clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,3rem); max-width: 1200px; margin: 0 auto; width: 100%; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 1.8rem; }
+    .section-title { font-size: clamp(1.4rem,3vw,1.9rem); font-weight: 600; }
+    .section-head span { color: var(--text-dim); font-size: .82rem; letter-spacing: .06em; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 1.5rem; }
+    .card { background: var(--surface-1); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.5rem; transition: border-color .2s, transform .2s; }
+    .card:hover { border-color: var(--accent-muted); transform: translateY(-3px); }
+    .card h3 { margin-bottom: .5rem; color: var(--accent); font-size: 1.15rem; }
+    .card p { color: var(--text-secondary); font-size: .95rem; }
+
+    /* Gallery */
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .gallery figure { margin: 0; position: relative; overflow: hidden; border-radius: var(--radius-md); border: 1px solid var(--line); aspect-ratio: 3/4; }
+    .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+    .gallery figure:hover img { transform: scale(1.05); }
+    .gallery figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.4rem .9rem .7rem; background: linear-gradient(transparent, rgba(0,0,0,.78)); color: var(--text-primary); font-size: .8rem; }
+
+    /* Footer */
+    footer { margin-top: auto; padding: 2rem clamp(1.5rem,5vw,3rem); border-top: 1px solid var(--line); text-align: center; color: var(--text-dim); font-size: .9rem; }
+    .footer-links { display: flex; justify-content: center; gap: 18px; margin-bottom: .8rem; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; }
+    .footer-links a:hover { color: var(--accent); }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; padding-top: 2.5rem; }
+      .hero-content { text-align: center; }
       .hero-content p { margin-left: auto; margin-right: auto; }
       .links { justify-content: center; }
-      nav ul { flex-wrap: wrap; justify-content: center; }
+      .collage { height: 420px; max-width: 400px; margin: 0 auto; width: 100%; }
+      .gallery { grid-template-columns: repeat(2, 1fr); }
     }
-    
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-      }
+    @media (max-width: 560px) {
+      .gallery { grid-template-columns: 1fr; }
+      .collage { height: 380px; }
+      .section-head { display: block; }
+      .section-head span { display: block; margin-top: 4px; }
     }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
   </style>
 </head>
 <body>
   <nav>
-    <ul>
-      <li><a href="index.html" class="active">首页</a></li>
-      <li><a href="about.html">关于</a></li>
-      <li><a href="projects.html">项目</a></li>
-      <li><a href="notes.html">随笔</a></li>
-    </ul>
+    <div class="nav-inner">
+      <a class="brand" href="index.html">MYSTHIRU</a>
+      <ul>
+        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="about.html">关于</a></li>
+        <li><a href="projects.html">项目</a></li>
+        <li><a href="notes.html">随笔</a></li>
+      </ul>
+    </div>
   </nav>
-  
+
   <main>
     <div class="hero">
       <div class="hero-content">
         <h1>玄明 · MystHiru</h1>
         <p class="subtitle">把灵感拆成代码，再把代码装回日常。</p>
-        <p>我喜欢追番、听音乐，也喜欢把突然冒出来的想法做成能运行的小东西。平时大多在代码、耳机和屏幕之间切换。</p>
+        <p>我喜欢追番、听音乐，也喜欢把突然冒出来的想法做成能运行的小东西。平时大多在代码、耳机和屏幕之间切换，AI 是我的高频搭档。</p>
         <div class="links">
           <a href="https://github.com/MystHiru" class="btn btn-primary">GitHub</a>
           <a href="https://t.me/MystHiru" class="btn btn-secondary">Telegram</a>
         </div>
       </div>
-      <div class="hero-image">
-        <img src="https://raw.githubusercontent.com/MystHiru/mysthiru.github.io/main/img/character.svg" alt="原创二次元风格装饰插画">
+      <div class="collage">
+        <img class="main" src="./img/gallery/g5.jpg" alt="角色插画">
+        <img class="small-a" src="./img/gallery/g2.jpg" alt="角色插画">
+        <img class="small-b" src="./img/gallery/g1.jpg" alt="角色插画">
+        <span class="collage-note">✦ 夜间编辑中</span>
       </div>
     </div>
-    
+
     <section>
-      <h2 class="section-title">最近在关注</h2>
+      <div class="section-head">
+        <h2 class="section-title">最近在关注</h2>
+        <span>NOW FOCUSING</span>
+      </div>
       <div class="grid">
-        <div class="card">
-          <h3 style="margin-bottom:0.5rem;color:var(--accent);">📺 追番</h3>
-          <p style="color:var(--text-secondary);font-size:0.95rem;">每季新番，以及让人记住的角色</p>
-        </div>
-        <div class="card">
-          <h3 style="margin-bottom:0.5rem;color:var(--accent);">🎵 音乐</h3>
-          <p style="color:var(--text-secondary);font-size:0.95rem;">适合通勤和深夜的音乐</p>
-        </div>
-        <div class="card">
-          <h3 style="margin-bottom:0.5rem;color:var(--accent);">💻 开发</h3>
-          <p style="color:var(--text-secondary);font-size:0.95rem;">Android、自动化与开源项目</p>
-        </div>
-        <div class="card">
-          <h3 style="margin-bottom:0.5rem;color:var(--accent);">🤖 AI</h3>
-          <p style="color:var(--text-secondary);font-size:0.95rem;">AI 辅助开发带来的新工作方式</p>
-        </div>
+        <div class="card"><h3>📺 追番</h3><p>每季新番，以及让人记住的角色。</p></div>
+        <div class="card"><h3>🎵 音乐</h3><p>适合通勤和深夜的歌单。</p></div>
+        <div class="card"><h3>💻 开发</h3><p>Android、自动化与开源项目。</p></div>
+        <div class="card"><h3>🤖 AI</h3><p>AI 辅助开发带来的新工作方式。</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2 class="section-title">角色收藏</h2>
+        <span>FAVORITE ART</span>
+      </div>
+      <div class="gallery">
+        <figure><img src="./img/gallery/g5.jpg" alt="角色插画一"><figcaption>收藏 · 01</figcaption></figure>
+        <figure><img src="./img/gallery/g6.jpg" alt="角色插画二"><figcaption>收藏 · 02</figcaption></figure>
+        <figure><img src="./img/gallery/g2.jpg" alt="角色插画三"><figcaption>收藏 · 03</figcaption></figure>
+        <figure><img src="./img/gallery/g3.jpg" alt="角色插画四"><figcaption>收藏 · 04</figcaption></figure>
+        <figure><img src="./img/gallery/g1.jpg" alt="角色插画五"><figcaption>收藏 · 05</figcaption></figure>
+        <figure><img src="./img/gallery/g4.png" alt="角色插画六"><figcaption>收藏 · 06</figcaption></figure>
       </div>
     </section>
   </main>
-  
+
   <footer>
+    <div class="footer-links">
+      <a href="https://github.com/MystHiru">GitHub</a>
+      <a href="https://t.me/MystHiru">Telegram</a>
+    </div>
     <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
   </footer>
 </body>
