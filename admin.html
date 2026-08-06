@@ -171,7 +171,7 @@
           const meta=await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
           let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
           for(const r of data.replaces)
-            html=html.replace(new RegExp(`<!-- EDITABLE:${r.key} -->[\\s\\S]*?<!-- END -->`),`<!-- EDITABLE:${r.key} -->${r.val}<!-- END -->`);
+            html=html.replace(new RegExp(`<!-- EDITABLE:${r.key} -->[\\s\\S]*?<!-- END -->`),`<!-- EDITABLE:${r.key} -->${esc(r.val)}<!-- END -->`);
           await gh(`/repos/${OWNER}/${REPO}/contents/${page}`,'PUT',{message:`Edit ${page}`,content:btoa(unescape(encodeURIComponent(html))),sha:meta.sha,branch:BRANCH});
         }
         st('内容已保存 ✅','ok');
@@ -242,14 +242,16 @@
       });
     }
     async function syncGallery(){
+      // 重新读取目录，避免上传或删除后使用旧列表。
+      const current=await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}`);
+      images=Array.isArray(current)?current.filter(i=>i.type==='file'):[];
       const meta=await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`);
       const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
       const figs=images.sort((a,b)=>a.name.localeCompare(b.name)).map((img,i)=>`<figure><img loading="lazy" src="./${DIR}/${img.name}" alt="收藏 ${i+1}"><figcaption>${String(i+1).padStart(2,'0')}</figcaption></figure>`).join('\n      ');
       const out=html.replace(/<div class="gallery">[\s\S]*?<\/div>\s*<\/main>/,`<div class="gallery">\n      ${figs}\n    </div>\n  </main>`);
       await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`,'PUT',{message:'Sync gallery',content:btoa(unescape(encodeURIComponent(out))),sha:meta.sha,branch:BRANCH});
     }
-
-    // ========== PROJECTS (add/edit/delete/reorder) ==========
+    // ========== PROJECTS (add/edit/delete/reorder) ==========  
     let projects=[];
     async function loadProjects(){
       const meta=await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
@@ -322,11 +324,11 @@
         const meta=await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
         let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
         const cards=projects.map((p,i)=>`      <div class="project-card" data-project="${i+1}">
-        <h3 data-proj-name="${i+1}">${p.name}</h3>
-        <p data-proj-desc="${i+1}">${p.desc}</p>
+        <h3 data-proj-name="${i+1}">${esc(p.name)}</h3>
+        <p data-proj-desc="${i+1}">${esc(p.desc)}</p>
         <div class="project-meta">
-          <span class="project-tag" data-proj-tag1="${i+1}">${p.tag1}</span>
-          <span class="project-tag" data-proj-tag2="${i+1}">${p.tag2}</span>
+          <span class="project-tag" data-proj-tag1="${i+1}">${esc(p.tag1)}</span>
+          <span class="project-tag" data-proj-tag2="${i+1}">${esc(p.tag2)}</span>
         </div>
       </div>
       <!-- /PROJECT -->`).join('\n');
@@ -403,9 +405,9 @@
         const meta=await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
         let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
         const cards=notes.map((n,i)=>`      <div class="note-card" data-note="${i+1}">
-        <h3 data-note-title="${i+1}">${n.title}</h3>
-        <div class="note-date" data-note-date="${i+1}">${n.date}</div>
-        <p data-note-body="${i+1}">${n.body}</p>
+        <h3 data-note-title="${i+1}">${esc(n.title)}</h3>
+        <div class="note-date" data-note-date="${i+1}">${esc(n.date)}</div>
+        <p data-note-body="${i+1}">${esc(n.body)}</p>
       </div>
       <!-- /NOTE -->`).join('\n');
         html=html.replace(/<!-- NOTE:start -->[\s\S]*?<!-- NOTE:end -->/,`<!-- NOTE:start -->\n${cards}\n      <!-- NOTE:end -->`);
