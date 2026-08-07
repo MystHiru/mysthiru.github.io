@@ -1,115 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>收藏 · 玄明</title>
-  <style>
-    :root {
-      --surface-0: #05070C;
-      --surface-1: #0A0D12;
-      --surface-2: #0F131C;
-      --surface-3: #161D2B;
-      --accent: #9D7BFF;
-      --accent-muted: #6B5B95;
-      --text-primary: #E8E8F0;
-      --text-secondary: #A8A8B8;
-      --text-dim: #6B6B7B;
-      --line: #282C38;
-      --radius-md: 14px;
-      --radius-full: 999px;
-      --gap: clamp(1rem, 2.5vw, 1.5rem);
-      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--surface-0);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-      line-height: 1.7;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    a { color: inherit; }
-
-    nav {
-      background: rgba(10,13,18,.85);
-      border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
-    }
-    nav .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--gap);
-      padding: .9rem clamp(1.5rem, 5vw, 3rem);
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .brand { color: var(--accent); text-decoration: none; font-weight: 700; letter-spacing: .1em; font-size: 1rem; }
-    nav ul { display: flex; list-style: none; gap: var(--gap); }
-    nav a:not(.brand) { color: var(--text-secondary); text-decoration: none; font-size: .95rem; transition: color .2s; }
-    nav a:not(.brand):hover { color: var(--accent); }
-
-    header.page {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: clamp(2.5rem,6vw,4rem) clamp(1.5rem,5vw,3rem) 1rem;
-      width: 100%;
-    }
-    header.page h1 { font-size: clamp(1.6rem,4vw,2.2rem); font-weight: 600; }
-    header.page p { color: var(--text-dim); margin-top: .6rem; }
-
-    main { max-width: 1000px; margin: 0 auto; padding: 1.5rem clamp(1.5rem,5vw,3rem) 3rem; width: 100%; }
-    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
-    figure { margin: 0; position: relative; overflow: hidden; border-radius: var(--radius-md); border: 1px solid var(--line); aspect-ratio: 3/4; background: var(--surface-1); }
-    figure img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
-    figure:hover img { transform: scale(1.04); }
-    figure figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.2rem .8rem .55rem; background: linear-gradient(transparent, rgba(0,0,0,.75)); color: var(--text-secondary); font-size: .75rem; opacity: 0; transition: opacity .3s; }
-    figure:hover figcaption { opacity: 1; }
-
-    .empty-state { color:var(--text-dim); padding:2rem 0; }
-    footer { margin-top: auto; padding: 1.6rem clamp(1.5rem,5vw,3rem); border-top: 1px solid var(--line); text-align: center; color: var(--text-dim); font-size: .85rem; }
-    footer a { color: var(--text-secondary); text-decoration: none; }
-    footer a:hover { color: var(--accent); }
-
-    @media (max-width: 560px) {
-      .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      figure figcaption { opacity: 1; }
-    }
-    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; } }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>收藏库 · 玄明</title>
+<style>
+:root{--s0:#05070c;--s1:#0a0d12;--s2:#0f131c;--s3:#161d2b;--a:#9d7bff;--am:#6b5b95;--tp:#e8e8f0;--ts:#a8a8b8;--td:#6b6b7b;--ln:#282c38;--r:16px;--f:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box;margin:0;padding:0}body{background:var(--s0);color:var(--tp);font-family:var(--f);line-height:1.65;min-height:100vh}nav{position:sticky;top:0;z-index:20;background:rgba(10,13,18,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}.nav{max-width:1120px;margin:auto;padding:14px clamp(18px,5vw,44px);display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{color:var(--a);font-weight:700;letter-spacing:.12em;text-decoration:none}.nav ul{display:flex;list-style:none;gap:clamp(12px,3vw,25px)}.nav a:not(.brand){color:var(--ts);text-decoration:none;font-size:14px}.nav a:hover{color:var(--a)}header{max-width:1120px;margin:auto;padding:clamp(48px,8vw,86px) clamp(18px,5vw,44px) 24px}.eyebrow{color:var(--a);font-size:12px;letter-spacing:.14em;margin-bottom:12px}h1{font-size:clamp(34px,6vw,58px);line-height:1.08;letter-spacing:-.035em;font-weight:650}header p{color:var(--ts);max-width:590px;margin-top:18px;font-size:clamp(15px,2vw,17px)}main{max-width:1120px;margin:auto;padding:12px clamp(18px,5vw,44px) 70px}.filter-block{border-top:1px solid var(--ln);padding:15px 0;display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:start}.filter-label{color:var(--td);font-size:12px;padding-top:7px}.filters{display:flex;flex-wrap:wrap;gap:8px}.filter-chip,.collection-tag{border:1px solid var(--ln);background:var(--s1);color:var(--ts);border-radius:999px;padding:6px 11px;cursor:pointer}.filter-chip:hover,.filter-chip.active,.collection-tag:hover{border-color:var(--am);color:var(--a);background:var(--s2)}.summary{display:flex;justify-content:space-between;align-items:center;margin:26px 0 15px}.summary h2{font-size:17px}.summary span{color:var(--td);font-size:13px}.collection-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.collection-card{grid-column:span 4;background:var(--s1);border:1px solid var(--ln);border-radius:var(--r);overflow:hidden;min-width:0;transition:transform .2s,border-color .2s}.collection-card:hover{transform:translateY(-3px);border-color:var(--am)}.collection-card[hidden]{display:none}.collection-media{aspect-ratio:4/5;background:var(--s2);overflow:hidden}.collection-media img{width:100%;height:100%;object-fit:cover;transition:transform .45s}.collection-card:hover img{transform:scale(1.035)}.collection-symbol{height:180px;display:grid;place-items:center;background:linear-gradient(135deg,var(--s2),var(--s3));font-size:50px;color:var(--a)}.collection-content{padding:17px}.collection-meta{display:flex;justify-content:space-between;color:var(--td);font-size:11px;letter-spacing:.08em;margin-bottom:9px}.collection-content h2{font-size:18px;line-height:1.35}.collection-content h2 a{color:inherit;text-decoration:none}.collection-content h2 a:hover{color:var(--a)}.collection-content p{color:var(--ts);font-size:13px;margin-top:8px}.collection-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}.collection-tag{font-size:11px;padding:4px 8px}.empty-state{color:var(--td);padding:40px 0}footer{text-align:center;border-top:1px solid var(--ln);padding:24px;color:var(--td);font-size:13px}footer a{color:var(--ts);text-decoration:none}@media(max-width:850px){.collection-card{grid-column:span 6}}@media(max-width:560px){.nav{align-items:flex-start}.nav ul{gap:12px;flex-wrap:wrap;justify-content:flex-end}.filter-block{grid-template-columns:1fr;gap:6px}.collection-card{grid-column:1/-1}.collection-media{aspect-ratio:16/11}}
+</style>
 </head>
 <body>
-  <nav>
-    <div class="nav-inner">
-      <a class="brand" href="index.html">MYSTHIRU</a>
-      <ul>
-        <li><a href="index.html">首页</a></li>
-        <li><a href="about.html">关于</a></li>
-        <li><a href="projects.html">项目</a></li>
-        <li><a href="notes.html">随笔</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <header class="page">
-    <h1>收藏</h1>
-    <p>一些觉得好看、想留下来的画面。</p>
-  </header>
-
-  <main>
-    <div class="gallery" id="gallery-list" data-content-root><p class="empty-state">正在读取收藏…</p></div>
-  </main>
-
-  <footer>
-    <a href="index.html">← 返回首页</a>
-  </footer>
-  <script src="./assets/content.js" defer></script>
-</body>
-</html>
+<nav><div class="nav"><a class="brand" href="index.html">MYSTHIRU</a><ul><li><a href="index.html">首页</a></li><li><a href="about.html">关于</a></li><li><a href="projects.html">项目</a></li><li><a href="notes.html">随笔</a></li></ul></div></nav>
+<header><div class="eyebrow">PERSONAL ARCHIVE</div><h1>收藏库</h1><p>图片只是其中一部分。这里也会留下链接、音乐、视频、文字片段，以及那些暂时不知道该放在哪里的东西。</p></header>
+<main>
+<section class="filter-block"><div class="filter-label">分类</div><div class="filters" id="category-filters"></div></section>
+<section class="filter-block"><div class="filter-label">类型</div><div class="filters" id="type-filters"></div></section>
+<section class="filter-block"><div class="filter-label">标签</div><div class="filters" id="tag-filters"></div></section>
+<div class="summary"><h2>全部收藏</h2><span id="collection-count">读取中…</span></div>
+<div class="collection-grid" id="collection-list" data-content-root><p class="empty-state">正在整理收藏…</p></div>
+</main>
+<footer><a href="index.html">← 返回首页</a></footer><script src="./assets/content.js" defer></script>
+</body></html>

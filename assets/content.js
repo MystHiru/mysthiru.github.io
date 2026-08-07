@@ -1,107 +1,12 @@
 (() => {
   const DATA_URL = './data/content.json';
-
-  const escapeHtml = value => String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '"')
-    .replace(/'/g, '&#39;');
-
-  function markdown(source) {
-    let text = escapeHtml(source || '');
-    const blocks = [];
-    text = text.replace(/```([\w-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
-      const key = `@@CODE_${blocks.length}@@`;
-      blocks.push(`<pre><code data-lang="${escapeHtml(lang)}">${code.trim()}</code></pre>`);
-      return key;
-    });
-    text = text
-      .replace(/^### (.+)$/gm, '<h4>$1</h4>')
-      .replace(/^## (.+)$/gm, '<h3>$1</h3>')
-      .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.+?)\*/g, '<em>$1</em>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-      .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-      .replace(/(?:^|\n)((?:- .+(?:\n|$))+)/g, (_, list) => {
-        const items = list.trim().split('\n').map(line => `<li>${line.slice(2)}</li>`).join('');
-        return `\n<ul>${items}</ul>\n`;
-      });
-    text = text.split(/\n{2,}/).map(block => {
-      const value = block.trim();
-      if (!value) return '';
-      if (/^<(h[2-4]|pre|ul|blockquote)/.test(value) || /^@@CODE_\d+@@$/.test(value)) return value;
-      return `<p>${value.replace(/\n/g, '<br>')}</p>`;
-    }).join('\n');
-    blocks.forEach((block, index) => { text = text.replace(`@@CODE_${index}@@`, block); });
-    return text;
-  }
-
-  async function loadData() {
-    const response = await fetch(`${DATA_URL}?v=${Date.now()}`, { cache: 'no-store' });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    return response.json();
-  }
-
-  function renderGallery(data) {
-    const root = document.getElementById('gallery-list');
-    if (!root) return;
-    const items = Array.isArray(data.gallery) ? data.gallery : [];
-    root.innerHTML = items.map((item, index) => `
-      <figure>
-        <img loading="lazy" src="./img/archive/${encodeURIComponent(item.file)}" alt="${escapeHtml(item.title || `收藏 ${index + 1}`)}">
-        <figcaption>${escapeHtml(item.title || String(index + 1).padStart(2, '0'))}</figcaption>
-      </figure>`).join('');
-    if (!items.length) root.innerHTML = '<p class="empty-state">这里暂时是空的。</p>';
-  }
-
-  function renderProjects(data) {
-    const root = document.getElementById('project-grid');
-    if (!root) return;
-    const projects = (Array.isArray(data.projects) ? data.projects : []).filter(item => item.published !== false);
-    root.innerHTML = projects.map(project => {
-      const name = escapeHtml(project.name || '未命名项目');
-      const title = project.url
-        ? `<a href="${escapeHtml(project.url)}" target="_blank" rel="noopener">${name}</a>`
-        : name;
-      const tags = (project.tags || []).filter(Boolean).map(tag => `<span class="project-tag">${escapeHtml(tag)}</span>`).join('');
-      return `<article class="project-card">
-        <h3>${title}</h3>
-        <p>${escapeHtml(project.description || '')}</p>
-        <div class="project-meta">${tags}</div>
-      </article>`;
-    }).join('');
-    if (!projects.length) root.innerHTML = '<p class="empty-state">项目正在整理。</p>';
-  }
-
-  function renderNotes(data) {
-    const root = document.getElementById('note-list');
-    if (!root) return;
-    const notes = (Array.isArray(data.notes) ? data.notes : []).filter(item => item.published !== false);
-    root.innerHTML = notes.map(note => `
-      <article class="note-card" id="${escapeHtml(note.id || '')}">
-        <h3>${escapeHtml(note.title || '未命名随笔')}</h3>
-        <div class="note-date">${escapeHtml(note.date || '')}</div>
-        <div class="note-body">${markdown(note.body || '')}</div>
-      </article>`).join('');
-    if (!notes.length) root.innerHTML = '<p class="empty-state">这里暂时没有公开随笔。</p>';
-  }
-
-  document.addEventListener('DOMContentLoaded', async () => {
-    try {
-      const data = await loadData();
-      renderGallery(data);
-      renderProjects(data);
-      renderNotes(data);
-    } catch (error) {
-      console.error('Content load failed:', error);
-      document.querySelectorAll('[data-content-root]').forEach(root => {
-        root.innerHTML = '<p class="empty-state">内容加载遇到了一点问题，请稍后刷新。</p>';
-      });
-    }
-  });
-
-  window.MystContent = { markdown, escapeHtml };
+  const escapeHtml = value => String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'"').replace(/'/g,'&#39;');
+  function markdown(source){let text=escapeHtml(source||''),blocks=[];text=text.replace(/```([\w-]*)\n([\s\S]*?)```/g,(_,lang,code)=>{const key=`@@CODE_${blocks.length}@@`;blocks.push(`<pre><code data-lang="${escapeHtml(lang)}">${code.trim()}</code></pre>`);return key});text=text.replace(/^### (.+)$/gm,'<h4>$1</h4>').replace(/^## (.+)$/gm,'<h3>$1</h3>').replace(/^# (.+)$/gm,'<h2>$1</h2>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`([^`]+)`/g,'<code>$1</code>').replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/^> (.+)$/gm,'<blockquote>$1</blockquote>').replace(/(?:^|\n)((?:- .+(?:\n|$))+)/g,(_,list)=>`\n<ul>${list.trim().split('\n').map(line=>`<li>${line.slice(2)}</li>`).join('')}</ul>\n`);text=text.split(/\n{2,}/).map(block=>{const value=block.trim();if(!value)return'';if(/^<(h[2-4]|pre|ul|blockquote)/.test(value)||/^@@CODE_\d+@@$/.test(value))return value;return`<p>${value.replace(/\n/g,'<br>')}</p>`}).join('\n');blocks.forEach((block,index)=>text=text.replace(`@@CODE_${index}@@`,block));return text}
+  async function loadData(){const response=await fetch(`${DATA_URL}?v=${Date.now()}`,{cache:'no-store'});if(!response.ok)throw Error(`HTTP ${response.status}`);return response.json()}
+  const typeLabel={image:'图片',link:'链接',text:'文字',music:'音乐',video:'视频'};
+  function renderCollectionCard(item,index){const tags=(item.tags||[]).map(tag=>`<button class="collection-tag" data-filter-tag="${escapeHtml(tag)}">#${escapeHtml(tag)}</button>`).join('');let media='';if(item.type==='image'&&item.file)media=`<div class="collection-media"><img loading="lazy" src="./img/archive/${encodeURIComponent(item.file)}" alt="${escapeHtml(item.title)}"></div>`;else if(item.type==='music'&&item.url)media=`<div class="collection-symbol">♫</div>`;else if(item.type==='video'&&item.url)media=`<div class="collection-symbol">▶</div>`;else if(item.type==='link')media=`<div class="collection-symbol">↗</div>`;else media=`<div class="collection-symbol">✦</div>`;const title=item.url?`<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${escapeHtml(item.title||'未命名收藏')}</a>`:escapeHtml(item.title||'未命名收藏');return `<article class="collection-card" data-category="${escapeHtml(item.category||'其他')}" data-type="${escapeHtml(item.type||'text')}" data-tags="${escapeHtml((item.tags||[]).join('|'))}">${media}<div class="collection-content"><div class="collection-meta"><span>${escapeHtml(item.category||'其他')}</span><span>${typeLabel[item.type]||'收藏'}</span></div><h2>${title}</h2>${item.description?`<p>${escapeHtml(item.description)}</p>`:''}<div class="collection-tags">${tags}</div></div></article>`}
+  function renderCollections(data){const root=document.getElementById('collection-list');if(!root)return;const items=Array.isArray(data.collections)?data.collections:[];root.innerHTML=items.map(renderCollectionCard).join('')||'<p class="empty-state">这里暂时是空的。</p>';const categories=['全部',...new Set(items.map(x=>x.category||'其他'))],types=['全部',...new Set(items.map(x=>x.type||'text'))],tags=[...new Set(items.flatMap(x=>x.tags||[]))];const cat=document.getElementById('category-filters'),typ=document.getElementById('type-filters'),tag=document.getElementById('tag-filters');if(cat)cat.innerHTML=categories.map((x,i)=>`<button class="filter-chip ${i===0?'active':''}" data-category-filter="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join('');if(typ)typ.innerHTML=types.map((x,i)=>`<button class="filter-chip ${i===0?'active':''}" data-type-filter="${escapeHtml(x)}">${x==='全部'?'全部类型':typeLabel[x]||escapeHtml(x)}</button>`).join('');if(tag)tag.innerHTML=tags.map(x=>`<button class="filter-chip" data-tag-filter="${escapeHtml(x)}">#${escapeHtml(x)}</button>`).join('');let selectedCategory='全部',selectedType='全部',selectedTag='';function apply(){root.querySelectorAll('.collection-card').forEach(card=>{const okCategory=selectedCategory==='全部'||card.dataset.category===selectedCategory,okType=selectedType==='全部'||card.dataset.type===selectedType,okTag=!selectedTag||card.dataset.tags.split('|').includes(selectedTag);card.hidden=!(okCategory&&okType&&okTag)});document.getElementById('collection-count').textContent=`显示 ${[...root.querySelectorAll('.collection-card')].filter(x=>!x.hidden).length} / ${items.length} 项`}document.querySelectorAll('[data-category-filter]').forEach(btn=>btn.onclick=()=>{selectedCategory=btn.dataset.categoryFilter;document.querySelectorAll('[data-category-filter]').forEach(x=>x.classList.toggle('active',x===btn));apply()});document.querySelectorAll('[data-type-filter]').forEach(btn=>btn.onclick=()=>{selectedType=btn.dataset.typeFilter;document.querySelectorAll('[data-type-filter]').forEach(x=>x.classList.toggle('active',x===btn));apply()});function selectTag(value){selectedTag=selectedTag===value?'':value;document.querySelectorAll('[data-tag-filter]').forEach(x=>x.classList.toggle('active',x.dataset.tagFilter===selectedTag));apply()}document.querySelectorAll('[data-tag-filter]').forEach(btn=>btn.onclick=()=>selectTag(btn.dataset.tagFilter));root.querySelectorAll('[data-filter-tag]').forEach(btn=>btn.onclick=()=>selectTag(btn.dataset.filterTag));apply()}
+  function renderProjects(data){const root=document.getElementById('project-grid');if(!root)return;const projects=(data.projects||[]).filter(x=>x.published!==false);root.innerHTML=projects.map(p=>`<article class="project-card"><h3>${p.url?`<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener">${escapeHtml(p.name)}</a>`:escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||'')}</p><div class="project-meta">${(p.tags||[]).map(t=>`<span class="project-tag">${escapeHtml(t)}</span>`).join('')}</div></article>`).join('')||'<p class="empty-state">项目正在整理。</p>'}
+  function renderNotes(data){const root=document.getElementById('note-list');if(!root)return;const notes=(data.notes||[]).filter(x=>x.published!==false);root.innerHTML=notes.map(n=>`<article class="note-card" id="${escapeHtml(n.id||'')}"><h3>${escapeHtml(n.title)}</h3><div class="note-date">${escapeHtml(n.date||'')}</div><div class="note-body">${markdown(n.body||'')}</div></article>`).join('')||'<p class="empty-state">这里暂时没有公开随笔。</p>'}
+  document.addEventListener('DOMContentLoaded',async()=>{try{const data=await loadData();renderCollections(data);renderProjects(data);renderNotes(data)}catch(error){console.error(error);document.querySelectorAll('[data-content-root]').forEach(root=>root.innerHTML='<p class="empty-state">内容加载遇到问题，请稍后刷新。</p>')}});window.MystContent={markdown,escapeHtml};
 })();

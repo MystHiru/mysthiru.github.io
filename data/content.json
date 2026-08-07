@@ -1,53 +1,19 @@
 {
-  "version": 1,
+  "version": 2,
   "updatedAt": "2026-08-06T00:00:00.000Z",
-  "gallery": [
-    {"file":"a4.jpg","title":"收藏 01"},
-    {"file":"a5.jpg","title":"收藏 02"},
-    {"file":"a6.jpg","title":"收藏 03"},
-    {"file":"a1.jpg","title":"收藏 04"},
-    {"file":"a2.jpg","title":"收藏 05"},
-    {"file":"a3.jpg","title":"收藏 06"}
+  "collections": [
+    {"id":"anime-illustration-a4","type":"image","title":"角色插画 · 01","category":"二次元","tags":["角色","插画","长图"],"file":"a4.jpg","url":"","description":"留存的一张角色插画。"},
+    {"id":"anime-wallpaper-a1","type":"image","title":"角色收藏 · 02","category":"二次元","tags":["角色","壁纸"],"file":"a1.jpg","url":"","description":"适合作为纵向壁纸的角色图。"},
+    {"id":"anime-illustration-a2","type":"image","title":"角色插画 · 03","category":"二次元","tags":["角色","插画"],"file":"a2.jpg","url":"","description":"偏插画感的角色收藏。"},
+    {"id":"anime-wallpaper-a3","type":"image","title":"角色收藏 · 04","category":"二次元","tags":["角色","壁纸","长图"],"file":"a3.jpg","url":"","description":"纵向构图的角色收藏。"}
   ],
   "projects": [
-    {
-      "id":"action-build-myst",
-      "name":"Action-Build-Myst",
-      "description":"基于 GitHub Actions 的 Android 内核自动构建工具。Fork 自 Numbersf/Action-Build，做了定制化修改。",
-      "tags":["Kotlin","Kernel"],
-      "url":"https://github.com/MystHiru/Action-Build-Myst",
-      "published":true
-    },
-    {
-      "id":"mysthiru-site",
-      "name":"MystHiru.github.io",
-      "description":"个人网站，记录日常、项目和随笔。通过 GitHub Pages 部署，并提供网页内容管理面板。",
-      "tags":["HTML","GitHub API"],
-      "url":"https://github.com/MystHiru/mysthiru.github.io",
-      "published":true
-    }
+    {"id":"action-build-myst","name":"Action-Build-Myst","description":"基于 GitHub Actions 的 Android 内核自动构建工具。Fork 自 Numbersf/Action-Build，做了定制化修改。","tags":["Kotlin","Kernel"],"url":"https://github.com/MystHiru/Action-Build-Myst","published":true},
+    {"id":"mysthiru-site","name":"MystHiru.github.io","description":"个人网站，记录日常、项目、收藏与随笔。通过 GitHub Pages 部署，并提供网页内容管理面板。","tags":["HTML","GitHub API"],"url":"https://github.com/MystHiru/mysthiru.github.io","published":true}
   ],
   "notes": [
-    {
-      "id":"start-first",
-      "title":"关于“先做出来”这件事",
-      "date":"2026-08-06",
-      "body":"很多时候一个想法在脑子里转了很久，但真正动手做了之后才发现，它和想象中完全不一样。\n\n不过没关系，至少现在有了一个可以改的东西，而不是一个永远停留在脑子的念头。",
-      "published":true
-    },
-    {
-      "id":"late-night-code",
-      "title":"深夜写代码的副作用",
-      "date":"2026-07-28",
-      "body":"凌晨两点写出来的代码，第二天早上看往往觉得是另一个人写的。\n\n但有时候，凌晨的灵感也确实比白天更野一点。",
-      "published":true
-    },
-    {
-      "id":"ai-workflow",
-      "title":"AI 不是万能，但确实好用",
-      "date":"2026-07-15",
-      "body":"最近越来越多地把 AI 当作日常开发的一部分。它帮我快速搭框架、写样板代码、想命名。\n\n真正决定 **做什么** 和 **做到什么程度** 的，还是得自己来。",
-      "published":true
-    }
+    {"id":"start-first","title":"关于“先做出来”这件事","date":"2026-08-06","body":"很多时候一个想法在脑子里转了很久，但真正动手做了之后才发现，它和想象中完全不一样。\n\n不过没关系，至少现在有了一个可以改的东西，而不是一个永远停留在脑子的念头。","published":true},
+    {"id":"late-night-code","title":"深夜写代码的副作用","date":"2026-07-28","body":"凌晨两点写出来的代码，第二天早上看往往觉得是另一个人写的。\n\n但有时候，凌晨的灵感也确实比白天更野一点。","published":true},
+    {"id":"ai-workflow","title":"AI 不是万能，但确实好用","date":"2026-07-15","body":"最近越来越多地把 AI 当作日常开发的一部分。它帮我快速搭框架、写样板代码、想命名。\n\n真正决定 **做什么** 和 **做到什么程度** 的，还是得自己来。","published":true}
   ]
 }
