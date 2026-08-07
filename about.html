@@ -3,207 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>关于 - 玄明</title>
+  <title>关于 · 玄明</title>
   <style>
     :root {
-      --surface-0: #05070C;
-      --surface-1: #0A0D12;
-      --surface-2: #0F131C;
-      --surface-3: #161D2B;
-      --surface-4: #1E2636;
-      --accent: #9D7BFF;
-      --accent-muted: #6B5B95;
-      --text-primary: #E8E8F0;
-      --text-secondary: #A8A8B8;
-      --text-dim: #6B6B7B;
-      --line: #282C38;
-      --radius-sm: 8px;
-      --radius-md: 16px;
-      --radius-full: 999px;
-      --gap: clamp(1rem, 2.5vw, 1.5rem);
-      --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-      --font-mono: "SF Mono", Consolas, "Liberation Mono", monospace;
+      --s0: #05070c; --s1: #0a0d12; --s2: #0f131c; --s3: #161d2b;
+      --a: #9d7bff; --am: #6b5b95; --tp: #e8e8f0; --ts: #a8a8b8; --td: #6b6b7b; --ln: #282c38;
+      --r: 16px; --f: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
-      background: var(--surface-0);
-      color: var(--text-primary);
-      font-family: var(--font-sans);
-      font-size: clamp(0.95rem, 1.8vw, 1.05rem);
-      line-height: 1.7;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background: var(--s0); color: var(--tp); font-family: var(--f);
+      font-size: clamp(0.95rem, 1.8vw, 1.05rem); line-height: 1.8;
+      min-height: 100vh; display: flex; flex-direction: column;
     }
-    
-    nav {
-      background: var(--surface-1);
-      border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(12px);
+    a { color: inherit; }
+    nav { position: sticky; top: 0; z-index: 20; background: rgba(10,9,18,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--ln); }
+    .site-nav-inner {
+      max-width: 1120px; margin: 0 auto; padding: 14px clamp(18px,5vw,44px);
+      display: flex; justify-content: space-between; align-items: center; gap: 20px;
     }
-    nav ul {
-      display: flex;
-      list-style: none;
-      gap: var(--gap);
-      padding: 1rem clamp(1.5rem, 5vw, 3rem);
-      max-width: 1200px;
-      margin: 0 auto;
+    .brand { color: var(--a); font-weight: 700; letter-spacing: .12em; text-decoration: none; }
+    .site-nav-inner ul { display: flex; list-style: none; gap: clamp(12px,3vw,25px); }
+    .site-nav-inner a:not(.brand) { color: var(--ts); text-decoration: none; font-size: 14px; }
+    .site-nav-inner a:hover, .site-nav-inner a.active { color: var(--a); }
+
+    main { flex: 1; max-width: 720px; margin: 0 auto; padding: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 5vw, 3rem); width: 100%; }
+
+    .about-header { margin-bottom: 2.5rem; }
+    .about-header .greeting { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 650; line-height: 1.15; margin-bottom: 0.5rem; }
+    .about-header .greeting span { background: linear-gradient(120deg, var(--tp) 10%, var(--a) 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .about-header .tagline { color: var(--ts); font-size: clamp(1rem, 1.8vw, 1.15rem); }
+
+    .narrative { color: var(--ts); }
+    .narrative p { margin-bottom: 1.5rem; }
+    .narrative .kaomoji { color: var(--a); font-family: 'Segoe UI', sans-serif; }
+
+    .recent-section { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--ln); }
+    .recent-section h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--tp); }
+    .recent-section h2 small { font-size: 0.75rem; color: var(--td); font-weight: 400; margin-left: 0.6rem; }
+
+    .recent-list { display: grid; gap: 0.8rem; }
+    .recent-item {
+      background: var(--s1); border: 1px solid var(--ln); border-radius: 12px;
+      padding: 1rem 1.2rem; text-decoration: none; display: flex; gap: 0.8rem; align-items: center;
+      transition: border-color .2s, transform .2s;
     }
-    nav a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: color 0.2s;
+    .recent-item:hover { border-color: var(--am); transform: translateY(-2px); }
+    .recent-item .marker { color: var(--td); font-size: 0.8rem; white-space: nowrap; flex-shrink: 0; }
+    .recent-item .title { color: var(--a); flex: 1; }
+    .recent-item .date { color: var(--td); font-size: 0.8rem; white-space: nowrap; }
+
+    .links-section { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .links-section a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.6rem 1.2rem; border-radius: 999px; border: 1px solid var(--ln);
+      text-decoration: none; color: var(--ts); font-size: 0.9rem; transition: border-color .2s;
     }
-    nav a:hover, nav a.active { color: var(--accent); }
-    
-    main {
-      flex: 1;
-      padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
-      max-width: 800px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    
-    h1 {
-      font-size: clamp(2rem, 4vw, 2.5rem);
-      font-weight: 600;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .content {
-      color: var(--text-secondary);
-      margin-bottom: 2rem;
-    }
-    
-    .content p {
-      margin-bottom: 1.5rem;
-    }
-    
-    .quote {
-      background: var(--surface-1);
-      border-left: 3px solid var(--accent);
-      border-radius: var(--radius-sm);
-      padding: 1.5rem;
-      margin: 2rem 0;
-      font-style: italic;
-      color: var(--text-primary);
-    }
-    
-    .list {
-      background: var(--surface-1);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      margin: 2rem 0;
-    }
-    
-    .list h3 {
-      color: var(--accent);
-      margin-bottom: 1rem;
-      font-size: 1.2rem;
-    }
-    
-    .list ul {
-      list-style: none;
-      display: grid;
-      gap: 0.8rem;
-    }
-    
-    .list li {
-      color: var(--text-secondary);
-      padding-left: 1.5rem;
-      position: relative;
-    }
-    
-    .list li::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-    }
-    
-    footer {
-      margin-top: auto;
-      padding: 2rem clamp(1.5rem, 5vw, 3rem);
-      border-top: 1px solid var(--line);
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 0.9rem;
-    }
-    .admin-entry {
-      margin-top: 1rem;
-      font-size: 0.72rem;
-    }
-    .admin-entry a {
-      color: rgba(255,255,255,0.16);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .admin-entry a:hover { color: var(--accent); }
-    
+    .links-section a:hover { border-color: var(--am); color: var(--a); }
+
+    footer { margin-top: auto; padding: 2rem clamp(1.5rem, 5vw, 3rem); border-top: 1px solid var(--ln); text-align: center; color: var(--td); font-size: 0.9rem; }
+    .admin-entry { margin-top: 0.6rem; font-size: 0.7rem; }
+    .admin-entry a { color: rgba(255,255,255,.12); text-decoration: none; }
+    .admin-entry a:hover { color: var(--a); }
+
     @media (max-width: 760px) {
-      nav ul { flex-wrap: wrap; justify-content: center; }
+      .site-nav-inner { align-items: flex-start; }
+      .site-nav-inner ul { flex-wrap: wrap; }
+      .recent-item { flex-wrap: wrap; }
+      .recent-item .date { margin-left: auto; }
     }
-    
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-      }
-    }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; } }
   </style>
-<link rel="stylesheet" href="./assets/theme.css">
+  <link rel="stylesheet" href="./assets/theme.css">
 </head>
 <body>
   <nav class="site-nav"><div class="site-nav-inner"><a class="brand" href="index.html">MYSTHIRU</a><ul><li><a href="index.html">首页</a></li><li><a href="about.html" class="active">关于</a></li><li><a href="projects.html">项目</a></li><li><a href="notes.html">随笔</a></li></ul></div></nav>
-  
+
   <main>
-    <h1>关于我</h1>
-    
-    <div class="content">
-      <p><!-- EDITABLE:about_intro1 -->我是玄明（MystHiru），一个喜欢追番、听音乐，也喜欢把突然冒出来的想法做成能运行的小东西的人。<!-- END --></p>
-       
-      <p><!-- EDITABLE:about_intro2 -->平时大多在代码、耳机和屏幕之间切换。AI 是我的高频搭档：它负责快速铺路，我负责判断方向、修掉细节，以及面对最后那个奇怪的 bug。<!-- END --></p>
-      
-      <p><!-- EDITABLE:about_intro3 -->目前正在寻找适合自己的节奏。比起把主页塞满标签，更希望这里留下几件真正做过、也愿意继续维护的东西。<!-- END --></p>
+    <div class="about-header">
+      <div class="greeting"><span>你好，这里是玄明</span></div>
+      <div class="tagline">把灵感拆成代码，再把代码装回日常。</div>
     </div>
-    
-    <div class="quote">
-      <!-- EDITABLE:about_quote -->「先把想法做出来，再决定它应该长成什么样。」<!-- END -->
+
+    <div class="narrative">
+      <p>日子大多在屏幕和耳机之间切换。写写代码，追追新番，偶尔也让 AI 替我写两行试试水。<span class="kaomoji">(´-ω-`)</span></p>
+
+      <p>想法来得快去得也快，所以趁它们还在的时候，尽量做成能跑的东西。不追求每个项目都完整，但至少让它们从脑子的角落搬到了真实的世界里。</p>
+
+      <p>比起堆满标签和徽章，我更希望这里留下几件真正做过、也愿意继续维护的东西。<span class="kaomoji">( ´ ▽ ` )</span></p>
     </div>
-    
-    <div class="list">
-      <h3>我会关注的东西</h3>
-      <ul>
-        <li>每季新番，以及让人记住的角色</li>
-        <li>适合通勤和深夜的音乐</li>
-        <li>Android、自动化与开源项目</li>
-        <li>AI 辅助开发带来的新工作方式</li>
-      </ul>
+
+    <div class="recent-section" id="recent-section">
+      <h2>最近的小成果 <small>RECENT</small></h2>
+      <div class="recent-list" id="recent-list">
+        <p style="color:var(--td);">读取中…</p>
+      </div>
     </div>
-    
-    <div class="list">
-      <h3>联系方式</h3>
-      <ul>
-        <li><a href="https://github.com/MystHiru" style="color:var(--accent);text-decoration:none;">GitHub</a></li>
-        <li><a href="https://t.me/MystHiru" style="color:var(--accent);text-decoration:none;">Telegram</a></li>
-      </ul>
+
+    <div class="links-section">
+      <a href="https://github.com/MystHiru">GitHub</a>
+      <a href="https://t.me/MystHiru">Telegram</a>
     </div>
   </main>
-  
+
   <footer>
     <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
     <p class="admin-entry"><a href="gallery.html">Archive</a></p>
   </footer>
+
+  <script src="./assets/content.js" defer></script>
+  <script>
+    (async function() {
+      try {
+        const r = await fetch('./data/content.json?v=' + Date.now(), { cache: 'no-store' });
+        const data = await r.json();
+        const notes = (data.notes || []).filter(x => x.published !== false);
+        const projects = (data.projects || []).filter(x => x.published !== false);
+        const list = document.getElementById('recent-list');
+        const items = [];
+        notes.forEach(n => items.push({ type: 'note', title: n.title, date: n.date, url: 'notes.html#' + (n.id || '') }));
+        projects.forEach(p => items.push({ type: 'project', title: p.name, date: '', url: p.url || 'projects.html' }));
+        items.sort((a, b) => {
+          if (a.date && b.date) return b.date.localeCompare(a.date);
+          if (a.date) return -1; if (b.date) return 1;
+          return a.title.localeCompare(b.title);
+        });
+        const top = items.slice(0, 5);
+        if (top.length) {
+          list.innerHTML = top.map(item => {
+            const dat = item.date ? `<span class="date">${item.date}</span>` : '';
+            const marker = item.type === 'note' ? '随笔' : '项目';
+            return `<a class="recent-item" href="${item.url}"><span class="marker">${marker}</span><span class="title">${item.title}</span>${dat}</a>`;
+          }).join('');
+        } else {
+          list.innerHTML = '<p style="color:var(--td);">还没有公开内容，以后会有的。</p>';
+        }
+      } catch(e) {
+        document.getElementById('recent-list').innerHTML = '<p style="color:var(--td);">读取失败</p>';
+      }
+    })();
+  </script>
 </body>
 </html>
