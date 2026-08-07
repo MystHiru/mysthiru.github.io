@@ -64,6 +64,13 @@
     .note-card h3 { color: var(--accent); font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
     .note-date { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1rem; }
     .note-card p { color: var(--text-secondary); line-height: 1.8; }
+    .note-body > * + * { margin-top:1rem; }
+    .note-body a { color:var(--accent); }
+    .note-body code { background:var(--surface-2); padding:.12rem .35rem; border-radius:5px; }
+    .note-body pre { overflow:auto; background:var(--surface-2); padding:1rem; border-radius:10px; }
+    .note-body blockquote { border-left:3px solid var(--accent); padding-left:1rem; color:var(--text-secondary); }
+    .note-body ul { padding-left:1.25rem; }
+    .empty-state { color:var(--text-dim); padding:2rem 0; }
 
     /* DATA markers for admin */
     .note-card[data-note] { }
@@ -88,28 +95,11 @@
   <main>
     <h1>随笔记录</h1>
     <p class="subtitle">一些想法、碎片和不太成形的东西</p>
-    <div class="note-list" id="note-list">
-      <!-- NOTE:start -->
-      <div class="note-card" data-note="1">
-        <h3 data-note-title="1">关于“先做出来”这件事</h3>
-        <div class="note-date" data-note-date="1">2026-08-06</div>
-        <p data-note-body="1">很多时候一个想法在脑子里转了很久，但真正动手做了之后才发现，它和想象中完全不一样。不过没关系，至少现在有了一个可以改的东西，而不是一个永远停留在脑子的念头。</p>
-      </div>
-      <div class="note-card" data-note="2">
-        <h3 data-note-title="2">深夜写代码的副作用</h3>
-        <div class="note-date" data-note-date="2">2026-07-28</div>
-        <p data-note-body="2">凌晨两点写出来的代码，第二天早上看往往觉得是另一个人写的。但有时候，凌晨的灵感也确实比白天更野一点。</p>
-      </div>
-      <div class="note-card" data-note="3">
-        <h3 data-note-title="3">AI 不是万能，但确实好用</h3>
-        <div class="note-date" data-note-date="3">2026-07-15</div>
-        <p data-note-body="3">最近越来越多地把 AI 当作日常开发的一部分。它帮我快速搭框架、写样板代码、想命名——但真正决定“做什么”和“做到什么程度”的，还是得自己来。</p>
-      </div>
-      <!-- NOTE:end -->
-    </div>
+    <div class="note-list" id="note-list" data-content-root><p class="empty-state">正在读取随笔…</p></div>
   </main>
   <footer>
     <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
   </footer>
+  <script src="./assets/content.js" defer></script>
 </body>
 </html>

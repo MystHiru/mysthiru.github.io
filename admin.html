@@ -2,423 +2,45 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>管理面板 · 玄明</title>
   <style>
-    :root {
-      --s0: #05070C; --s1: #0A0D12; --s2: #0F131C; --s3: #161D2B;
-      --accent: #9D7BFF; --am: #6B5B95; --danger: #E56B6B; --ok: #7BD88F;
-      --tp: #E8E8F0; --ts: #A8A8B8; --td: #6B6B7B; --line: #282C38;
-      --rm: 14px; --rf: 999px; --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:var(--s0); color:var(--tp); font-family:var(--font); font-size:.95rem; line-height:1.6; min-height:100vh; }
-    nav { background:rgba(10,13,18,.85); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); }
-    nav .inner { display:flex; align-items:center; justify-content:space-between; padding:.8rem clamp(1.5rem,5vw,3rem); max-width:1200px; margin:0 auto; }
-    .brand { color:var(--accent); text-decoration:none; font-weight:700; letter-spacing:.1em; }
-    main { max-width:1200px; margin:0 auto; padding:1.5rem clamp(1.5rem,5vw,3rem) 4rem; }
-    .tbar { display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; margin-bottom:1.5rem; }
-    .tbar input { flex:1; min-width:200px; background:var(--s2); border:1px solid var(--line); border-radius:10px; color:var(--tp); padding:.6rem 1rem; font-size:.85rem; }
-    .tbar input:focus { outline:none; border-color:var(--am); }
-    .tabs { display:flex; gap:4px; margin-bottom:1.5rem; flex-wrap:wrap; }
-    .tab { padding:.6rem 1.2rem; border-radius:10px 10px 0 0; border:1px solid var(--line); border-bottom:none; background:var(--s1); color:var(--td); cursor:pointer; font-size:.85rem; }
-    .tab:hover { color:var(--ts); }
-    .tab.active { background:var(--s2); color:var(--accent); border-color:var(--am); }
-    .panel { display:none; } .panel.active { display:block; }
-    .card { background:var(--s1); border:1px solid var(--line); border-radius:var(--rm); padding:1.2rem; margin-bottom:1rem; }
-    .card h3 { font-size:.95rem; color:var(--accent); margin-bottom:.6rem; }
-    .card label { display:block; color:var(--td); font-size:.78rem; margin-bottom:.3rem; }
-    .card input, .card textarea { width:100%; background:var(--s2); border:1px solid var(--line); border-radius:8px; color:var(--tp); padding:.6rem .8rem; font-size:.9rem; font-family:var(--font); }
-    .card textarea { min-height:50px; resize:vertical; }
-    .card input:focus, .card textarea:focus { outline:none; border-color:var(--am); }
-    .card .row { display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; }
-    .card .row > * { flex:1; min-width:100px; }
-    .btn { display:inline-flex; align-items:center; gap:.4rem; padding:.6rem 1.2rem; border-radius:var(--rf); border:none; cursor:pointer; font-size:.85rem; font-weight:500; font-family:var(--font); transition:all .2s; }
-    .btn-primary { background:var(--accent); color:var(--s0); }
-    .btn-primary:hover { background:var(--am); }
-    .btn-ghost { background:var(--s2); color:var(--tp); border:1px solid var(--line); }
-    .btn-ghost:hover { background:var(--s3); border-color:var(--am); }
-    .btn-danger { background:transparent; color:var(--danger); border:1px solid var(--danger); }
-    .btn-danger:hover { background:rgba(229,107,107,.12); }
-    .btn-sm { font-size:.78rem; padding:.35rem .8rem; }
-    .btn:disabled { opacity:.5; cursor:not-allowed; }
-    #status { margin-top:1rem; font-size:.9rem; min-height:1.4em; padding:0 2px; }
-    #status.ok { color:var(--ok); } #status.err { color:var(--danger); } #status.busy { color:var(--accent); }
-    .g-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; }
-    .g-item { position:relative; border-radius:10px; overflow:hidden; border:1px solid var(--line); aspect-ratio:3/4; background:var(--s2); }
-    .g-item img { width:100%; height:100%; object-fit:cover; display:block; }
-    .g-item .del { position:absolute; top:5px; right:5px; width:26px; height:26px; background:rgba(5,7,12,.75); color:var(--danger); border:1px solid rgba(229,107,107,.5); border-radius:999px; font-size:.75rem; cursor:pointer; display:flex; align-items:center; justify-content:center; opacity:0; }
-    .g-item:hover .del { opacity:1; }
-    .g-item .nm { position:absolute; left:0; right:0; bottom:0; padding:1rem .4rem .35rem; background:linear-gradient(transparent,rgba(0,0,0,.8)); font-size:.65rem; color:var(--ts); text-overflow:ellipsis; white-space:nowrap; overflow:hidden; }
-    #drop { border:1.5px dashed var(--line); border-radius:var(--rm); padding:1.5rem; text-align:center; color:var(--td); cursor:pointer; margin-bottom:1rem; }
-    #drop:hover, #drop.dragover { border-color:var(--accent); background:var(--s2); color:var(--ts); }
-    #drop input { display:none; }
-    .item-bar { display:flex; gap:.6rem; align-items:center; margin-bottom:1rem; }
-    .item-bar .btn { flex-shrink:0; }
-    .item-card { background:var(--s1); border:1px solid var(--line); border-radius:var(--rm); padding:1rem; margin-bottom:.8rem; }
-    .item-card .hdr { display:flex; justify-content:space-between; align-items:center; margin-bottom:.4rem; }
-    .item-card .hdr .idx { color:var(--td); font-size:.78rem; }
-    .item-card .hdr .btns { display:flex; gap:4px; }
-    .item-card .flds { display:grid; gap:.5rem; }
-    .item-card .flds input, .item-card .flds textarea { width:100%; background:var(--s2); border:1px solid var(--line); border-radius:6px; color:var(--tp); padding:.45rem .7rem; font-size:.85rem; font-family:var(--font); }
-    .item-card .flds input:focus, .item-card .flds textarea:focus { outline:none; border-color:var(--am); }
-    .item-card .flds textarea { min-height:40px; resize:vertical; }
-    @media (max-width:560px) { .g-item .del { opacity:1; } .g-grid { grid-template-columns:repeat(2,1fr); } .tabs { overflow-x:auto; flex-wrap:nowrap; } .tab { white-space:nowrap; font-size:.8rem; } }
+    :root{--s0:#05070c;--s1:#0a0d12;--s2:#0f131c;--s3:#161d2b;--a:#9d7bff;--am:#6b5b95;--tp:#e8e8f0;--ts:#a8a8b8;--td:#6b6b7b;--ln:#282c38;--ok:#72d391;--bad:#e56b6b;--r:14px;--f:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box;margin:0;padding:0}body{background:var(--s0);color:var(--tp);font-family:var(--f);font-size:14px;line-height:1.6;min-height:100vh}button,input,textarea{font:inherit}nav{position:sticky;top:0;z-index:20;background:rgba(10,13,18,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}.nav{max-width:1200px;margin:auto;padding:12px clamp(18px,5vw,44px);display:flex;justify-content:space-between;align-items:center}.brand{color:var(--a);font-weight:700;letter-spacing:.12em;text-decoration:none}main{max-width:1200px;margin:auto;padding:22px clamp(18px,5vw,44px) 70px}.connect{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.connect input{flex:1;min-width:220px}.hint{font-size:12px;color:var(--td)}input,textarea{width:100%;color:var(--tp);background:var(--s2);border:1px solid var(--ln);border-radius:9px;padding:9px 11px}textarea{resize:vertical;min-height:72px}input:focus,textarea:focus{outline:none;border-color:var(--am)}.btn{border:0;border-radius:999px;padding:8px 15px;cursor:pointer;background:var(--a);color:var(--s0);font-weight:600;text-decoration:none}.btn:hover{filter:brightness(.9)}.btn.ghost{background:var(--s2);color:var(--tp);border:1px solid var(--ln)}.btn.danger{background:transparent;color:var(--bad);border:1px solid var(--bad)}.btn.small{padding:5px 10px;font-size:12px}.btn:disabled{opacity:.45;cursor:default}.tabs{display:flex;gap:5px;overflow:auto;margin:22px 0 16px}.tab{white-space:nowrap;padding:9px 14px;border:1px solid var(--ln);border-radius:10px;background:var(--s1);color:var(--td);cursor:pointer}.tab.active{color:var(--a);border-color:var(--am);background:var(--s2)}.panel{display:none}.panel.active{display:block}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.toolbar .spacer{flex:1}.card{background:var(--s1);border:1px solid var(--ln);border-radius:var(--r);padding:15px;margin-bottom:12px}.card-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}.card-head strong{color:var(--a)}.actions{display:flex;gap:5px;flex-wrap:wrap}.fields{display:grid;gap:9px}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.switch{display:flex;gap:8px;align-items:center;color:var(--ts)}.switch input{width:auto}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}.photo{background:var(--s1);border:1px solid var(--ln);border-radius:12px;padding:8px}.photo.dragging{opacity:.4}.photo img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;background:var(--s2);margin-bottom:8px}.photo .photo-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.drop{border:1.5px dashed var(--ln);border-radius:var(--r);padding:24px;text-align:center;color:var(--td);cursor:pointer;margin-bottom:14px}.drop.over{border-color:var(--a);background:var(--s2)}.drop input{display:none}.preview{background:var(--s1);border:1px solid var(--ln);border-radius:var(--r);padding:18px;margin-top:10px;color:var(--ts)}.preview>*+*{margin-top:12px}.preview h1,.preview h2,.preview h3,.preview h4{color:var(--tp)}.preview a{color:var(--a)}.preview code{background:var(--s2);padding:2px 5px;border-radius:5px}.preview pre{overflow:auto;background:var(--s2);padding:12px;border-radius:9px}.preview blockquote{border-left:3px solid var(--a);padding-left:12px}.preview ul{padding-left:20px}.status{min-height:24px;margin:10px 0}.status.ok{color:var(--ok)}.status.bad{color:var(--bad)}.status.busy{color:var(--a)}.empty{color:var(--td);padding:30px;text-align:center}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:var(--s1);border:1px solid var(--ln);border-radius:var(--r);padding:18px}.stat b{display:block;font-size:24px;color:var(--a)}label{font-size:12px;color:var(--td)}@media(max-width:650px){.row{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.gallery{grid-template-columns:repeat(2,1fr)}.nav span{display:none}}
   </style>
 </head>
 <body>
-  <nav><div class="inner"><a class="brand" href="index.html">MYSTHIRU</a><span style="color:var(--td);font-size:.82rem;">管理面板</span></div></nav>
-  <main>
-    <div class="tbar">
-      <input type="password" id="token" placeholder="Fine-grained Token" autocomplete="off">
-      <button class="btn btn-primary" id="btnConnect">连接</button>
-      <span style="color:var(--td);font-size:.78rem;">Token 仅存本地 · 自动保存</span>
-    </div>
-    <div class="tabs">
-      <div class="tab active" data-tab="content">📝 内容</div>
-      <div class="tab" data-tab="gallery">🖼️ 图片</div>
-      <div class="tab" data-tab="projects">📦 项目</div>
-      <div class="tab" data-tab="notes">📄 随笔</div>
-    </div>
-    <div id="status"></div>
-
-    <div class="panel active" id="tab-content">
-      <div id="content-editor"><p style="color:var(--td);">点击「连接」后加载。</p></div>
-      <div style="margin-top:1rem;text-align:right;"><button class="btn btn-primary" id="saveContent" style="display:none;">全部保存</button></div>
-    </div>
-
-    <div class="panel" id="tab-gallery">
-      <div id="drop">📁 点击选择或拖入图片（自动压缩到 1200px）<input type="file" id="file" accept="image/*" multiple></div>
-      <div id="gallery-list"><p style="color:var(--td);">连接后显示。</p></div>
-    </div>
-
-    <div class="panel" id="tab-projects">
-      <div class="item-bar"><button class="btn btn-ghost btn-sm" id="addProject">＋ 新增项目</button></div>
-      <div id="project-editor"><p style="color:var(--td);">连接后编辑。</p></div>
-      <div style="margin-top:1rem;text-align:right;"><button class="btn btn-primary" id="saveProjects" style="display:none;">保存项目</button></div>
-    </div>
-
-    <div class="panel" id="tab-notes">
-      <div class="item-bar"><button class="btn btn-ghost btn-sm" id="addNote">＋ 新增随笔</button></div>
-      <div id="note-editor"><p style="color:var(--td);">连接后编辑。</p></div>
-      <div style="margin-top:1rem;text-align:right;"><button class="btn btn-primary" id="saveNotes" style="display:none;">保存随笔</button></div>
-    </div>
-  </main>
-
-  <script>
-    const OWNER='MystHiru', REPO='mysthiru.github.io', BRANCH='main', DIR='img/archive', GALLERY_FILE='gallery.html';
-    const $=id=>document.getElementById(id), s=$('status');
-    function st(m,c=''){s.textContent=m;s.className=c;}
-    function tk(){return $('token').value.trim();}
-    async function gh(path,method='GET',body=null){
-      const opt={method,headers:{'Authorization':'Bearer '+tk()}};
-      if(body){opt.headers['Content-Type']='application/json';opt.body=JSON.stringify(body);}
-      const r=await fetch('https://api.github.com'+path,opt);
-      if(!r.ok){let m='HTTP '+r.status;try{const e=await r.json();m=e.message||m;}catch(_){}throw new Error(m);}
-      return r.status===204?null:r.json();
-    }
-
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(el=>{
-      el.onclick=()=>{
-        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-        document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-        el.classList.add('active'); $('tab-'+el.dataset.tab).classList.add('active');
-      };
-    });
-
-    // Connect
-    $('btnConnect').onclick=async()=>{
-      if(!tk()){st('请输入 Token','err');return;}
-      st('连接中…','busy');
-      try{
-        await loadContent(); await loadGallery();
-        await loadProjects(); await loadNotes();
-        st('已连接 ✅','ok');
-      }catch(e){st('连接失败：'+e.message,'err');}
-    };
-    $('token').addEventListener('keydown',e=>{if(e.key==='Enter')$('btnConnect').click();});
-
-    // ========== CONTENT ==========
-    let contentFields={};
-    async function loadContent(){
-      const pages=['index.html','about.html'];
-      contentFields={}; const ce=$('content-editor'); ce.innerHTML='';
-      for(const page of pages){
-        const meta=await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
-        const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
-        const re=/<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g; let m;
-        while((m=re.exec(html))!==null){
-          const key=m[1],val=m[2].trim();
-          contentFields[key]={page,val,sha:meta.sha};
-          const cd=document.createElement('div'); cd.className='card';
-          cd.innerHTML=`<label>${key} <span style="color:var(--td);font-size:.7rem;">(${page})</span></label><textarea id="cf-${key}" rows="2">${esc(val)}</textarea>`;
-          ce.appendChild(cd);
-        }
-      }
-      $('saveContent').style.display=Object.keys(contentFields).length?'inline-flex':'none';
-    }
-    $('saveContent').onclick=async()=>{
-      st('保存中…','busy');
-      try{
-        const byPage={};
-        for(const[key,info]of Object.entries(contentFields)){
-          const v=$(`cf-${key}`).value.trim();
-          if(!byPage[info.page])byPage[info.page]={replaces:[]};
-          byPage[info.page].replaces.push({key,val:v});
-        }
-        for(const[page,data]of Object.entries(byPage)){
-          const meta=await gh(`/repos/${OWNER}/${REPO}/contents/${page}`);
-          let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
-          for(const r of data.replaces)
-            html=html.replace(new RegExp(`<!-- EDITABLE:${r.key} -->[\\s\\S]*?<!-- END -->`),`<!-- EDITABLE:${r.key} -->${esc(r.val)}<!-- END -->`);
-          await gh(`/repos/${OWNER}/${REPO}/contents/${page}`,'PUT',{message:`Edit ${page}`,content:btoa(unescape(encodeURIComponent(html))),sha:meta.sha,branch:BRANCH});
-        }
-        st('内容已保存 ✅','ok');
-      }catch(e){st('保存失败：'+e.message,'err');}
-    };
-
-    // ========== GALLERY ==========
-    let images=[];
-    async function loadGallery(){
-      try{
-        const data=await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}`);
-        images=Array.isArray(data)?data.filter(i=>i.type==='file'):[];
-        renderGallery();
-      }catch(e){$('gallery-list').innerHTML=`<p style="color:var(--td);">读取失败：${e.message}</p>`;}
-    }
-    function renderGallery(){
-      const gl=$('gallery-list');
-      if(!images.length){gl.innerHTML='<p style="color:var(--td);">还没有图片。</p>';return;}
-      const grid=document.createElement('div');grid.className='g-grid';
-      images.forEach(img=>{
-        const item=document.createElement('div');item.className='g-item';
-        item.innerHTML=`<img loading="lazy" src="${img.download_url}" alt="${img.name}"><div class="nm">${img.name}</div>`;
-        const del=document.createElement('button');del.className='del';del.textContent='✕';
-        del.onclick=()=>deleteImage(img);item.appendChild(del);grid.appendChild(item);
-      });
-      gl.innerHTML='';gl.appendChild(grid);
-    }
-    async function deleteImage(img){
-      if(!confirm(`删除 ${img.name}？`))return;st('删除中…','busy');
-      try{
-        await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${img.name}`,'DELETE',{message:`Delete ${img.name}`,sha:img.sha,branch:BRANCH});
-        await syncGallery(); await loadGallery();
-        st('已删除并同步','ok');
-      }catch(e){st('删除失败：'+e.message,'err');}
-    }
-    const drop=$('drop'),fi=$('file');
-    drop.onclick=()=>fi.click();
-    drop.ondragover=e=>{e.preventDefault();drop.classList.add('dragover');};
-    drop.ondragleave=()=>drop.classList.remove('dragover');
-    drop.ondrop=e=>{e.preventDefault();drop.classList.remove('dragover');handleFiles(e.dataTransfer.files);};
-    fi.onchange=()=>handleFiles(fi.files);
-    async function handleFiles(files){
-      if(!tk()){st('请先输入 Token','err');return;}
-      const arr=Array.from(files).filter(f=>f.type.startsWith('image/'));
-      if(!arr.length)return;let ok=0,fail=0;
-      for(const f of arr){
-        try{
-          st(`处理 ${f.name}…`,'busy');
-          const jpg=await compress(f);
-          const name=`img-${new Date().toISOString().replace(/[-:T]/g,'').slice(0,14)}-${Math.random().toString(36).slice(2,6)}.jpg`;
-          await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}/${name}`,'PUT',{message:`Upload ${name}`,content:jpg,branch:BRANCH});
-          ok++;
-        }catch(e){fail++;st('上传失败：'+e.message,'err');}
-      }
-      try{await syncGallery();await loadGallery();st(`完成：上传 ${ok} 张${fail?'，失败 '+fail+' 张':''}`,ok&&!fail?'ok':'err');}catch(e){st('同步失败：'+e.message,'err');}
-    }
-    function compress(file){
-      return new Promise((resolve,reject)=>{
-        const img=new Image();
-        img.onload=()=>{
-          let {width:w,height:h}=img;const MAX=1200;
-          if(Math.max(w,h)>MAX){const s=MAX/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);}
-          const c=document.createElement('canvas');c.width=w;c.height=h;
-          c.getContext('2d').drawImage(img,0,0,w,h);
-          resolve(c.toDataURL('image/jpeg',.82).split(',')[1]);
-        };
-        img.onerror=()=>reject(new Error('图片解析失败'));img.src=URL.createObjectURL(file);
-      });
-    }
-    async function syncGallery(){
-      // 重新读取目录，避免上传或删除后使用旧列表。
-      const current=await gh(`/repos/${OWNER}/${REPO}/contents/${DIR}`);
-      images=Array.isArray(current)?current.filter(i=>i.type==='file'):[];
-      const meta=await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`);
-      const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
-      const figs=images.sort((a,b)=>a.name.localeCompare(b.name)).map((img,i)=>`<figure><img loading="lazy" src="./${DIR}/${img.name}" alt="收藏 ${i+1}"><figcaption>${String(i+1).padStart(2,'0')}</figcaption></figure>`).join('\n      ');
-      const out=html.replace(/<div class="gallery">[\s\S]*?<\/div>\s*<\/main>/,`<div class="gallery">\n      ${figs}\n    </div>\n  </main>`);
-      await gh(`/repos/${OWNER}/${REPO}/contents/${GALLERY_FILE}`,'PUT',{message:'Sync gallery',content:btoa(unescape(encodeURIComponent(out))),sha:meta.sha,branch:BRANCH});
-    }
-    // ========== PROJECTS (add/edit/delete/reorder) ==========  
-    let projects=[];
-    async function loadProjects(){
-      const meta=await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
-      const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
-      // Parse cards
-      const re=/<div class="project-card" data-project="(\d+)"[^>]*>([\s\S]*?)<\/div>\s*<!-- \/PROJECT -->/g;
-      projects=[]; let m;
-      while((m=re.exec(html))!==null){
-        const card=m[0];
-        const name=m[0].match(/data-proj-name="\d+">([\s\S]*?)<\//);
-        const desc=m[0].match(/data-proj-desc="\d+">([\s\S]*?)<\//);
-        const tag1=m[0].match(/data-proj-tag1="\d+">([\s\S]*?)<\//);
-        const tag2=m[0].match(/data-proj-tag2="\d+">([\s\S]*?)<\//);
-        projects.push({
-          name: name?name[1].trim():'',
-          desc: desc?desc[1].trim():'',
-          tag1: tag1?tag1[1].trim():'',
-          tag2: tag2?tag2[1].trim():''
-        });
-      }
-      renderProjects();
-    }
-    function renderProjects(){
-      const pe=$('project-editor'); pe.innerHTML='';
-      if(!projects.length){pe.innerHTML='<p style="color:var(--td);">暂无项目。</p>';$('saveProjects').style.display='none';return;}
-      $('saveProjects').style.display='inline-flex';
-      projects.forEach((p,i)=>{
-        const cd=document.createElement('div');cd.className='item-card';
-        cd.innerHTML=`
-          <div class="hdr">
-            <span class="idx">#${i+1}</span>
-            <div class="btns">
-              <button class="btn btn-ghost btn-sm" onclick="moveProj(${i},-1)">↑</button>
-              <button class="btn btn-ghost btn-sm" onclick="moveProj(${i},1)">↓</button>
-              <button class="btn btn-danger btn-sm" onclick="delProj(${i})">✕</button>
-            </div>
-          </div>
-          <div class="flds">
-            <input id="pn-${i}" value="${esc(p.name)}" placeholder="项目名称">
-            <textarea id="pd-${i}" rows="2" placeholder="项目描述">${esc(p.desc)}</textarea>
-            <div class="row"><input id="pt1-${i}" value="${esc(p.tag1)}" placeholder="标签1"><input id="pt2-${i}" value="${esc(p.tag2)}" placeholder="标签2"></div>
-          </div>`;
-        pe.appendChild(cd);
-      });
-    }
-    function moveProj(i,dir){
-      const j=i+dir;
-      if(j<0||j>=projects.length)return;
-      [projects[i],projects[j]]=[projects[j],projects[i]];
-      renderProjects();
-    }
-    function delProj(i){
-      if(!confirm(`删除项目 #${i+1}？`))return;
-      projects.splice(i,1); renderProjects();
-    }
-    $('addProject').onclick=()=>{
-      projects.push({name:'新项目',desc:'项目描述',tag1:'标签',tag2:''});
-      renderProjects();
-    };
-    $('saveProjects').onclick=async()=>{
-      st('保存项目…','busy');
-      try{
-        // Read current values
-        projects.forEach((p,i)=>{
-          p.name=$(`pn-${i}`).value.trim();
-          p.desc=$(`pd-${i}`).value.trim();
-          p.tag1=$(`pt1-${i}`).value.trim();
-          p.tag2=$(`pt2-${i}`).value.trim();
-        });
-        const meta=await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`);
-        let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
-        const cards=projects.map((p,i)=>`      <div class="project-card" data-project="${i+1}">
-        <h3 data-proj-name="${i+1}">${esc(p.name)}</h3>
-        <p data-proj-desc="${i+1}">${esc(p.desc)}</p>
-        <div class="project-meta">
-          <span class="project-tag" data-proj-tag1="${i+1}">${esc(p.tag1)}</span>
-          <span class="project-tag" data-proj-tag2="${i+1}">${esc(p.tag2)}</span>
-        </div>
-      </div>
-      <!-- /PROJECT -->`).join('\n');
-        html=html.replace(/<!-- PROJECT:start -->[\s\S]*?<!-- PROJECT:end -->/,`<!-- PROJECT:start -->\n${cards}\n      <!-- PROJECT:end -->`);
-        await gh(`/repos/${OWNER}/${REPO}/contents/projects.html`,'PUT',{message:'Edit projects',content:btoa(unescape(encodeURIComponent(html))),sha:meta.sha,branch:BRANCH});
-        st('项目已保存 ✅','ok');
-      }catch(e){st('保存失败：'+e.message,'err');}
-    };
-
-    // ========== NOTES (add/edit/delete/reorder) ==========
-    let notes=[];
-    async function loadNotes(){
-      const meta=await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
-      const html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
-      const re=/<div class="note-card" data-note="(\d+)"[^>]*>([\s\S]*?)<\/div>\s*<!-- \/NOTE -->/g;
-      notes=[]; let m;
-      while((m=re.exec(html))!==null){
-        const title=m[0].match(/data-note-title="\d+">([\s\S]*?)<\//);
-        const date=m[0].match(/data-note-date="\d+">([\s\S]*?)<\//);
-        const body=m[0].match(/data-note-body="\d+">([\s\S]*?)<\//);
-        notes.push({
-          title: title?title[1].trim():'',
-          date: date?date[1].trim():'',
-          body: body?body[1].trim():''
-        });
-      }
-      renderNotes();
-    }
-    function renderNotes(){
-      const ne=$('note-editor'); ne.innerHTML='';
-      if(!notes.length){ne.innerHTML='<p style="color:var(--td);">暂无随笔。</p>';$('saveNotes').style.display='none';return;}
-      $('saveNotes').style.display='inline-flex';
-      notes.forEach((n,i)=>{
-        const cd=document.createElement('div');cd.className='item-card';
-        cd.innerHTML=`
-          <div class="hdr">
-            <span class="idx">#${i+1}</span>
-            <div class="btns">
-              <button class="btn btn-ghost btn-sm" onclick="moveNote(${i},-1)">↑</button>
-              <button class="btn btn-ghost btn-sm" onclick="moveNote(${i},1)">↓</button>
-              <button class="btn btn-danger btn-sm" onclick="delNote(${i})">✕</button>
-            </div>
-          </div>
-          <div class="flds">
-            <input id="nt-${i}" value="${esc(n.title)}" placeholder="标题">
-            <input id="nd-${i}" value="${esc(n.date)}" placeholder="日期 (YYYY-MM-DD)">
-            <textarea id="nb-${i}" rows="3" placeholder="正文">${esc(n.body)}</textarea>
-          </div>`;
-        ne.appendChild(cd);
-      });
-    }
-    function moveNote(i,dir){
-      const j=i+dir;
-      if(j<0||j>=notes.length)return;
-      [notes[i],notes[j]]=[notes[j],notes[i]];
-      renderNotes();
-    }
-    function delNote(i){
-      if(!confirm(`删除随笔 #${i+1}？`))return;
-      notes.splice(i,1); renderNotes();
-    }
-    $('addNote').onclick=()=>{
-      notes.push({title:'新随笔',date:new Date().toISOString().slice(0,10),body:'正文内容'});
-      renderNotes();
-    };
-    $('saveNotes').onclick=async()=>{
-      st('保存随笔…','busy');
-      try{
-        notes.forEach((n,i)=>{
-          n.title=$(`nt-${i}`).value.trim();
-          n.date=$(`nd-${i}`).value.trim();
-          n.body=$(`nb-${i}`).value.trim();
-        });
-        const meta=await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`);
-        let html=decodeURIComponent(escape(atob(meta.content.replace(/\s/g,''))));
-        const cards=notes.map((n,i)=>`      <div class="note-card" data-note="${i+1}">
-        <h3 data-note-title="${i+1}">${esc(n.title)}</h3>
-        <div class="note-date" data-note-date="${i+1}">${esc(n.date)}</div>
-        <p data-note-body="${i+1}">${esc(n.body)}</p>
-      </div>
-      <!-- /NOTE -->`).join('\n');
-        html=html.replace(/<!-- NOTE:start -->[\s\S]*?<!-- NOTE:end -->/,`<!-- NOTE:start -->\n${cards}\n      <!-- NOTE:end -->`);
-        await gh(`/repos/${OWNER}/${REPO}/contents/notes.html`,'PUT',{message:'Edit notes',content:btoa(unescape(encodeURIComponent(html))),sha:meta.sha,branch:BRANCH});
-        st('随笔已保存 ✅','ok');
-      }catch(e){st('保存失败：'+e.message,'err');}
-    };
-
-    function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-    try{const t=localStorage.getItem('mh_token');if(t)$('token').value=t;}catch(_){}
-    $('token').addEventListener('change',()=>{try{localStorage.setItem('mh_token',$('token').value);}catch(_){}});
-  </script>
+<nav><div class="nav"><a class="brand" href="index.html">MYSTHIRU</a><span class="hint">CONTENT CONTROL</span></div></nav>
+<main>
+  <div class="connect"><input id="token" type="password" placeholder="Fine-grained Token（仓库 Contents 读写）" autocomplete="off"><button class="btn" id="connect">连接</button><button class="btn ghost" id="undo" disabled>撤销最近一次内容修改</button><a class="btn ghost" href="index.html" target="_blank">预览网站</a></div>
+  <p class="hint">Token 保存在当前浏览器。内容保存前自动写入 data/content.previous.json。</p><div id="status" class="status"></div>
+  <div class="tabs"><button class="tab active" data-tab="home">概览</button><button class="tab" data-tab="gallery">照片</button><button class="tab" data-tab="notes">随笔</button><button class="tab" data-tab="projects">项目</button><button class="tab" data-tab="text">页面文字</button></div>
+  <section class="panel active" id="panel-home"><div class="stats"><div class="stat"><span>照片</span><b id="stat-gallery">—</b></div><div class="stat"><span>公开随笔</span><b id="stat-notes">—</b></div><div class="stat"><span>公开项目</span><b id="stat-projects">—</b></div></div><div class="card" style="margin-top:14px"><strong>说明</strong><p class="hint" style="margin-top:8px">照片可拖动排序、重命名和移入回收区；随笔支持 Markdown、预览和草稿；项目支持链接与发布状态。</p></div></section>
+  <section class="panel" id="panel-gallery"><div class="drop" id="drop">点击或拖入图片；上传前自动压缩<input id="files" type="file" accept="image/*" multiple></div><div class="toolbar"><button class="btn" id="save-gallery">保存照片标题与顺序</button><span class="hint">拖动卡片或使用 ↑↓ 排序</span></div><div class="gallery" id="gallery-editor"></div></section>
+  <section class="panel" id="panel-notes"><div class="toolbar"><button class="btn ghost" id="add-note">＋ 新随笔</button><button class="btn" id="save-notes">保存随笔</button><span class="spacer"></span><a class="btn ghost small" href="notes.html" target="_blank">打开随笔页</a></div><div id="notes-editor"></div></section>
+  <section class="panel" id="panel-projects"><div class="toolbar"><button class="btn ghost" id="add-project">＋ 新项目</button><button class="btn" id="save-projects">保存项目</button><span class="spacer"></span><a class="btn ghost small" href="projects.html" target="_blank">打开项目页</a></div><div id="projects-editor"></div></section>
+  <section class="panel" id="panel-text"><div class="toolbar"><button class="btn" id="save-text">保存页面文字</button></div><div id="text-editor"><p class="empty">连接后读取首页和关于页可编辑文字。</p></div></section>
+</main>
+<script src="./assets/content.js"></script>
+<script>
+const OWNER='MystHiru',REPO='mysthiru.github.io',BRANCH='main',DATA='data/content.json',BACKUP='data/content.previous.json',IMG='img/archive',TRASH='img/trash';
+const $=id=>document.getElementById(id);let data=null,dataSha=null,dragIndex=null,textFields={};
+function token(){return $('token').value.trim()}function status(m,c=''){const e=$('status');e.textContent=m;e.className='status '+c}function encodeText(s){return btoa(unescape(encodeURIComponent(s)))}function decodeText(s){return decodeURIComponent(escape(atob(s.replace(/\s/g,''))))}
+async function api(path,method='GET',body=null){const o={method,headers:{Authorization:'Bearer '+token(),Accept:'application/vnd.github+json'}};if(body){o.headers['Content-Type']='application/json';o.body=JSON.stringify(body)}const r=await fetch('https://api.github.com'+path,o);if(!r.ok){let m='HTTP '+r.status;try{m=(await r.json()).message||m}catch{}throw Error(m)}return r.status===204?null:r.json()}async function getFile(path){return api(`/repos/${OWNER}/${REPO}/contents/${path}`)}async function putFile(path,content,message,sha){return api(`/repos/${OWNER}/${REPO}/contents/${path}`,'PUT',{message,content:encodeText(content),sha,branch:BRANCH})}async function putBase64(path,content,message,sha){return api(`/repos/${OWNER}/${REPO}/contents/${path}`,'PUT',{message,content,sha,branch:BRANCH})}async function deleteFile(path,sha,message){return api(`/repos/${OWNER}/${REPO}/contents/${path}`,'DELETE',{message,sha,branch:BRANCH})}
+function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'"').replace(/'/g,'&#39;')}function slug(s){return String(s||'item').toLowerCase().trim().replace(/[^a-z0-9\u4e00-\u9fa5]+/g,'-').replace(/^-|-$/g,'').slice(0,50)||'item-'+Date.now()}
+async function saveData(message){status('正在备份并保存…','busy');const current=await getFile(DATA);const old=decodeText(current.content);let backupSha;try{backupSha=(await getFile(BACKUP)).sha}catch{}await putFile(BACKUP,old,'Backup content before change',backupSha);data.updatedAt=new Date().toISOString();const result=await putFile(DATA,JSON.stringify(data,null,2),message,current.sha);dataSha=result.content.sha;$('undo').disabled=false;renderAll();status('已保存，Pages 更新通常需要几十秒','ok')}
+async function load(){if(!token())return status('请输入 Token','bad');status('正在读取…','busy');const meta=await getFile(DATA);data=JSON.parse(decodeText(meta.content));dataSha=meta.sha;try{await getFile(BACKUP);$('undo').disabled=false}catch{$('undo').disabled=true}await loadText();renderAll();status('已连接','ok')}
+function renderAll(){renderStats();renderGallery();renderNotes();renderProjects()}function renderStats(){$('stat-gallery').textContent=data.gallery.length;$('stat-notes').textContent=data.notes.filter(x=>x.published).length;$('stat-projects').textContent=data.projects.filter(x=>x.published).length}
+function captureInputs(){if(!data)return;document.querySelectorAll('[data-note-index]').forEach(c=>{const i=+c.dataset.noteIndex;if(data.notes[i])data.notes[i]={...data.notes[i],title:c.querySelector('.n-title').value,date:c.querySelector('.n-date').value,body:c.querySelector('.n-body').value,published:c.querySelector('.n-pub').checked}});document.querySelectorAll('[data-project-index]').forEach(c=>{const i=+c.dataset.projectIndex;if(data.projects[i])data.projects[i]={...data.projects[i],name:c.querySelector('.p-name').value,description:c.querySelector('.p-desc').value,url:c.querySelector('.p-url').value,tags:c.querySelector('.p-tags').value.split(',').map(x=>x.trim()).filter(Boolean),published:c.querySelector('.p-pub').checked}});document.querySelectorAll('[data-gallery-index]').forEach(c=>{const i=+c.dataset.galleryIndex;if(data.gallery[i])data.gallery[i].title=c.querySelector('.g-title').value})}
+function move(arr,i,d){captureInputs();const j=i+d;if(j<0||j>=arr.length)return;[arr[i],arr[j]]=[arr[j],arr[i]];renderAll()}
+function renderGallery(){const root=$('gallery-editor');if(!data.gallery.length){root.innerHTML='<p class="empty">暂无照片</p>';return}root.innerHTML=data.gallery.map((g,i)=>`<div class="photo" draggable="true" data-gallery-index="${i}"><img src="./img/archive/${encodeURIComponent(g.file)}?v=${Date.now()}" alt=""><input class="g-title" value="${esc(g.title)}" placeholder="照片标题"><div class="photo-actions"><button class="btn ghost small" onclick="move(data.gallery,${i},-1)">↑</button><button class="btn ghost small" onclick="move(data.gallery,${i},1)">↓</button><button class="btn ghost small" onclick="renamePhoto(${i})">重命名</button><button class="btn danger small" onclick="trashPhoto(${i})">删除</button></div></div>`).join('');root.querySelectorAll('.photo').forEach(el=>{el.ondragstart=()=>{captureInputs();dragIndex=+el.dataset.galleryIndex;el.classList.add('dragging')};el.ondragend=()=>el.classList.remove('dragging');el.ondragover=e=>e.preventDefault();el.ondrop=e=>{e.preventDefault();const to=+el.dataset.galleryIndex;if(dragIndex===null||dragIndex===to)return;const[item]=data.gallery.splice(dragIndex,1);data.gallery.splice(to,0,item);dragIndex=null;renderGallery()}})}
+async function renamePhoto(i){captureInputs();const item=data.gallery[i],ext=item.file.includes('.')?'.'+item.file.split('.').pop():'.jpg',base=prompt('新的文件名（无需扩展名）',item.file.replace(/\.[^.]+$/,''));if(!base)return;const next=slug(base)+ext;if(next===item.file)return;status('正在重命名…','busy');const old=await getFile(`${IMG}/${item.file}`);await putBase64(`${IMG}/${next}`,old.content.replace(/\s/g,''),`Rename ${item.file}`);await deleteFile(`${IMG}/${item.file}`,old.sha,`Remove ${item.file}`);item.file=next;await saveData('Rename gallery image')}
+async function trashPhoto(i){captureInputs();const item=data.gallery[i];if(!confirm(`将 ${item.file} 移到回收区？`))return;status('正在移动…','busy');const old=await getFile(`${IMG}/${item.file}`),trashName=`${Date.now()}-${item.file}`;await putBase64(`${TRASH}/${trashName}`,old.content.replace(/\s/g,''),`Trash ${item.file}`);await deleteFile(`${IMG}/${item.file}`,old.sha,`Remove ${item.file}`);data.gallery.splice(i,1);await saveData('Remove gallery image')}
+function compress(file){return new Promise((ok,bad)=>{const im=new Image;im.onload=()=>{let w=im.width,h=im.height,max=1600;if(Math.max(w,h)>max){const r=max/Math.max(w,h);w=Math.round(w*r);h=Math.round(h*r)}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(im,0,0,w,h);URL.revokeObjectURL(im.src);ok(c.toDataURL('image/jpeg',.84).split(',')[1])};im.onerror=bad;im.src=URL.createObjectURL(file)})}async function upload(files){for(const file of [...files].filter(x=>x.type.startsWith('image/'))){status('正在上传 '+file.name,'busy');const content=await compress(file),name=`img-${Date.now()}-${Math.random().toString(36).slice(2,6)}.jpg`;await putBase64(`${IMG}/${name}`,content,`Upload ${name}`);data.gallery.push({file:name,title:file.name.replace(/\.[^.]+$/,'')})}await saveData('Upload gallery images')}
+function renderNotes(){const root=$('notes-editor');if(!data.notes.length){root.innerHTML='<p class="empty">暂无随笔</p>';return}root.innerHTML=data.notes.map((n,i)=>`<div class="card" data-note-index="${i}"><div class="card-head"><strong>#${i+1}</strong><div class="actions"><button class="btn ghost small" onclick="move(data.notes,${i},-1)">↑</button><button class="btn ghost small" onclick="move(data.notes,${i},1)">↓</button><button class="btn ghost small" onclick="previewNote(${i})">预览</button><button class="btn danger small" onclick="deleteNote(${i})">删除</button></div></div><div class="fields"><input class="n-title" value="${esc(n.title)}" placeholder="标题"><div class="row"><input class="n-date" type="date" value="${esc(n.date)}"><label class="switch"><input class="n-pub" type="checkbox" ${n.published?'checked':''}> 发布</label></div><textarea class="n-body" rows="9" placeholder="支持 Markdown">${esc(n.body)}</textarea><div class="preview" id="note-preview-${i}" style="display:none"></div></div></div>`).join('')}function previewNote(i){captureInputs();const e=$(`note-preview-${i}`);e.innerHTML=window.MystContent.markdown(data.notes[i].body);e.style.display=e.style.display==='none'?'block':'none'}function deleteNote(i){captureInputs();if(confirm('删除这篇随笔？')){data.notes.splice(i,1);renderNotes()}}
+function renderProjects(){const root=$('projects-editor');if(!data.projects.length){root.innerHTML='<p class="empty">暂无项目</p>';return}root.innerHTML=data.projects.map((p,i)=>`<div class="card" data-project-index="${i}"><div class="card-head"><strong>#${i+1}</strong><div class="actions"><button class="btn ghost small" onclick="move(data.projects,${i},-1)">↑</button><button class="btn ghost small" onclick="move(data.projects,${i},1)">↓</button><button class="btn danger small" onclick="deleteProject(${i})">删除</button></div></div><div class="fields"><input class="p-name" value="${esc(p.name)}" placeholder="项目名称"><textarea class="p-desc" placeholder="项目描述">${esc(p.description)}</textarea><input class="p-url" value="${esc(p.url||'')}" placeholder="https://github.com/..."><div class="row"><input class="p-tags" value="${esc((p.tags||[]).join(', '))}" placeholder="标签，用逗号分隔"><label class="switch"><input class="p-pub" type="checkbox" ${p.published?'checked':''}> 发布</label></div></div></div>`).join('')}function deleteProject(i){captureInputs();if(confirm('删除这个项目？')){data.projects.splice(i,1);renderProjects()}}
+async function loadText(){textFields={};const root=$('text-editor');root.innerHTML='';for(const page of ['index.html','about.html']){const meta=await getFile(page),html=decodeText(meta.content),re=/<!-- EDITABLE:(\w+) -->([\s\S]*?)<!-- END -->/g;let m;while((m=re.exec(html))){textFields[m[1]]={page,value:m[2].trim()};root.insertAdjacentHTML('beforeend',`<div class="card"><label>${esc(m[1])} · ${page}</label><textarea data-text-key="${esc(m[1])}">${esc(m[2].trim())}</textarea></div>`)}}}async function saveText(){status('保存页面文字…','busy');const grouped={};document.querySelectorAll('[data-text-key]').forEach(e=>{const k=e.dataset.textKey,f=textFields[k];(grouped[f.page]??=[]).push({key:k,value:e.value})});for(const[page,items]of Object.entries(grouped)){const meta=await getFile(page);let html=decodeText(meta.content);items.forEach(x=>html=html.replace(new RegExp(`<!-- EDITABLE:${x.key} -->[\\s\\S]*?<!-- END -->`),`<!-- EDITABLE:${x.key} -->${esc(x.value)}<!-- END -->`));await putFile(page,html,`Edit page text: ${page}`,meta.sha)}status('页面文字已保存','ok')}
+async function undo(){if(!confirm('用上一次备份覆盖当前内容？'))return;status('正在撤销…','busy');const backup=await getFile(BACKUP),current=await getFile(DATA);await putFile(DATA,decodeText(backup.content),'Undo last content change',current.sha);await load();status('已撤销','ok')}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');$(`panel-${t.dataset.tab}`).classList.add('active')});$('connect').onclick=load;$('undo').onclick=undo;$('save-gallery').onclick=()=>{captureInputs();saveData('Update gallery')};$('save-notes').onclick=()=>{captureInputs();saveData('Update notes')};$('save-projects').onclick=()=>{captureInputs();saveData('Update projects')};$('save-text').onclick=saveText;$('add-note').onclick=()=>{captureInputs();data.notes.unshift({id:'note-'+Date.now(),title:'新随笔',date:new Date().toISOString().slice(0,10),body:'',published:false});renderNotes()};$('add-project').onclick=()=>{captureInputs();data.projects.push({id:'project-'+Date.now(),name:'新项目',description:'',tags:[],url:'',published:false});renderProjects()};const drop=$('drop'),files=$('files');drop.onclick=()=>files.click();files.onchange=()=>upload(files.files);drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');upload(e.dataTransfer.files)};try{const t=localStorage.getItem('mh_token');if(t)$('token').value=t}catch{}$('token').onchange=()=>localStorage.setItem('mh_token',token());
+</script>
 </body>
 </html>
