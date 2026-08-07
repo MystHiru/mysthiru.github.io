@@ -80,12 +80,12 @@ function updateCollectionFilterOptions(){
  type.innerHTML='<option value="all">全部类型</option>'+types.map(x=>`<option value="${esc(x)}">${{image:'图片',link:'链接',text:'文字',music:'音乐',video:'视频'}[x]||esc(x)}</option>`).join('');
  category.value=categories.includes(collectionCategory)?collectionCategory:'all'; type.value=types.includes(collectionType)?collectionType:'all'; collectionCategory=category.value; collectionType=type.value;
 }
-function duplicateCollection(i){captureInputs();const copy=structuredClone?structuredClone(data.collections[i]):JSON.parse(JSON.stringify(data.collections[i]));copy.id='collection-'+Date.now();copy.title=(copy.title||'未命名收藏')+' · 副本';data.collections.splice(i+1,0,copy);renderGallery()}
+function duplicateCollection(i){captureInputs();const copy=typeof structuredClone==='function'?structuredClone(data.collections[i]):JSON.parse(JSON.stringify(data.collections[i]));copy.id='collection-'+Date.now();copy.title=(copy.title||'未命名收藏')+' · 副本';data.collections.splice(i+1,0,copy);renderGallery()}
 function renderGallery(){
  const root=$('gallery-editor'); if(!data)return; updateCollectionFilterOptions();
  const entries=collectionEntries(); $('collection-visible-count').textContent=`${entries.length} / ${data.collections.length} 项`;
  $('group-toggle-bar').style.display=collectionView==='group'?'flex':'none';
- if(!entries.length){root.innerHTML='<div class="collection-no-result">没有找到符合条件的收藏</div>';return}
+ if(!entries.length){const empty=data.collections.length===0;root.innerHTML=empty?'<div class="archive-empty"><span class="empty-mark">✦</span><h2>收藏管理还是空的</h2><p>可以从上方上传图片，或新建链接、文字、音乐与视频收藏。</p></div>':'<div class="collection-no-result">没有找到符合当前搜索与筛选条件的收藏</div>';$('group-toggle-bar').style.display='none';return}
  if(collectionView==='all'){
    root.innerHTML=`<div class="collection-overview-head"><span>全部概览</span><span>${entries.length} 项 · ${collectionSort==='manual'?'手动顺序':'显示排序'}</span></div><div class="${collectionGridClass()}">${entries.map(({item,index})=>collectionCard(item,index)).join('')}</div>`;
  }else{
