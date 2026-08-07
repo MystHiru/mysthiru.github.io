@@ -1,44 +1,45 @@
 (() => {
-  const THEMES = {
-    sakura: { label: '夜樱 Sakura', swatch: '#f3a6bd' },
-    aurora: { label: '极光 Aurora', swatch: '#7fd8c8' },
-    twilight: { label: '黄昏 Twilight', swatch: '#ffb37e' },
-    azure: { label: '苍蓝 Azure', swatch: '#8ab4ff' }
-  };
+  const THEMES = [
+    { id: 'sakura', label: '夜樱', accent: '#e8b4c8', bg: '#0f0b12' },
+    { id: 'aurora', label: '极光', accent: '#7fd8c8', bg: '#0a1216' },
+    { id: 'twilight', label: '黄昏', accent: '#ffb37e', bg: '#140d08' },
+    { id: 'azure', label: '苍蓝', accent: '#8ab4ff', bg: '#0a0f1a' }
+  ];
   const saved = localStorage.getItem('mh_theme') || 'sakura';
-  document.documentElement.setAttribute('data-theme', saved);
-
-  const container = document.createElement('div');
-  container.className = 'theme-switcher';
-  container.innerHTML = `<button class="theme-toggle-btn" aria-label="切换主题">🎨 <span>${THEMES[saved].label}</span></button><div class="theme-menu" id="theme-menu"></div>`;
-  const menu = container.querySelector('.theme-menu');
-  menu.innerHTML = Object.entries(THEMES).map(([key, val]) =>
-    `<button class="theme-option${key === saved ? ' active' : ''}" data-theme="${key}"><span class="theme-swatch" style="background:${val.swatch}"></span>${val.label}</button>`
-  ).join('');
-
-  menu.addEventListener('click', e => {
-    const btn = e.target.closest('.theme-option');
-    if (!btn) return;
-    const theme = btn.dataset.theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('mh_theme', theme);
-    container.querySelector('.theme-toggle-btn span').textContent = THEMES[theme].label;
-    menu.querySelectorAll('.theme-option').forEach(o => o.classList.toggle('active', o.dataset.theme === theme));
-    menu.classList.remove('open');
-  });
-
-  container.querySelector('.theme-toggle-btn').addEventListener('click', () => {
-    menu.classList.toggle('open');
-  });
-  document.addEventListener('click', e => {
-    if (!container.contains(e.target)) menu.classList.remove('open');
-  });
-
-  // Insert into nav
-  const insert = () => {
-    const nav = document.querySelector('.site-nav-inner') || document.querySelector('.nav');
-    if (nav) nav.appendChild(container);
-    else setTimeout(insert, 100);
+  const apply = (id) => {
+    const t = THEMES.find(x => x.id === id) || THEMES[0];
+    document.documentElement.style.setProperty('--accent', t.accent);
+    document.documentElement.style.setProperty('--bg', t.bg);
+    document.body.style.background = t.bg;
+    localStorage.setItem('mh_theme', id);
   };
-  insert();
+  apply(saved);
+
+  // Build a minimal theme switcher button
+  const holder = document.createElement('div');
+  holder.className = 'theme-switcher';
+  holder.innerHTML = `<button class="theme-btn" aria-label="切换主题">✦</button><div class="theme-pop"></div>`;
+  const btn = holder.querySelector('.theme-btn');
+  const pop = holder.querySelector('.theme-pop');
+  pop.innerHTML = THEMES.map(t =>
+    `<button class="theme-opt${t.id === saved ? ' active' : ''}" data-id="${t.id}"><span class="dot" style="background:${t.accent}"></span>${t.label}</button>`
+  ).join('');
+  btn.onclick = () => pop.classList.toggle('open');
+  document.addEventListener('click', e => {
+    if (!holder.contains(e.target)) pop.classList.remove('open');
+  });
+  pop.addEventListener('click', e => {
+    const opt = e.target.closest('.theme-opt');
+    if (!opt) return;
+    apply(opt.dataset.id);
+    pop.querySelectorAll('.theme-opt').forEach(o => o.classList.toggle('active', o === opt));
+    pop.classList.remove('open');
+  });
+
+  const inject = () => {
+    const nav = document.querySelector('.nav-inner');
+    if (nav) { nav.appendChild(holder); }
+    else setTimeout(inject, 80);
+  };
+  inject();
 })();

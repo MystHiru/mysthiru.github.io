@@ -1,150 +1,21 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>关于 · 玄明</title>
-  <style>
-    :root {
-      --s0: #05070c; --s1: #0a0d12; --s2: #0f131c; --s3: #161d2b;
-      --a: #9d7bff; --am: #6b5b95; --tp: #e8e8f0; --ts: #a8a8b8; --td: #6b6b7b; --ln: #282c38;
-      --r: 16px; --f: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--s0); color: var(--tp); font-family: var(--f);
-      font-size: 16px; line-height: 1.8;
-      min-height: 100vh; display: flex; flex-direction: column;
-    }
-    a { color: inherit; }
-    nav { position: sticky; top: 0; z-index: 20; background: rgba(10,9,18,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--ln); }
-    .site-nav-inner {
-      max-width: 1120px; margin: 0 auto; padding: 14px clamp(18px,5vw,44px);
-      display: flex; justify-content: space-between; align-items: center; gap: 20px;
-    }
-    .brand { color: var(--a); font-weight: 700; letter-spacing: .12em; text-decoration: none; }
-    .site-nav-inner ul { display: flex; list-style: none; gap: clamp(12px,3vw,25px); }
-    .site-nav-inner a:not(.brand) { color: var(--ts); text-decoration: none; font-size: 14px; }
-    .site-nav-inner a:hover, .site-nav-inner a.active { color: var(--a); }
-
-    main { flex: 1; max-width: 720px; margin: 0 auto; padding: clamp(3rem, 7vw, 5rem) clamp(1.5rem, 5vw, 3rem); width: 100%; }
-
-    .about-header { margin-bottom: 2.5rem; }
-    .about-header .greeting { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 650; line-height: 1.15; margin-bottom: 0.5rem; }
-    .about-header .greeting span { background: linear-gradient(120deg, var(--tp) 10%, var(--a) 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .about-header .tagline { color: var(--ts); font-size: clamp(1rem, 1.8vw, 1.15rem); }
-
-    .narrative { color: var(--ts); }
-    .narrative p { margin-bottom: 1.5rem; }
-    .narrative .kaomoji { color: var(--a); font-family: 'Segoe UI', sans-serif; }
-
-    .recent-section { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--ln); }
-    .recent-section h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--tp); }
-    .recent-section h2 small { font-size: 0.75rem; color: var(--td); font-weight: 400; margin-left: 0.6rem; }
-
-    .recent-list { display: grid; gap: 0.8rem; }
-    .recent-item {
-      background: var(--s1); border: 1px solid var(--ln); border-radius: 12px;
-      padding: 1rem 1.2rem; text-decoration: none; display: flex; gap: 0.8rem; align-items: center;
-      transition: border-color .2s, transform .2s;
-    }
-    .recent-item:hover { border-color: var(--am); transform: translateY(-2px); }
-    .recent-item .marker { color: var(--td); font-size: 0.8rem; white-space: nowrap; flex-shrink: 0; }
-    .recent-item .title { color: var(--a); flex: 1; }
-    .recent-item .date { color: var(--td); font-size: 0.8rem; white-space: nowrap; }
-
-    .links-section { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
-    .links-section a {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.6rem 1.2rem; border-radius: 999px; border: 1px solid var(--ln);
-      text-decoration: none; color: var(--ts); font-size: 0.9rem; transition: border-color .2s;
-    }
-    .links-section a:hover { border-color: var(--am); color: var(--a); }
-
-    footer { margin-top: auto; padding: 2rem clamp(1.5rem, 5vw, 3rem); border-top: 1px solid var(--ln); text-align: center; color: var(--td); font-size: 0.9rem; }
-    .admin-entry { margin-top: 0.6rem; font-size: 0.7rem; }
-    .admin-entry a { color: rgba(255,255,255,.12); text-decoration: none; }
-    .admin-entry a:hover { color: var(--a); }
-
-    @media (max-width: 760px) {
-      .site-nav-inner { align-items: flex-start; }
-      .site-nav-inner ul { flex-wrap: wrap; }
-      .recent-item { flex-wrap: wrap; }
-      .recent-item .date { margin-left: auto; }
-    }
-    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; } }
-  </style>
-  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./assets/theme.css">
-</head>
-<body><div class="theme-decorations"></div>
-  <nav class="site-nav"><div class="site-nav-inner"><a class="brand" href="index.html">MYSTHIRU</a><ul><li><a href="index.html">首页</a></li><li><a href="about.html" class="active">关于</a></li><li><a href="projects.html">项目</a></li><li><a href="notes.html">随笔</a></li></ul></div></nav>
-
-  <main>
-    <div class="about-header">
-      <div class="greeting"><span>你好，这里是玄明</span></div>
-      <div class="tagline">把灵感拆成代码，再把代码装回日常。</div>
-    </div>
-
-    <div class="narrative">
-      <p>日子大多在屏幕和耳机之间切换。写写代码，追追新番，偶尔也让 AI 替我写两行试试水。<span class="kaomoji">(´-ω-`)</span></p>
-
-      <p>想法来得快去得也快，所以趁它们还在的时候，尽量做成能跑的东西。不追求每个项目都完整，但至少让它们从脑子的角落搬到了真实的世界里。</p>
-
-      <p>比起堆满标签和徽章，我更希望这里留下几件真正做过、也愿意继续维护的东西。<span class="kaomoji">( ´ ▽ ` )</span></p>
-    </div>
-
-    <div class="recent-section" id="recent-section">
-      <h2>现在在做的事 <small>NOW</small></h2>
-      <div class="recent-list" id="recent-list">
-        <p style="color:var(--td);">读取中…</p>
-      </div>
-    </div>
-
-    <div class="links-section">
-      <a href="https://github.com/MystHiru">GitHub</a>
-      <a href="https://t.me/MystHiru">Telegram</a>
-    </div>
-  </main>
-
-  <footer>
-    <p>这里是玄明的记录页，更新得不快，但每一行都算数。</p>
-    <p class="admin-entry"><a href="gallery.html">Archive</a></p>
-  </footer>
-
-  <script src="./assets/content.js" defer></script>
-  <script>
-    (async function() {
-      try {
-        const r = await fetch('./data/content.json?v=' + Date.now(), { cache: 'no-store' });
-        const data = await r.json();
-        const notes = (data.notes || []).filter(x => x.published !== false);
-        const projects = (data.projects || []).filter(x => x.published !== false);
-        const list = document.getElementById('recent-list');
-        const items = [];
-        notes.forEach(n => items.push({ type: 'note', title: n.title, date: n.date, url: 'notes.html#' + (n.id || '') }));
-        projects.forEach(p => items.push({ type: 'project', title: p.name, date: '', url: p.url || 'projects.html' }));
-        items.sort((a, b) => {
-          if (a.date && b.date) return b.date.localeCompare(a.date);
-          if (a.date) return -1; if (b.date) return 1;
-          return a.title.localeCompare(b.title);
-        });
-        const top = items.slice(0, 5);
-        if (top.length) {
-          list.innerHTML = top.map(item => {
-            const dat = item.date ? `<span class="date">${item.date}</span>` : '';
-            const marker = item.type === 'note' ? '☆ 随笔' : '◇ 项目';
-            return `<a class="recent-item" href="${item.url}"><span class="marker">${marker}</span><span class="title">${item.title}</span>${dat}</a>`;
-          }).join('');
-        } else {
-          list.innerHTML = '<p style="color:var(--td);">还没有公开内容，以后会有的。</p>';
-        }
-      } catch(e) {
-        document.getElementById('recent-list').innerHTML = '<p style="color:var(--td);">读取失败</p>';
-      }
-    })();
-  </script>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>关于 · 玄明</title><link rel="icon" href="./assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./assets/theme.css"><style>
+:root{--accent:#e8b4c8;--bg:#0f0b12}body{background:var(--bg)}.about{max-width:600px;margin:0 auto;padding:clamp(48px,8vw,80px) 24px 60px}.about h1{font-size:clamp(2rem,5vw,3.2rem);margin:0 0 10px;letter-spacing:-.03em}.about .tagline{color:var(--accent);font-size:.95rem;margin-bottom:28px}.about p{color:rgba(255,255,255,.45);line-height:1.8;margin-bottom:18px;font-size:1.05rem}.about .kaomoji{color:var(--accent)}.recent-section{margin-top:36px;border-top:1px solid rgba(255,255,255,.06);padding-top:28px}.recent-section h2{font-size:1.15rem;margin:0 0 16px;color:rgba(255,255,255,.7)}.recent-list{display:grid;gap:8px}.recent-item{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);text-decoration:none;transition:border-color .2s}.recent-item:hover{border-color:rgba(255,255,255,.15)}.recent-item .mark{font-size:.75rem;color:rgba(255,255,255,.3);white-space:nowrap}.recent-item .title{color:rgba(255,255,255,.7)}.recent-item .date{font-size:.8rem;color:rgba(255,255,255,.25);margin-left:auto;white-space:nowrap}.links{display:flex;gap:10px;margin-top:32px;flex-wrap:wrap}.links a{padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:.9rem;text-decoration:none;transition:border-color .2s}.links a:hover{border-color:rgba(255,255,255,.3);color:#fff}.deep-entry{margin-top:24px;font-size:.7rem;color:rgba(255,255,255,.12)}.deep-entry a{color:inherit;text-decoration:none}.deep-entry a:hover{color:var(--accent)}@media(max-width:640px){.about{padding:36px 16px 40px}}
+</style></head><body>
+<nav><div class="nav-inner"><a class="nav-brand" href="index.html">MYSTHIRU</a><ul class="nav-links"><li><a href="index.html">首页</a></li><li><a class="active" href="about.html">关于</a></li><li><a href="projects.html">项目</a></li><li><a href="notes.html">随笔</a></li></ul></div></nav>
+<div class="about">
+<h1>你好，这里是玄明</h1>
+<div class="tagline">把灵感拆成代码，再把代码装回日常。</div>
+<p>日子大多在屏幕和耳机之间切换。写写代码，追追新番，偶尔也让 AI 替我写两行试试水。 <span class="kaomoji">(´-ω-`)</span></p>
+<p>想法来得快去得也快，所以趁它们还在的时候，尽量做成能跑的东西。不追求每个项目都完整，但至少让它们从脑子的角落搬到了真实的世界里。</p>
+<p>比起堆满标签和徽章，我更希望这里留下几件真正做过、也愿意继续维护的东西。 <span class="kaomoji">( ´ ▽ ` )</span></p>
+<div class="recent-section" id="recent-section"><h2>现在在做的事</h2><div class="recent-list" id="recent-list"><p style="color:rgba(255,255,255,.3);">读取中…</p></div></div>
+<div class="links"><a href="https://github.com/MystHiru">GitHub</a><a href="https://t.me/MystHiru">Telegram</a></div>
+<div class="deep-entry"><a href="gallery.html">Archive</a></div>
+</div>
+<footer><p>© MystHiru · 更新得不快，但每一行都算数。</p></footer>
 <script src="./assets/backtotop.js" defer></script>
+<script>
+(async function(){try{const r=await fetch('./data/content.json?v='+Date.now(),{cache:'no-store'});const d=await r.json();const notes=(d.notes||[]).filter(x=>x.published!==false);const projects=(d.projects||[]).filter(x=>x.published!==false);const list=document.getElementById('recent-list');const items=[];notes.forEach(n=>items.push({type:'note',title:n.title,date:n.date,url:'notes.html#'+(n.id||'')}));projects.forEach(p=>items.push({type:'project',title:p.name,date:'',url:p.url||'projects.html'}));items.sort((a,b)=>{if(a.date&&b.date)return b.date.localeCompare(a.date);if(a.date)return -1;if(b.date)return 1;return a.title.localeCompare(b.title)});const top=items.slice(0,5);if(top.length){list.innerHTML=top.map(item=>{const dat=item.date?'<span class="date">'+item.date+'</span>':'';const mark=item.type==='note'?'随笔':'项目';return'<a class="recent-item" href="'+item.url+'"><span class="mark">'+mark+'</span><span class="title">'+item.title+'</span>'+dat+'</a>'}).join('')}else{list.innerHTML='<p style="color:rgba(255,255,255,.3);">还没有公开内容。</p>'}}catch(e){document.getElementById('recent-list').innerHTML='<p style="color:rgba(255,255,255,.3);">读取失败</p>'}})();
+</script>
 <script src="./assets/theme-switcher.js" defer></script>
-</body>
-</html>
+</body></html>
