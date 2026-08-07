@@ -27,6 +27,21 @@
     document.querySelectorAll('[data-tag-filter]').forEach(btn=>btn.onclick=()=>selectTag(btn.dataset.tagFilter));root.querySelectorAll('[data-filter-tag]').forEach(btn=>btn.onclick=()=>selectTag(btn.dataset.filterTag));apply();
   }
   function renderProjects(data){const root=document.getElementById('project-grid');if(!root)return;const projects=(data.projects||[]).filter(x=>x.published!==false);root.innerHTML=projects.map(p=>`<article class="project-card"><h3>${p.url?`<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener">${escapeHtml(p.name)}</a>`:escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||'')}</p><div class="project-meta">${(p.tags||[]).map(t=>`<span class="project-tag">${escapeHtml(t)}</span>`).join('')}</div></article>`).join('')||'<p class="empty-state">项目正在整理。</p>'}
-  function renderNotes(data){const root=document.getElementById('note-list');if(!root)return;const notes=(data.notes||[]).filter(x=>x.published!==false);root.innerHTML=notes.map(n=>`<article class="note-card" id="${escapeHtml(n.id||'')}"><h3>${escapeHtml(n.title)}</h3><div class="note-date">${escapeHtml(n.date||'')}</div><div class="note-body">${markdown(n.body||'')}</div></article>`).join('')||'<p class="empty-state">这里暂时没有公开随笔。</p>'}
+  function renderNotes(data){const root=document.getElementById('note-list');if(!root)return;const notes=(data.notes||[]).filter(x=>x.published!==false);root.innerHTML=notes.map(n=>`<article class="note-card" id="${escapeHtml(n.id||'')}"><h3>${escapeHtml(n.title)}</h3><div class="note-date">${escapeHtml(n.date||'')}</div><div class="note-body">${markdown(n.body||'')}</div></article>`).join('')||'<p class="empty-state">这里暂时没有公开随笔。</p>';highlightCode(root);}
+  function highlightCode(root){
+    if(!root)return;
+    const KEYWORDS=new Set(['const','let','var','function','return','if','else','for','while','do','switch','case','break','continue','new','class','extends','import','export','from','async','await','try','catch','finally','throw','typeof','instanceof','in','of','this','true','false','null','undefined','def','elif','lambda','print','raise','except','with','as','pass','yield','public','private','static','void','int','string','bool','package','sub','require','end']);
+    root.querySelectorAll('pre code').forEach(block=>{
+      const text=block.textContent;
+      if(!text.trim())return;
+      block.innerHTML=text.replace(/(\/\/[^\n]*|#[^\n]*|---[^\n]*)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`)|\b(\d[\d._]*)\b|\b([A-Za-z_$][\w$]*)\b|(\/\/[^\n]*)/g,(m,comment,str,num,word)=>{
+        if(comment)return `<span class="hl-comment">${comment}</span>`;
+        if(str)return `<span class="hl-string">${str}</span>`;
+        if(num)return `<span class="hl-number">${num}</span>`;
+        if(word)return KEYWORDS.has(word)?`<span class="hl-keyword">${word}</span>`:word;
+        return m;
+      });
+    });
+  }
   document.addEventListener('DOMContentLoaded',async()=>{try{const data=await loadData();renderCollections(data);renderProjects(data);renderNotes(data)}catch(error){console.error(error);document.querySelectorAll('[data-content-root]').forEach(root=>root.innerHTML='<p class="empty-state">内容加载遇到问题，请稍后刷新。</p>')}});window.MystContent={markdown,escapeHtml};
 })();
