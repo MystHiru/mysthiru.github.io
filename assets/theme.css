@@ -223,3 +223,48 @@ footer p { color: var(--text-dim); }
   .site-nav-inner { align-items: flex-start; }
   .site-nav-inner ul { flex-wrap: wrap; }
 }
+
+/* Back to top */
+.back-to-top {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--sakura);
+  color: #120d16;
+  border: none;
+  cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 18px;
+  opacity: 0; transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity .3s, transform .3s, background .2s;
+  z-index: 999;
+  box-shadow: 0 8px 24px rgba(200,117,152,.3);
+}
+.back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.back-to-top:hover { background: var(--sakura-bright); }
+@media (max-width: 560px) { .back-to-top { bottom: 18px; right: 18px; } }
+
+/* Code syntax highlight */
+.note-body pre code .hl-keyword { color: #f3a6bd; }
+.note-body pre code .hl-string { color: #c3e88d; }
+.note-body pre code .hl-number { color: #f78c6c; }
+.note-body pre code .hl-comment { color: #546e7a; font-style: italic; }
+.note-body pre code .hl-builtin { color: #89ddff; }
+.note-body pre code .hl-type { color: #ffcb6b; }
+
+/* Recent updates on homepage */
+.recent-updates { margin-top: 28px; }
+.recent-updates .ru-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.recent-updates .ru-head h2 { font-size: clamp(18px, 3vw, 22px); }
+.recent-updates .ru-head span { color: var(--td); font-size: 12px; }
+.recent-updates .ru-list { display: grid; gap: 8px; }
+.recent-updates .ru-item {
+  display: flex; gap: 10px; align-items: center;
+  background: var(--s1); border: 1px solid var(--ln); border-radius: 10px;
+  padding: 10px 14px; text-decoration: none; transition: border-color .2s;
+}
+.recent-updates .ru-item:hover { border-color: var(--am); }
+.recent-updates .ru-mark { font-size: 11px; color: var(--td); white-space: nowrap; flex-shrink: 0; }
+.recent-updates .ru-title { color: var(--ts); flex: 1; font-size: 14px; }
+.recent-updates .ru-date { color: var(--td); font-size: 12px; white-space: nowrap; }
