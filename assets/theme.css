@@ -61,7 +61,11 @@ body {
   color: var(--warm-white) !important;
   position: relative;
   transition: background .5s ease;
-}
+    }
+
+
+/* Global font-size normalization */
+body { font-size: 16px !important; }
 
 /* ===== 主题装饰层 ===== */
 .theme-decorations {
