@@ -1,73 +1,80 @@
-/* ============================================
-   MystHiru — Theme System
-   Minimal · Elegant · Atmospheric
-   ============================================ */
-
-/* ---------- Base ---------- */
+/* -----------------------------------------------
+   MystHiru — Minimal Dark
+   ----------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { color-scheme: dark; scroll-behavior: smooth; }
 body {
-  margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 16px; line-height: 1.65; color: #e8e6ee; background: #0a0a0f;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #d4d0d8;
+  background: linear-gradient(145deg, #0c0a12 0%, #0f0d1a 50%, #0a0812 100%);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ---------- Typography ---------- */
-h1, h2, h3, h4 { font-weight: 600; line-height: 1.2; }
-h1 { font-size: clamp(2.4rem, 5.5vw, 3.8rem); letter-spacing: -0.03em; }
-h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
-h3 { font-size: 1.2rem; }
-p { margin: 0; }
+/* Typography */
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.25; color: #eeeaf2; }
+h1 { font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -0.02em; margin: 0 0 8px; }
+h2 { font-size: clamp(1.3rem, 2.5vw, 1.7rem); margin: 0 0 16px; }
+h3 { font-size: 1.1rem; margin: 0 0 6px; }
+p { margin: 0; color: #a8a2b0; }
 a { color: inherit; text-decoration: none; }
-::selection { background: rgba(180, 130, 255, 0.25); color: #fff; }
+::selection { background: rgba(160, 130, 220, 0.3); color: #fff; }
 
-/* ---------- Navigation ---------- */
+/* Navigation */
 nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(10, 10, 15, 0.82); backdrop-filter: blur(16px);
+  background: rgba(12, 10, 18, 0.85);
+  backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .nav-inner {
   max-width: 1120px; margin: 0 auto; padding: 0 24px;
   height: 56px; display: flex; align-items: center; justify-content: space-between;
 }
-.nav-brand { font-weight: 700; letter-spacing: 0.08em; font-size: 0.95rem; color: #e8e6ee; }
-.nav-links { display: flex; gap: 20px; align-items: center; list-style: none; padding: 0; margin: 0; }
-.nav-links a { font-size: 0.9rem; color: rgba(255, 255, 255, 0.5); transition: color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color: #e8e6ee; }
+.nav-brand {
+  font-weight: 700; letter-spacing: 0.06em; font-size: 0.95rem; color: #c8b8e8;
+}
+.nav-links { display: flex; gap: 24px; align-items: center; list-style: none; padding: 0; margin: 0; }
+.nav-links a {
+  font-size: 0.9rem; color: rgba(255, 255, 255, 0.4); transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: #c8b8e8; }
 
-/* ---------- Page Header ---------- */
+/* Page header */
 .page-header {
-  max-width: 720px; margin: 0 auto; padding: clamp(48px, 8vw, 80px) 24px 20px;
+  max-width: 860px; margin: 0 auto;
+  padding: clamp(48px, 7vw, 72px) 24px 16px;
 }
-.page-header h1 { margin: 0 0 6px; }
-.page-header p { color: rgba(255, 255, 255, 0.4); font-size: 1rem; margin: 0; }
+.page-header p { color: rgba(255, 255, 255, 0.35); }
 
-/* ---------- Main Content ---------- */
+/* Page content */
 .page-content {
-  max-width: 1120px; margin: 0 auto; padding: 0 24px 80px;
+  max-width: 860px; margin: 0 auto; padding: 0 24px 80px;
 }
 
-/* ---------- Cards ---------- */
+/* Cards */
 .card {
-  background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px; padding: 20px 24px;
-  transition: border-color 0.2s, transform 0.2s;
+  border-radius: 10px; padding: 20px 22px;
+  transition: border-color 0.2s;
 }
-.card:hover { border-color: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+.card:hover { border-color: rgba(255, 255, 255, 0.12); }
 
-/* ---------- Footer ---------- */
+/* Footer */
 footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 24px; text-align: center; color: rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px; text-align: center; color: rgba(255, 255, 255, 0.2);
   font-size: 0.85rem;
 }
 
-/* ---------- Responsive ---------- */
+/* Responsive */
 @media (max-width: 640px) {
-  .nav-inner { height: 52px; padding: 0 16px; }
-  .nav-links { gap: 14px; }
-  .page-header { padding: 36px 16px 16px; }
+  .nav-inner { padding: 0 16px; height: 52px; }
+  .nav-links { gap: 16px; }
+  .page-header { padding: 36px 16px 12px; }
   .page-content { padding: 0 16px 60px; }
 }
