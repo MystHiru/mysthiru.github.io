@@ -59,9 +59,10 @@ body {
     radial-gradient(circle at 88% 16%, rgba(var(--glow-2),.10), transparent 30rem),
     linear-gradient(180deg, var(--surface-0) 0%, var(--night-soft) 48%, var(--surface-0) 100%) !important;
   color: var(--warm-white) !important;
+  font-size: 16px !important;
   position: relative;
   transition: background .5s ease;
-    }
+}
 
 
 /* Global font-size normalization */
@@ -281,14 +282,14 @@ h1 {
 }
 
 /* ===== 共享页面骨架 ===== */
-.site-nav-inner {
+.site-nav-inner, .nav {
   width: min(1120px, 100%); margin: 0 auto; padding: 14px clamp(18px, 5vw, 44px);
   display: flex; justify-content: space-between; align-items: center; gap: 20px;
 }
-.site-nav-inner ul { padding: 0 !important; margin: 0 !important; display: flex; justify-content: flex-end; align-items: center; gap: clamp(12px, 3vw, 25px); list-style: none; }
-.site-nav-inner a:not(.brand) { color: var(--warm-muted); font-size: 14px; text-decoration: none; }
-.site-nav-inner .brand { color: var(--sakura-bright); font-weight: 700; letter-spacing: .12em; text-decoration: none; }
-.site-nav-inner a.active { color: var(--sakura-bright) !important; }
+.site-nav-inner ul, .nav ul { padding: 0 !important; margin: 0 !important; display: flex; justify-content: flex-end; align-items: center; gap: clamp(12px, 3vw, 25px); list-style: none; }
+.site-nav-inner a:not(.brand), .nav a:not(.brand) { color: var(--warm-muted); font-size: 14px; text-decoration: none; }
+.site-nav-inner .brand, .nav .brand { color: var(--sakura-bright); font-weight: 700; letter-spacing: .12em; text-decoration: none; }
+.site-nav-inner a.active, .nav a.active { color: var(--sakura-bright) !important; }
 footer p { color: var(--text-dim); }
 
 /* 空状态 */
@@ -305,7 +306,7 @@ footer p { color: var(--text-dim); }
 .archive-empty h2 { font-size: clamp(20px, 4vw, 28px); }
 .archive-empty p { color: var(--warm-muted); max-width: 460px; margin: 9px auto 0; }
 
-@media (max-width: 660px) { .site-nav-inner { align-items: flex-start; } .site-nav-inner ul { flex-wrap: wrap; } }
+@media (max-width: 660px) { .site-nav-inner, .nav { align-items: flex-start; } .site-nav-inner ul, .nav ul { flex-wrap: wrap; } }
 
 /* 返回顶部 */
 .back-to-top {
