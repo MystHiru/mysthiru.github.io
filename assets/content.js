@@ -8,23 +8,13 @@
   function renderCollections(data){
     const root=document.getElementById('collection-list'); if(!root)return;
     const items=Array.isArray(data.collections)?data.collections:[];
+    if(!items.length){root.innerHTML='<div class="archive-empty"><span class="empty-mark">✦</span><h2>收藏库还没有内容</h2><p>这里会逐渐留下图片、链接、音乐、视频和文字片段。第一条收藏可以从首页底部的 Archive 入口添加。</p></div>';return;}
     const groups=[...new Map(items.map(item=>[item.group||item.category||'其他',item])).values()];
     root.innerHTML=groups.map(group=>{
       const name=group.group||group.category||'其他';
       const children=items.filter(item=>(item.group||item.category||'其他')===name);
-      return `<section class="collection-group" data-group="${escapeHtml(name)}"><div class="group-head"><div><h2>${escapeHtml(name)}</h2><p>${escapeHtml(group.groupDescription||'按主题整理的一组收藏。')}</p></div><span class="group-count">${children.length} 项</span></div><div class="collection-grid group-grid">${children.map((item,index)=>renderCollectionCard(item,index)).join('')}</div></section>`;
-    }).join('')||'<div class="archive-empty"><span class="empty-mark">✦</span><h2>收藏库还没有内容</h2><p>这里会逐渐留下图片、链接、音乐、视频和文字片段。第一条收藏可以从深层管理入口添加。</p></div>';
-    const categories=['全部',...new Set(items.map(x=>x.category||'其他'))],types=['全部',...new Set(items.map(x=>x.type||'text'))],tags=[...new Set(items.flatMap(x=>x.tags||[]))];
-    const cat=document.getElementById('category-filters'),typ=document.getElementById('type-filters'),tag=document.getElementById('tag-filters');
-    if(cat)cat.innerHTML=categories.map((x,i)=>`<button class="filter-chip ${i===0?'active':''}" data-category-filter="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join('');
-    if(typ)typ.innerHTML=types.map((x,i)=>`<button class="filter-chip ${i===0?'active':''}" data-type-filter="${escapeHtml(x)}">${x==='全部'?'全部类型':typeLabel[x]||escapeHtml(x)}</button>`).join('');
-    if(tag)tag.innerHTML=tags.map(x=>`<button class="filter-chip" data-tag-filter="${escapeHtml(x)}">#${escapeHtml(x)}</button>`).join('');
-    let selectedCategory='全部',selectedType='全部',selectedTag='';
-    function apply(){root.querySelectorAll('.collection-card').forEach(card=>{const okCategory=selectedCategory==='全部'||card.dataset.category===selectedCategory,okType=selectedType==='全部'||card.dataset.type===selectedType,okTag=!selectedTag||card.dataset.tags.split('|').includes(selectedTag);card.hidden=!(okCategory&&okType&&okTag)});root.querySelectorAll('.collection-group').forEach(group=>group.hidden=!group.querySelector('.collection-card:not([hidden])'));document.getElementById('collection-count').textContent=`显示 ${[...root.querySelectorAll('.collection-card')].filter(x=>!x.hidden).length} / ${items.length} 项`}
-    document.querySelectorAll('[data-category-filter]').forEach(btn=>btn.onclick=()=>{selectedCategory=btn.dataset.categoryFilter;document.querySelectorAll('[data-category-filter]').forEach(x=>x.classList.toggle('active',x===btn));apply()});
-    document.querySelectorAll('[data-type-filter]').forEach(btn=>btn.onclick=()=>{selectedType=btn.dataset.typeFilter;document.querySelectorAll('[data-type-filter]').forEach(x=>x.classList.toggle('active',x===btn));apply()});
-    function selectTag(value){selectedTag=selectedTag===value?'':value;document.querySelectorAll('[data-tag-filter]').forEach(x=>x.classList.toggle('active',x.dataset.tagFilter===selectedTag));apply()}
-    document.querySelectorAll('[data-tag-filter]').forEach(btn=>btn.onclick=()=>selectTag(btn.dataset.tagFilter));root.querySelectorAll('[data-filter-tag]').forEach(btn=>btn.onclick=()=>selectTag(btn.dataset.filterTag));apply();
+      return `<section class="collection-group"><div class="group-head"><div><h2>${escapeHtml(name)}</h2><p>${escapeHtml(group.groupDescription||'按主题整理的一组收藏。')}</p></div><span class="group-count">${children.length} 项</span></div><div class="collection-grid">${children.map((item,index)=>renderCollectionCard(item,index)).join('')}</div></section>`;
+    }).join('');
   }
   function renderProjects(data){const root=document.getElementById('project-grid');if(!root)return;const projects=(data.projects||[]).filter(x=>x.published!==false);root.innerHTML=projects.map(p=>`<article class="project-card"><h3>${p.url?`<a href="${escapeHtml(p.url)}" target="_blank" rel="noopener">${escapeHtml(p.name)}</a>`:escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||'')}</p><div class="project-tags">${(p.tags||[]).map(t=>`<span>${escapeHtml(t)}</span>`).join('')}</div></article>`).join('')||'<p class="empty-state">项目正在整理。</p>'}
   function renderNotes(data){const root=document.getElementById('note-list');if(!root)return;const notes=(data.notes||[]).filter(x=>x.published!==false);root.innerHTML=notes.map(n=>`<article class="note-card" id="${escapeHtml(n.id||'')}"><h3>${escapeHtml(n.title)}</h3><div class="note-date">${escapeHtml(n.date||'')}</div><div class="note-body">${markdown(n.body||'')}</div></article>`).join('')||'<p class="empty-state">这里暂时没有公开随笔。</p>';highlightCode(root);}

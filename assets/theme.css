@@ -214,6 +214,11 @@ nav {
 .btn-ghost { border: 1px solid var(--line); color: var(--text-dim); background: transparent; }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
+
+.deep-entry { margin-top: 20px; font-size: .7rem; text-align: center; }
+.deep-entry a { color: rgba(255,255,255,0.1); text-decoration: none; }
+.deep-entry a:hover { color: var(--accent); }
+
 /* ---------- Footer ---------- */
 footer {
   border-top: 1px solid var(--line);
