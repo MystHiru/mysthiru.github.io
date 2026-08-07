@@ -95,7 +95,7 @@
     </div>
 
     <div class="recent-section" id="recent-section">
-      <h2>最近的小成果 <small>RECENT</small></h2>
+      <h2>现在在做的事 <small>NOW</small></h2>
       <div class="recent-list" id="recent-list">
         <p style="color:var(--td);">读取中…</p>
       </div>
@@ -133,7 +133,7 @@
         if (top.length) {
           list.innerHTML = top.map(item => {
             const dat = item.date ? `<span class="date">${item.date}</span>` : '';
-            const marker = item.type === 'note' ? '随笔' : '项目';
+            const marker = item.type === 'note' ? '☆ 随笔' : '◇ 项目';
             return `<a class="recent-item" href="${item.url}"><span class="marker">${marker}</span><span class="title">${item.title}</span>${dat}</a>`;
           }).join('');
         } else {
@@ -145,5 +145,6 @@
     })();
   </script>
 <script src="./assets/backtotop.js" defer></script>
+<script src="./assets/theme-switcher.js" defer></script>
 </body>
 </html>
