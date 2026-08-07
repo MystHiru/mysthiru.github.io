@@ -3,43 +3,84 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>随笔 · 玄明</title>
 <style>
-:root{--s0:#05070c;--s1:#0a0d12;--s2:#0f131c;--s3:#161d2b;--a:#9d7bff;--am:#6b5b95;--tp:#e8e8f0;--ts:#a8a8b8;--td:#6b6b7b;--ln:#282c38;--r:16px;--f:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--s0);color:var(--tp);font-family:var(--f);font-size:clamp(0.95rem,1.8vw,1.05rem);line-height:1.7;min-height:100vh;display:flex;flex-direction:column}a{color:inherit}nav{position:sticky;top:0;z-index:20;background:rgba(10,9,18,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}.site-nav-inner{max-width:1120px;margin:0 auto;padding:14px clamp(18px,5vw,44px);display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{color:var(--a);font-weight:700;letter-spacing:.12em;text-decoration:none}.site-nav-inner ul{display:flex;list-style:none;gap:clamp(12px,3vw,25px);align-items:center}.site-nav-inner a:not(.brand){color:var(--ts);text-decoration:none;font-size:14px}.site-nav-inner a:hover,.site-nav-inner a.active{color:var(--a)}main{flex:1;max-width:800px;margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,3rem);width:100%}h1{font-size:clamp(2rem,4vw,2.5rem);font-weight:600;margin-bottom:.5rem;background:linear-gradient(120deg,#fff5f8 10%,var(--a) 80%);-webkit-background-clip:text;background-clip:text;color:transparent}.subtitle{color:var(--td);margin-bottom:2rem}.search-wrap{position:relative;margin-bottom:2rem}.search-wrap input{width:100%;background:var(--s1);border:1px solid var(--ln);border-radius:999px;color:var(--tp);padding:.7rem 1rem .7rem 2.5rem;font-size:.9rem;font-family:var(--f)}.search-wrap input:focus{outline:none;border-color:var(--am)}.search-wrap .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--td);font-size:14px;pointer-events:none}.search-count{font-size:13px;color:var(--td);margin:-1rem 0 1.5rem;text-align:right;min-height:1.5em}.note-list{display:grid;gap:1.5rem}.note-card{background:var(--s1);border:1px solid var(--ln);border-radius:var(--r);padding:1.5rem;transition:border-color .2s}.note-card.hidden{display:none}.note-card:hover{border-color:var(--am)}.note-card h3{color:var(--a);font-size:1.3rem;font-weight:600;margin-bottom:.5rem}.note-date{color:var(--td);font-size:.85rem;margin-bottom:1rem}.note-body>*+*{margin-top:1rem}.note-body a{color:var(--a)}.note-body code{background:var(--s2);padding:.12rem .35rem;border-radius:5px}.note-body pre{overflow:auto;background:var(--s2);padding:1rem;border-radius:10px}.note-body blockquote{border-left:3px solid var(--a);padding-left:1rem;color:var(--ts)}.note-body ul{padding-left:1.25rem}.empty-state{color:var(--td);padding:2rem 0}footer{margin-top:auto;padding:2rem clamp(1.5rem,5vw,3rem);border-top:1px solid var(--ln);text-align:center;color:var(--td);font-size:.9rem}@media(max-width:760px){.site-nav-inner{align-items:flex-start}.site-nav-inner ul{flex-wrap:wrap}}
+:root{--s0:#05070c;--s1:#0a0d12;--s2:#0f131c;--s3:#161d2b;--a:#9d7bff;--am:#6b5b95;--tp:#e8e8f0;--ts:#a8a8b8;--td:#6b6b7b;--ln:#282c38;--r:16px;--f:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{margin:0;padding:0;box-sizing:border-box}body{background:var(--s0);color:var(--tp);font-family:var(--f);font-size:clamp(0.95rem,1.8vw,1.05rem);line-height:1.7;min-height:100vh;display:flex;flex-direction:column}a{color:inherit}nav{position:sticky;top:0;z-index:20;background:rgba(10,9,18,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}.site-nav-inner{max-width:1120px;margin:0 auto;padding:14px clamp(18px,5vw,44px);display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{color:var(--a);font-weight:700;letter-spacing:.12em;text-decoration:none}.site-nav-inner ul{display:flex;list-style:none;gap:clamp(12px,3vw,25px);align-items:center}.site-nav-inner a:not(.brand){color:var(--ts);text-decoration:none;font-size:14px}.site-nav-inner a:hover,.site-nav-inner a.active{color:var(--a)}
+.notes-layout{flex:1;width:100%;max-width:1120px;margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(18px,5vw,44px);display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:clamp(28px,5vw,60px);align-items:start}
+.notes-main h1{font-size:clamp(2rem,4vw,2.5rem);font-weight:600;margin-bottom:.5rem;background:linear-gradient(120deg,#fff5f8 10%,var(--a) 80%);-webkit-background-clip:text;background-clip:text;color:transparent}.subtitle{color:var(--td);margin-bottom:2rem}.search-wrap{position:relative;max-width:460px;margin-bottom:.8rem}.search-wrap input{width:100%;background:var(--s1);border:1px solid var(--ln);border-radius:999px;color:var(--tp);padding:.65rem 1rem .65rem 2.4rem;font-size:.9rem;font-family:var(--f)}.search-wrap input:focus{outline:none;border-color:var(--am)}.search-wrap .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--td);font-size:14px;pointer-events:none}.search-count{font-size:13px;color:var(--td);margin-bottom:1.5rem;min-height:1.5em}.note-list{display:grid;gap:1.5rem}.note-card{background:var(--s1);border:1px solid var(--ln);border-radius:var(--r);padding:1.5rem;transition:border-color .2s;scroll-margin-top:80px}.note-card.hidden{display:none}.note-card:hover{border-color:var(--am)}.note-card h3{color:var(--a);font-size:1.3rem;font-weight:600;margin-bottom:.5rem}.note-date{color:var(--td);font-size:.85rem;margin-bottom:1rem}.note-body>*+*{margin-top:1rem}.note-body a{color:var(--a)}.note-body code{background:var(--s2);padding:.12rem .35rem;border-radius:5px}.note-body pre{overflow:auto;background:var(--s2);padding:1rem;border-radius:10px}.note-body blockquote{border-left:3px solid var(--a);padding-left:1rem;color:var(--ts)}.note-body ul{padding-left:1.25rem}.empty-state{color:var(--td);padding:2rem 0}
+.toc{position:sticky;top:90px;border-left:1px solid var(--ln);padding-left:18px}.toc-label{font-size:11px;letter-spacing:.12em;color:var(--td);margin-bottom:12px}.toc-list{display:grid;gap:4px}.toc-link{display:block;color:var(--ts);text-decoration:none;font-size:13px;line-height:1.45;padding:3px 0;border-radius:4px;transition:color .2s}.toc-link:hover{color:var(--a)}.toc-link.active{color:var(--a)}.toc-empty{color:var(--td);font-size:13px}
+footer{margin-top:auto;padding:2rem clamp(1.5rem,5vw,3rem);border-top:1px solid var(--ln);text-align:center;color:var(--td);font-size:.9rem}
+@media(max-width:900px){.notes-layout{grid-template-columns:1fr}.toc{position:static;border-left:none;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);padding:14px 0;margin-top:28px}.toc-list{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:2px 14px}}
+@media(max-width:760px){.site-nav-inner{align-items:flex-start}.site-nav-inner ul{flex-wrap:wrap}}
 </style>
 <link rel="stylesheet" href="./assets/theme.css">
 </head>
 <body>
 <nav class="site-nav"><div class="site-nav-inner"><a class="brand" href="index.html">MYSTHIRU</a><ul><li><a href="index.html">首页</a></li><li><a href="about.html">关于</a></li><li><a href="projects.html">项目</a></li><li><a href="notes.html" class="active">随笔</a></li></ul></div></nav>
-<main>
-<h1>随笔记录</h1>
-<p class="subtitle">一些想法、碎片和不太成形的东西</p>
-<div class="search-wrap"><span class="search-icon">🔍</span><input id="note-search" type="search" placeholder="搜索标题、正文或日期…" autocomplete="off"></div>
-<div class="search-count" id="search-count">全部</div>
-<div class="note-list" id="note-list" data-content-root><p class="empty-state">正在读取随笔…</p></div>
-</main>
+<div class="notes-layout">
+  <div class="notes-main">
+    <h1>随笔记录</h1>
+    <p class="subtitle">一些想法、碎片和不太成形的东西</p>
+    <div class="search-wrap"><span class="search-icon">🔍</span><input id="note-search" type="search" placeholder="搜索标题、正文或日期…" autocomplete="off"></div>
+    <div class="search-count" id="search-count">全部</div>
+    <div class="note-list" id="note-list" data-content-root><p class="empty-state">正在读取随笔…</p></div>
+  </div>
+  <aside class="toc" id="toc">
+    <div class="toc-label">目录 · CONTENTS</div>
+    <div class="toc-list" id="toc-list"><p class="toc-empty">读取中…</p></div>
+  </aside>
+</div>
 <footer><p>这里是玄明的记录页，更新得不快，但每一行都算数。</p></footer>
 <script src="./assets/content.js" defer></script>
 <script>
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   const search = document.getElementById('note-search');
   const count = document.getElementById('search-count');
+  const tocList = document.getElementById('toc-list');
   let rawNotes = [];
+
+  const buildToc = () => {
+    if (!rawNotes.length) { tocList.innerHTML = '<p class="toc-empty">还没有随笔</p>'; return; }
+    tocList.innerHTML = rawNotes.map((card, i) => {
+      const title = card.querySelector('h3');
+      const id = card.id || 'note-' + i;
+      card.id = id;
+      return `<a class="toc-link" href="#${id}" data-idx="${i}">${title ? title.textContent : '未命名'}</a>`;
+    }).join('');
+  };
+
   const wait = setInterval(() => {
-    if (document.querySelectorAll('.note-card').length) {
+    if (document.querySelectorAll('.note-card').length || !document.querySelector('#note-list .empty-state')) {
       clearInterval(wait);
       rawNotes = [...document.querySelectorAll('.note-card')];
+      buildToc();
+
       const filter = () => {
         const q = search.value.trim().toLowerCase();
         let visible = 0;
         rawNotes.forEach(card => {
-          const text = (card.textContent || '').toLowerCase();
-          const match = !q || text.includes(q);
+          const match = !q || (card.textContent || '').toLowerCase().includes(q);
           card.classList.toggle('hidden', !match);
           if (match) visible++;
         });
         count.textContent = q ? `找到 ${visible} 篇` : `${rawNotes.length} 篇`;
+        tocList.querySelectorAll('.toc-link').forEach(link => {
+          const idx = +link.dataset.idx;
+          link.style.display = rawNotes[idx] && rawNotes[idx].classList.contains('hidden') ? 'none' : 'block';
+        });
       };
       search.addEventListener('input', filter);
       filter();
+
+      const links = tocList.querySelectorAll('.toc-link');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            links.forEach(l => l.classList.remove('active'));
+            const link = tocList.querySelector(`a[href="#${entry.target.id}"]`);
+            if (link) link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+      rawNotes.forEach(card => observer.observe(card));
     }
   }, 200);
 });
