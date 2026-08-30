@@ -186,6 +186,15 @@ nav {
 .nav-links a { font-size: 0.9rem; color: var(--text-dim); transition: color .2s; }
 .nav-links a:hover, .nav-links a.active { color: var(--accent-bright); }
 
+/* ---------- Skip Link ---------- */
+.skip-link {
+  position: absolute; top: -40px; left: 0;
+  background: var(--accent); color: #0a0812;
+  padding: 8px 16px; z-index: 1000;
+  transition: top .2s;
+}
+.skip-link:focus { top: 0; }
+
 /* ---------- Page Header ---------- */
 .page-header {
   max-width: 860px; margin: 0 auto; padding: clamp(48px, 7vw, 72px) 24px 16px;
@@ -226,7 +235,7 @@ footer {
 }
 
 /* ---------- Theme Switcher ---------- */
-.theme-switcher { position: relative; }
+.theme-switcher { position: relative; display: flex; gap: 6px; align-items: center; }
 .theme-btn {
   background: none; border: 1px solid var(--line); color: var(--text-dim);
   width: 34px; height: 34px; border-radius: 999px; cursor: pointer; font-size: .9rem;
@@ -272,4 +281,21 @@ footer {
   .page-header { padding: 36px 16px 12px; }
   .page-content { padding: 0 16px 60px; }
   .theme-decorations { opacity: .15; }
+}
+
+/* ---------- Animation Toggle ---------- */
+body.no-animations *, body.no-animations *::before, body.no-animations *::after {
+  animation-duration: .01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .01ms !important;
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

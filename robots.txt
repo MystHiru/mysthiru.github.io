@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mysthiru.github.io/sitemap.xml
